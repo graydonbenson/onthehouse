@@ -1,3 +1,3 @@
 # onthehouse
 
-This is all blank
+SENG 401 Project

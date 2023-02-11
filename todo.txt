@@ -1,0 +1,6 @@
+check-in #1:
+- set up file structure (DONE)
+- create-next-app (DONE)
+- login/signup page
+- firebase setup
+- homepage + navbar

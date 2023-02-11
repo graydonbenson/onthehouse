@@ -7,3 +7,8 @@ check-in #1:
 - firebase setup - Ahad, Graydon, Mush (DONE)
 - node.js/express setup, add an endpoint for food - Athul, Parbir
 - set up CI/CD - Ahad, Graydon, Parbir
+===
+Parbir - Deploy/Hosting
+Mush, Ahad, Athul - Firebase Auth
+David, Eduardo - Frontend setup
+Athul - Frontend routing

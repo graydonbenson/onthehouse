@@ -1,9 +1,9 @@
 check-in #1:
 - set up file structure (DONE)
 - create-next-app (DONE)
-- install materialUI (use the signin materialUI template & dashboard template) - David, Eduardo
-- login/signup page - David, Eduardo, Athul
+- install materialUI (use the signin materialUI template & dashboard template) - David, Eduardo (DONE)
+- login/signup page - David, Eduardo, Athul (DONE)
 - homepage + navbar (put in components folder) - David, Eduardo
-- firebase setup - Ahad, Graydon, Mush
+- firebase setup - Ahad, Graydon, Mush (DONE)
 - node.js/express setup, add an endpoint for food - Athul, Parbir
 - set up CI/CD - Ahad, Graydon, Parbir

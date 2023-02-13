@@ -4,14 +4,14 @@ const admin = require("firebase-admin");
 admin.initializeApp();
 let db = admin.firestore();
 
+const express = require("express");
+const app = express();
+
 // // Create and deploy your first functions
 // // https://firebase.google.com/docs/functions/get-started
 //
-exports.helloWorld = functions.https.onRequest((req, res) => {
-  res.send("Hello from Firebase!");
-});
 
-exports.getUsers = functions.https.onRequest((req, res) => {
+app.get("/users", (req, res) => {
     let users = [];
     db.collection("Users").get().then((querySnap) => {
         querySnap.forEach((doc) => {
@@ -20,3 +20,6 @@ exports.getUsers = functions.https.onRequest((req, res) => {
         return res.json(users);
     }).catch(error => console.error(error));
 });
+
+// Setting endpoint routes to start with /api
+exports.api = functions.https.onRequest(app);

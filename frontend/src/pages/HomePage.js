@@ -1,28 +1,21 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Link } from "react-router-dom";
-import axios from "axios";
+import videoSrc from "../media/production_ID_4253147.mp4";
+import "./HomePage.css";
 
 function HomePage() {
-
-  const [users, setUsers] = useState([]);
-  const [loading, setLoading] = useState([]);
-
-  useEffect(() => {
-    axios.get("/users").then(res => {
-      console.log(res.data);
-      setUsers(res.data);
-      setLoading(false);
-    }).catch(error => console.error(error));
-  }, []);
-
   return (
-    <div>
-      <h1>Home Page</h1>
-      <h2>User Emails Below</h2>
-      {loading ? (<h4>Loading Data Please Wait....</h4>) : (<div>{users.map((user) => <h4>{user.email}</h4>)}</div>)};
-      <Link to={"/login"}><button>Log In!</button></Link>
-      <Link to={"/signup"}><button>Sign Up!</button></Link>
-    </div>
+    <>
+      <video src={videoSrc} autoPlay loop muted/>
+      <div className='info'>
+        <h1>On The House</h1>
+        <h6 className='phrase'>Find your next meal.</h6>
+        <div>
+          <Link to={"/login"}><button className="homeButtons">Log In!</button></Link>
+          <Link to={"/signup"}><button className="homeButtons">Sign Up!</button></Link>
+        </div>
+      </div>
+    </>
   );
 };
 

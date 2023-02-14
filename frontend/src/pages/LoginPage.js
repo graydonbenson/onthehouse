@@ -1,13 +1,12 @@
 import React from 'react'
-import { useNavigate } from 'react-router';
+import { Link } from 'react-router-dom';
 
 function LoginPage() {
-  const navigate = useNavigate();
   return (
     <div>
       <h1>Login Page</h1>
-      <button onClick={() => { navigate("/"); }}>Home</button>
-      <button onClick={() => { navigate("/signup"); }}>Sign Up</button>
+      <Link to={"/"}><button>Back To Home</button></Link>
+      <Link to={"/signup"}><button>Sign Up!</button></Link>
     </div>
   );
 };

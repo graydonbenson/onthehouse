@@ -1,11 +1,13 @@
 const functions = require("firebase-functions");
 const admin = require("firebase-admin");
+const cors = require("cors");
 
 admin.initializeApp();
 let db = admin.firestore();
 
 const express = require("express");
 const app = express();
+app.use(cors());
 
 // // Create and deploy your first functions
 // // https://firebase.google.com/docs/functions/get-started

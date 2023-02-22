@@ -5,7 +5,7 @@ import LoginPage from './pages/LoginPage';
 import SignUpPage from './pages/SignUpPage';
 import axios from 'axios';
 
-axios.defaults.baseURL = "https://us-central1-seng-401-on-the-house.cloudfunctions.net/api";
+// axios.defaults.baseURL = "https://us-central1-seng-401-on-the-house.cloudfunctions.net/api";
 
 function App() {
   return (

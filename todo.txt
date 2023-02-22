@@ -12,3 +12,15 @@ Parbir - Deploy/Hosting
 Mush, Ahad, Athul - Firebase Auth
 David, Eduardo - Frontend setup
 Athul - Frontend routing
+
+check-in #2:
+- Login/Signup Page - Athul, David, Eduardo
+- Firebase Auth + Login/Signup Backend - Ahad, Graydon
+- Homepage Frontend + Recipes Posts - Mush
+- Recipe Posts Backend - Mush
+- Meal of the Week Frontend - Parbir
+===
+- Upvotes 
+- Meal of the Week Backend
+- Tags
+- Comments

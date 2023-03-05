@@ -9,8 +9,11 @@ SENG 401 Project
 4. `cd backend/functions`
 5. `firebase login`
 6. `npm i`
-7. `npm run serve`
+7. `firebase serve -p 5001`
 
 ### To Deploy
 1. `cd backend/functions`
 2. `firebase deploy`
+3. `cd frontend`
+4. `npm run build`
+5. `firebase deploy`

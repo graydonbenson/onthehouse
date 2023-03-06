@@ -3,7 +3,6 @@ const admin = require("firebase-admin");
 const cors = require("cors");
 const { initializeApp } = require("firebase/app");
 const { getAuth, createUserWithEmailAndPassword } = require ("firebase/auth");
-const { doc, setDoc } = require("firebase/firestore");
 
 admin.initializeApp();
 const db = admin.firestore();
@@ -54,7 +53,7 @@ app.post("/signup", async (req, res) => {
             email: registerUser.email,
             username: registerUser.username
         }).then(() => { 
-        console.log("Document successfully written!");
+        console.log("User document successfully created!");
         res.send({ successMessage: "Created User Successfully" });
         }).catch((error) => {
             console.error(error);

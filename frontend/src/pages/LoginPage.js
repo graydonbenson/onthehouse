@@ -39,9 +39,9 @@ export default function SignIn() {
 
   return (
     <ThemeProvider theme={theme}>
-      <Container 
-        component="main" 
-        maxWidth="xs" 
+      <Container
+        component="main"
+        maxWidth="xs"
         sx={{
           height: '100vh',
           display: 'flex',
@@ -97,6 +97,9 @@ export default function SignIn() {
             </Button>
             <Grid container>
               <Grid item xs>
+                <Link href="#" variant="body2">
+                  Forgot password?
+                </Link>
               </Grid>
               <Grid item>
                 <Link href="signup" variant="body2">

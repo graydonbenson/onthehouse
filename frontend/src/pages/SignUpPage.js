@@ -18,7 +18,7 @@ function Copyright(props) {
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
       <Link color="inherit" href="https://mui.com/">
-        Your Website
+        OnTheHouse
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -40,11 +40,18 @@ export default function SignUpPage() {
 
   return (
     <ThemeProvider theme={theme}>
-      <Container component="main" maxWidth="xs">
+      <Container 
+        component="main" 
+        maxWidth="xs" 
+        sx={{
+          height: '100vh',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center'
+        }}>
         <CssBaseline />
         <Box
           sx={{
-            marginTop: 8,
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',

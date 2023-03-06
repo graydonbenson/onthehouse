@@ -5,6 +5,17 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { Grid, Paper } from '@mui/material';
 import RecipeCard from '../components/RecipeCard';
+import MainFeaturedPost from '../components/Motw';
+
+const mainFeaturedPost = {
+    title: 'Meal of the Week',
+    description:
+      "Multiple lines of text that form the lede, informing new readers quickly and efficiently about what's most interesting in this post's contents.",
+    image: 'https://source.unsplash.com/random',
+    imageText: 'main image description',
+    linkText: 'Continue reading…',
+    
+};
 
 function DashboardPage() {
 
@@ -31,9 +42,7 @@ function DashboardPage() {
     <Navbar open={open} openDrawer={handleDrawerOpen}></Navbar>
     <SideDrawer open={open} closeDrawer={handleDrawerClose}></SideDrawer>
     <Box component="main" sx={{ flexGrow: 1, p: 3, marginTop: 8}}>
-        <Typography paragraph>
-          HERE IS WHERE THE MEAL OF THE WEEK WILL GO
-        </Typography>
+    <MainFeaturedPost post={mainFeaturedPost}/>
         <Grid container spacing={2}>
             {cards}
         </Grid>

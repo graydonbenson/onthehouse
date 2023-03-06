@@ -14,7 +14,8 @@ function MainFeaturedPost(props) {
     return (
       <Paper
         sx={{
-          position: 'relative',
+          
+        position: 'relative',
           backgroundColor: 'grey.800',
           color: '#fff',
           mb: 4,

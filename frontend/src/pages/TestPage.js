@@ -10,6 +10,7 @@ const mainFeaturedPost = {
     image: 'https://source.unsplash.com/random',
     imageText: 'main image description',
     linkText: 'Continue reading…',
+    
 };
 
 function TestPage() {

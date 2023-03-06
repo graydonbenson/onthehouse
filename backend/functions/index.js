@@ -3,6 +3,7 @@ const admin = require("firebase-admin");
 const cors = require("cors");
 const { initializeApp } = require("firebase/app");
 const { getAuth, createUserWithEmailAndPassword } = require ("firebase/auth");
+const { doc, setDoc } = require("firebase/firestore");
 
 admin.initializeApp();
 const db = admin.firestore();
@@ -39,14 +40,26 @@ app.get("/users", (req, res) => {
 
 app.post("/signup", async (req, res) => {
     const registerUser = {
+        fullName: req.body.fullName,
         email: req.body.email,
+        username: req.body.username,
         password: req.body.password
     };
 
     try {
         const auth = getAuth();
-        await createUserWithEmailAndPassword(auth, registerUser.email, registerUser.password);
+        const userCredentials = await createUserWithEmailAndPassword(auth, registerUser.email, registerUser.password);
+        db.collection("Users").doc(userCredentials.user.uid).set({
+            fullName: registerUser.fullName,
+            email: registerUser.email,
+            username: registerUser.username
+        }).then(() => { 
+        console.log("Document successfully written!");
         res.send({ successMessage: "Created User Successfully" });
+        }).catch((error) => {
+            console.error(error);
+            res.send(error);
+        });
     } catch (error) {
         console.error(error);
         res.send(error);

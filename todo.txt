@@ -24,3 +24,23 @@ check-in #2:
 - Meal of the Week Backend
 - Tags
 - Comments
+
+check-in #3 (GET DONE BY THEN):
+Connect auth to frontend - Mush
+Set up auth protected routes - Mush
+Set up auth invalid inputs (and dupicate user handling) - Mush
+Set up dashboard-v2 (when logged in/logged out) - Mush
+Create individual recipe post screen frontend (with comments, recipe flair tag, upvote/downvote, etc) - Graydon, Eduardo, David
+User "my recipes" recipes screen (rectangles) - Athul
+Recipe deletion/edit form screen - Athul
+Create posts in backend - Mush (baseline endpoint)
+    + Get all posts from backend - Mush
+    + Delete/edit posts in backend - Athul
+    + Update upvote counter posts in backend - Ahad
+    + Get all comments for specific post (based on post ID) - Ahad
+    + Add comments to posts in backend - Ahad
+    + Handle meal of the week based on upvotes in backend - Parbir
+    + Get all posts based on recipe flair tag - Parbir
+Manage all users screen? (admin) (firestore)
+Manage all posts screen? (admin) (firestore)
+Edit user profile screen? (if we have time)

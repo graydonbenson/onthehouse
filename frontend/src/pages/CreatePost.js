@@ -23,6 +23,10 @@ function CreatePost() {
     // handle submit logic here
   };
 
+  const handleFileInput = (e) => {
+    setSelectedFile(e.target.files[0]);
+  };
+
   return (
     <Container maxWidth="sm">
       <Card>
@@ -54,12 +58,13 @@ function CreatePost() {
               value={description}
               onChange={handleDescriptionChange}
             />
-            <TextField
-              label="Image URL"
-              fullWidth
-              margin="normal"
-              value={imageUrl}
-              onChange={handleImageUrlChange}
+            <input
+            accept="image/*"
+            className={classes.input}
+            id="contained-button-file"
+            multiple
+            type="file"
+             onChange={handleFileInput}
             />
             <Button type="submit" variant="contained" color="primary">
               Submit

@@ -7,6 +7,10 @@ import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import ThumbDownIcon from '@mui/icons-material/ThumbDown'; 
+import Comments from '../components/Comments';
+import { Grid} from '@mui/material';
+import TextField from '@mui/material/TextField';
+import SendIcon from '@mui/icons-material/Send';
 
 function PostPage() {
 
@@ -20,21 +24,13 @@ function PostPage() {
     setOpen(false);
   };
 
-  const handleClickScroll = () => {
-    const element = document.getElementById('section-1');
-    if (element) {
-      // 👇 Will scroll smoothly to the top of the next section
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
-
   return (
     <>
     <Box sx={{ display: 'flex' }}>
     <Navbar open={open} openDrawer={handleDrawerOpen}></Navbar>
     <SideDrawer open={open} closeDrawer={handleDrawerClose}></SideDrawer>
     <Box component="main" 
-        sx={{  mt: 15, mb: 15, ml: 5, width: 650, backgroundColor: '#def9f5', }}
+        sx={{  mt: 15, mb: 15, ml: 15, width: 650, height: 700, backgroundColor: '#def9f5' }}
         style={{ alignItems: "center", justifyContent: "center" }}>
         <Typography paragraph>
           Chicken Parmegiano
@@ -70,8 +66,26 @@ function PostPage() {
             saffron broth and remaining 4 1/2 cups chicken broth; bring to a boil.</Typography>
     </Box>
     <Box component="main" 
-        sx={{  mt: 15, mb: 15, pr: 10, width: 500, backgroundColor: 'aliceblue'}}
+        sx={{ mt: 15, mb: 15, pr: 10 }}
         style={{ alignItems: "center", justifyContent: "center" }}>
+            <Grid>
+                <Comments />
+            </Grid>
+            <Grid>
+                <div>
+                    <TextField
+                        id="filled-multiline-flexible"
+                        label="Multiline"
+                        multiline
+                        maxRows={4}
+                        variant="filled"
+                        style={{ width: 360}}
+                    />
+                </div>
+                <IconButton aria-label="Send Comment" >
+                    <SendIcon />
+                </IconButton>
+            </Grid>
     </Box>
     </Box>
     </>

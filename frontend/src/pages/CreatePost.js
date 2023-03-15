@@ -5,10 +5,12 @@ import {
   CardContent,
   CardHeader,
   Container,
-  Input,
-  TextField,
-  Typography,
+  TextField
 } from "@mui/material";
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import { Link } from "react-router-dom";
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
 
 function CreatePost() {
   const [title, setTitle] = useState('');
@@ -35,6 +37,13 @@ function CreatePost() {
   return (
     <Container maxWidth="sm">
       <Card>
+        <ListItemButton>
+          <Link to={"/dashboard"}>
+            <ListItemIcon>
+              <ArrowBackIosIcon />
+            </ListItemIcon>
+          </Link>
+        </ListItemButton>
         <CardHeader title="Upload a new recipe:" />
         <CardContent>
           <form onSubmit={handleSubmit}>

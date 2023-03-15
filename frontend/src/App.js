@@ -7,7 +7,8 @@ import DashboardPage from './pages/DashboardPage';
 import axios from 'axios';
 import ForgotPassword from './pages/ForgotPassword';
 import PostPage from './pages/PostPage';
-import CreatePost from '.page/CreatePost'
+import CreatePost from './pages/CreatePost';
+
 // axios.defaults.baseURL = "https://us-central1-seng-401-on-the-house.cloudfunctions.net/api";
 
 function App() {

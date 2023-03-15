@@ -12,19 +12,17 @@ import {
 function CreatePost() {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
+  const [tag, setTag] = useState('');
   const [imageUrl, setImageUrl] = useState('');
 
   const handleTitleChange = (event) => setTitle(event.target.value);
   const handleDescriptionChange = (event) => setDescription(event.target.value);
+  const handleTagChange = (event) => setTag(event.target.value);
   const handleImageUrlChange = (event) => setImageUrl(event.target.value);
 
   const handleSubmit = (event) => {
     event.preventDefault();
     // handle submit logic here
-  };
-
-  const handleFileInput = (e) => {
-    setSelectedFile(e.target.files[0]);
   };
 
   return (
@@ -54,17 +52,16 @@ function CreatePost() {
               fullWidth
               margin="normal"
               multiline
-              rows={4}
-              value={description}
-              onChange={handleDescriptionChange}
+              rows={1}
+              value={tag}
+              onChange={handleTagChange}
             />
-            <input
-            accept="image/*"
-            className={classes.input}
-            id="contained-button-file"
-            multiple
-            type="file"
-             onChange={handleFileInput}
+            <TextField
+              label="Image URL"
+              fullWidth
+              margin="normal"
+              value={imageUrl}
+              onChange={handleImageUrlChange}
             />
             <Button type="submit" variant="contained" color="primary">
               Submit

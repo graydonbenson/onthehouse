@@ -136,12 +136,23 @@ app.post('/logout', async (req, res) => {
 // !Posts
 // GET /posts - get all posts
 app.get('/posts', (req, res) => {
+  //   console.log(getuserNamebyUserId('h2RRCCV8NvMwkaPubu3JyHajKZ33'));
+  // const username = getuserNamebyUserId(doc.data().userId);
+  //   return;
+
   let posts = [];
   db.collection('Posts')
     .get()
     .then((querySnap) => {
       querySnap.forEach((doc) => {
-        posts.push(doc.data());
+        let postId = doc.id;
+        console.log(postId);
+        console.log(getuserNamebyUserId(doc.data().userId));
+        posts.push({
+          postId,
+          username: getuserNamebyUserId(doc.data().userId),
+          ...doc.data(),
+        });
       });
       return res.json(posts);
     })
@@ -155,9 +166,23 @@ app.get('/posts/:id', (req, res) => {
     .get()
     .then((doc) => {
       if (doc.exists) {
-        console.log('Document data:', doc.data());
-        const postId = doc.id;
-        return res.json({ postId, ...doc.data() });
+        let comments = [];
+        db.collection('Posts')
+          .doc(doc.id)
+          .collection('Comments')
+          .get()
+          .then((querySnap) => {
+            querySnap.forEach((doc) => {
+              comments.push(doc.data());
+            });
+
+            const postId = doc.id;
+            return res.json({ postId, ...doc.data(), comments });
+          })
+          .catch((error) => {
+            console.error(error);
+            res.send(error);
+          });
       } else {
         console.log('No such document!');
         res.send({ message: 'No such document!' });
@@ -302,6 +327,21 @@ else:
       res.send(error);
     });
 });
+
+// !Helper Function
+function getuserNamebyUserId(userId) {
+  db.collection('Users')
+    .doc(userId)
+    .get()
+    .then((doc) => {
+      const username = doc.data().username;
+      console.log('Document data:', username);
+      return { username };
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+}
 
 // Setting endpoint routes to start with /api
 exports.api = functions.https.onRequest(app);

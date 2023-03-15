@@ -5,6 +5,7 @@ import {
   CardContent,
   CardHeader,
   Container,
+  Input,
   TextField,
   Typography,
 } from "@mui/material";
@@ -12,21 +13,29 @@ import {
 function CreatePost() {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
+  const [tag, setTag] = useState('');
+  const [selectedFile, setSelectedFile] = useState(null);
+
   const [imageUrl, setImageUrl] = useState('');
 
   const handleTitleChange = (event) => setTitle(event.target.value);
   const handleDescriptionChange = (event) => setDescription(event.target.value);
+  const handleTagChange = (event) => setTag(event.target.value);
   const handleImageUrlChange = (event) => setImageUrl(event.target.value);
+  const handleImage = (event) => setSelectedFile(event.target.value);
 
   const handleSubmit = (event) => {
     event.preventDefault();
     // handle submit logic here
+
+    const formData = new FormData();
+    formData.append('image', selectedFile);
   };
 
   return (
     <Container maxWidth="sm">
       <Card>
-        <CardHeader title="Create a new post" />
+        <CardHeader title="Upload a new recipe:" />
         <CardContent>
           <form onSubmit={handleSubmit}>
             <TextField
@@ -46,12 +55,15 @@ function CreatePost() {
               onChange={handleDescriptionChange}
             />
             <TextField
-              label="Image URL"
+              label="Tag(s)"
               fullWidth
               margin="normal"
-              value={imageUrl}
-              onChange={handleImageUrlChange}
+              multiline
+              rows={1}
+              value={tag}
+              onChange={handleTagChange}
             />
+            <input type = "file" onChange={handleImage}/>
             <Button type="submit" variant="contained" color="primary">
               Submit
             </Button>

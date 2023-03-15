@@ -130,5 +130,36 @@ app.post('/logout', async (req, res) => {
     res.send(error); // for frontend - if error sent/check status code is not 200 then alert(error.message)
   }
 });
+
+app.get('/posts', (req, res) => {
+  let posts = [];
+  db.collection('Posts')
+    .get()
+    .then((querySnap) => {
+      querySnap.forEach((doc) => {
+        posts.push(doc.data());
+      });
+      return res.json(posts);
+    })
+    .catch((error) => console.error(error));
+});
+
+app.get('/posts/:id', (req, res) => {
+  db.collection('Posts').doc(req.params.id)
+    .get()
+    .then((doc) => {
+      if (doc.exists) {
+          console.log("Document data:", doc.data());
+          return res.json(doc.data());
+      } else {
+          console.log("No such document!");
+          res.send({ message: 'No such document!' });
+      }
+  }).catch((error) => {
+      console.error(error);
+      res.send(error);
+  });
+});
+
 // Setting endpoint routes to start with /api
 exports.api = functions.https.onRequest(app);

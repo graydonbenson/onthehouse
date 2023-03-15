@@ -11,6 +11,8 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import AddIcon from '@mui/icons-material/Add';
+import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 
 const drawerWidth = 240;
 
@@ -72,15 +74,15 @@ function SideDrawer({open, closeDrawer}) {
         <Divider sx={{ my: 1 }} />
             <ListItemButton>
                 <ListItemIcon>
-                    <DashboardIcon />
+                    <FormatListBulletedIcon />
                 </ListItemIcon>
-                <ListItemText primary="Dashboard" />
+                <ListItemText primary="Recipes" />
             </ListItemButton>
             <ListItemButton>
                 <ListItemIcon>
-                    <ShoppingCartIcon />
+                    <AddIcon />
                 </ListItemIcon>
-                <ListItemText primary="Orders" />
+                <ListItemText primary="Create" />
             </ListItemButton>
         </List>
     </Drawer>

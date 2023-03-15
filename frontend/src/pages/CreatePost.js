@@ -7,9 +7,9 @@ import {
   Container,
   TextField,
   Typography,
-} from '@material-ui/core';
+} from "@mui/material";
 
-const CreatePost = () => {
+function CreatePost() {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [imageUrl, setImageUrl] = useState('');

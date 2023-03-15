@@ -13,6 +13,7 @@ import { red } from '@mui/material/colors';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { Link } from "react-router-dom";
 
 const ExpandMore = styled((props) => {
     const { expand, ...other } = props;
@@ -56,6 +57,7 @@ function RecipeCard() {
           together with your guests. Add 1 cup of frozen peas along with the mussels,
           if you like.
         </Typography>
+        <Link to={"/post"}>Check this recipe!</Link>
       </CardContent>
       <CardActions disableSpacing>
         <IconButton aria-label="Upvote Recipe">

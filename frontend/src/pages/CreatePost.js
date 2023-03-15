@@ -26,7 +26,7 @@ function CreatePost() {
   return (
     <Container maxWidth="sm">
       <Card>
-        <CardHeader title="Create a new post" />
+        <CardHeader title="Upload a new recipe:" />
         <CardContent>
           <form onSubmit={handleSubmit}>
             <TextField
@@ -38,6 +38,15 @@ function CreatePost() {
             />
             <TextField
               label="Description"
+              fullWidth
+              margin="normal"
+              multiline
+              rows={4}
+              value={description}
+              onChange={handleDescriptionChange}
+            />
+            <TextField
+              label="Tag(s)"
               fullWidth
               margin="normal"
               multiline

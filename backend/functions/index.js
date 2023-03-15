@@ -10,6 +10,8 @@ const {
   signOut,
 } = require('firebase/auth');
 
+const { FieldValue } = require('firebase-admin/firestore');
+
 admin.initializeApp();
 const db = admin.firestore();
 
@@ -131,6 +133,8 @@ app.post('/logout', async (req, res) => {
   }
 });
 
+// !Posts
+// GET /posts - get all posts
 app.get('/posts', (req, res) => {
   let posts = [];
   db.collection('Posts')
@@ -144,25 +148,29 @@ app.get('/posts', (req, res) => {
     .catch((error) => console.error(error));
 });
 
+// GET /posts/:id - get post by post id
 app.get('/posts/:id', (req, res) => {
-  db.collection('Posts').doc(req.params.id)
+  db.collection('Posts')
+    .doc(req.params.id)
     .get()
     .then((doc) => {
       if (doc.exists) {
-          console.log("Document data:", doc.data());
-          return res.json(doc.data());
+        console.log('Document data:', doc.data());
+        const postId = doc.id;
+        return res.json({ postId, ...doc.data() });
       } else {
-          console.log("No such document!");
-          res.send({ message: 'No such document!' });
+        console.log('No such document!');
+        res.send({ message: 'No such document!' });
       }
-  }).catch((error) => {
+    })
+    .catch((error) => {
       console.error(error);
       res.send(error);
-  });
+    });
 });
 
+// POST /posts - create a new post
 app.post('/posts', (req, res) => {
-
   const newPost = {
     title: req.body.title,
     description: req.body.description,
@@ -171,18 +179,128 @@ app.post('/posts', (req, res) => {
     flair: req.body.flair,
     userId: req.body.userId,
     upvoteCount: 0,
-    date: new Date()
-  }
+    date: new Date(),
+  };
 
-  db.collection('Posts').doc().set(newPost)
-      .then(() => {
-        console.log('Post document successfully created!');
-        res.send({ message: 'Created Post Successfully' });
-      })
-      .catch((error) => {
-        console.error(error);
-        res.send(error);
-      });
+  db.collection('Posts')
+    .doc()
+    .set(newPost)
+    .then(() => {
+      console.log('Post document successfully created!');
+      res.send({ message: 'Created Post Successfully' });
+    })
+    .catch((error) => {
+      console.error(error);
+      res.send(error);
+    });
+});
+
+// POST /upvotes - upvote a post
+app.post('/upvotes', (req, res) => {
+  const newUpvote = {
+    postId: req.body.postId,
+    userId: req.body.userId,
+    isUpvote: req.body.isUpvote,
+  };
+
+  const docId = `${newUpvote.postId}_${newUpvote.userId}`;
+
+  /*if documentId w/ post and user id exists:
+  if isUpvote matches
+  	throw error
+  else
+  	update isUpvote for found record
+else:
+  create a new record
+*/
+
+  db.collection('Upvotes')
+    .doc(docId)
+    .get()
+    .then((doc) => {
+      if (doc.exists) {
+        if (doc.data().isUpvote === newUpvote.isUpvote) {
+          const message = 'Post has already been upvoted/downvoted by user.';
+          console.log(message);
+          res.send({ message: message });
+        } else {
+          // Update isUpvote in found record
+          db.collection('Upvotes')
+            .doc(docId)
+            .update({ isUpvote: newUpvote.isUpvote })
+            .then(() => {
+              console.log('IsUpvote attribute updated!');
+            })
+            .catch((error) => {
+              console.error(error);
+              res.send(error);
+            });
+
+          /*
+			user upvoted it, so
+			upvoteCount: 1
+
+			then downvote it: -1
+
+			
+			user downvoted it, so
+			upvoteCount: 1
+
+			then upvote it: 3
+			*/
+
+          // Update upvoteCount in posts
+          db.collection('Posts')
+            .doc(newUpvote.postId)
+            .update({
+              upvoteCount: newUpvote.isUpvote
+                ? FieldValue.increment(2)
+                : FieldValue.increment(-2),
+            })
+            .then(() => {
+              console.log('upvoteCount attribute updated!');
+              res.send({ message: 'Upvoted/Downvoted Post Successfully' });
+            })
+            .catch((error) => {
+              console.error(error);
+              res.send(error);
+            });
+        }
+      } else {
+        // Create a new record
+        db.collection('Upvotes')
+          .doc(docId)
+          .set(newUpvote)
+          .then(() => {
+            console.log('Upvote document successfully created!');
+          })
+          .catch((error) => {
+            console.error(error);
+            res.send(error);
+          });
+
+        // Update upvoteCount in posts
+        db.collection('Posts')
+          .doc(newUpvote.postId)
+          .update({
+            upvoteCount: newUpvote.isUpvote
+              ? FieldValue.increment(1)
+              : FieldValue.increment(-1),
+          })
+          .then(() => {
+            console.log('upvoteCount attribute updated!');
+            res.send({ message: 'Upvoted/Downvoted Post Successfully' });
+          })
+          .catch((error) => {
+            console.error(error);
+            res.send(error);
+          });
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+      res.send(error);
+    });
 });
 
 // Setting endpoint routes to start with /api

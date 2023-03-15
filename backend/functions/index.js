@@ -161,5 +161,29 @@ app.get('/posts/:id', (req, res) => {
   });
 });
 
+app.post('/posts', (req, res) => {
+
+  const newPost = {
+    title: req.body.title,
+    description: req.body.description,
+    recipe: req.body.recipe,
+    image: req.body.image,
+    flair: req.body.flair,
+    userId: req.body.userId,
+    upvoteCount: 0,
+    date: new Date()
+  }
+
+  db.collection('Posts').doc().set(newPost)
+      .then(() => {
+        console.log('Post document successfully created!');
+        res.send({ message: 'Created Post Successfully' });
+      })
+      .catch((error) => {
+        console.error(error);
+        res.send(error);
+      });
+});
+
 // Setting endpoint routes to start with /api
 exports.api = functions.https.onRequest(app);

@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography';
 import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
-import ThumbDownIcon from '@mui/icons-material/ThumbDown';
+import ThumbDownIcon from '@mui/icons-material/ThumbDown'; 
 
 function PostPage() {
 
@@ -20,13 +20,21 @@ function PostPage() {
     setOpen(false);
   };
 
+  const handleClickScroll = () => {
+    const element = document.getElementById('section-1');
+    if (element) {
+      // 👇 Will scroll smoothly to the top of the next section
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <>
     <Box sx={{ display: 'flex' }}>
     <Navbar open={open} openDrawer={handleDrawerOpen}></Navbar>
     <SideDrawer open={open} closeDrawer={handleDrawerClose}></SideDrawer>
     <Box component="main" 
-        sx={{  mt: 15, mb: 15, ml: 5, width: 650, backgroundColor: 'aliceblue', }}
+        sx={{  mt: 15, mb: 15, ml: 5, width: 650, backgroundColor: '#def9f5', }}
         style={{ alignItems: "center", justifyContent: "center" }}>
         <Typography paragraph>
           Chicken Parmegiano
@@ -52,7 +60,8 @@ function PostPage() {
         <Typography sx={{ mt: 2, ml: 3, mr: 3, textAlign: "justify"}} paragraph>Ingredients: 
             Chicken, shrimp and chorizo pimentón, bay leaves, garlic, tomatoes, onion,
              salt and pepper, 4 1/2 cups chicken broth; bring to a boil.</Typography>
-        <Typography sx={{ ml: 3, mr: 3, textAlign: "justify"}} paragraph>Method: Heat oil in a (14- to 16-inch) paella pan or a large, deep skillet over
+        <Typography sx={{ ml: 3, mr: 3, textAlign: "justify"}} paragraph>Method: 
+            Heat oil in a (14- to 16-inch) paella pan or a large, deep skillet over
             medium-high heat. Add chicken, shrimp and chorizo, and cook, stirring
             occasionally until lightly browned, 6 to 8 minutes. Transfer shrimp to a
             large plate and set aside, leaving chicken and chorizo in the pan. Add
@@ -61,7 +70,7 @@ function PostPage() {
             saffron broth and remaining 4 1/2 cups chicken broth; bring to a boil.</Typography>
     </Box>
     <Box component="main" 
-        sx={{  mt: 15, mb: 15, pr: 10, width: 500, backgroundColor: 'aliceblue', }}
+        sx={{  mt: 15, mb: 15, pr: 10, width: 500, backgroundColor: 'aliceblue'}}
         style={{ alignItems: "center", justifyContent: "center" }}>
     </Box>
     </Box>

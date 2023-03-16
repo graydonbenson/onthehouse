@@ -360,6 +360,28 @@ else:
 });
 
 // Comments
+// POST /comments/:postId - add a comment to a specific post
+app.post('/comments/:postId', async (req, res) => {
+  const newComment = {
+    message: req.body.message,
+    userId: req.body.userId,
+  };
+
+  await db
+    .collection('Posts')
+    .doc(req.params.postId)
+    .collection('Comments')
+    .doc()
+    .set(newComment)
+    .then(() => {
+      console.log('Comment document successfully created!');
+      res.send({ message: 'Created Comment Successfully' });
+    })
+    .catch((error) => {
+      console.error(error);
+      res.send(error);
+    });
+});
 
 // !Helper Function
 async function getuserNamebyUserId(userId) {

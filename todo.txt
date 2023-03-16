@@ -38,8 +38,8 @@ Create posts in backend - Mush (baseline endpoint) - DONE
     + my recipes in backend - Athul
     + Delete/edit posts in backend - Athul
     + Update upvote counter posts in backend - Ahad - DONE
-    + Get all comments for specific post (based on post ID) - Ahad
-    + Add comments to posts in backend - Ahad
+    + Get all comments for specific post (based on post ID) - Ahad - DONE (in GET /post/:id)
+    + Add comments to posts in backend - Ahad - DONE
     + Handle meal of the week based on upvotes in backend - Parbir
     + Get all posts based on recipe flair tag - Parbir
 Manage all users screen? (admin) (firestore)

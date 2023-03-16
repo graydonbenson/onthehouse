@@ -32,7 +32,7 @@ Set up auth invalid inputs (and dupicate user handling) - Mush
 Set up dashboard-v2 (when logged in/logged out) - Mush
 Create individual recipe post screen frontend + connect (with comments, recipe flair tag, upvote/downvote, etc) - Graydon, Eduardo, David
 User "my recipes" recipes screen (rectangles) - Athul
-Recipe deletion/edit form screen - Athul
+Recipe create/deletion/edit form screen - Athul
 Create posts in backend - Mush (baseline endpoint) - DONE
     + Get all posts from backend - Mush - DONE
     + my recipes in backend - Athul

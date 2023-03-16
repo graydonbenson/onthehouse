@@ -60,27 +60,44 @@ app.post('/signup', async (req, res) => {
   };
 
   try {
-    const auth = getAuth();
+    const auth = await getAuth();
     const userCredentials = await createUserWithEmailAndPassword(
       auth,
       registerUser.email,
       registerUser.password
     );
-    db.collection('Users')
-      .doc(userCredentials.user.uid)
-      .set({
-        fullName: registerUser.fullName,
-        email: registerUser.email,
-        username: registerUser.username,
-      })
-      .then(() => {
-        console.log('User document successfully created!');
-        res.send({ message: 'Created User Successfully' });
-      })
-      .catch((error) => {
-        console.error(error);
-        res.send(error);
-      });
+
+    // Check if username exists
+    const usernameRef = await db.collection('Users').doc(registerUser.username);
+
+    const doc = await usernameRef.get();
+    if (!doc.exists) {
+      console.log('No such document!');
+
+      await db
+        .collection('Users')
+        .doc(registerUser.username)
+        //   .doc(userCredentials.user.uid)
+        .set(
+          {
+            fullName: registerUser.fullName,
+            email: registerUser.email,
+            username: registerUser.username,
+          },
+          { merge: false }
+        )
+        .then(() => {
+          console.log('User document successfully created!');
+          res.send({ message: 'Created User Successfully' });
+        })
+        .catch((error) => {
+          console.error(error);
+          res.send(error);
+        });
+    } else {
+      console.log('Document data:', doc.data());
+      res.send({ message: 'Username already taken.' });
+    }
   } catch (error) {
     console.error(error);
     res.send(error); // for frontend - if error sent/check status code is not 200 then alert(error.message)
@@ -102,7 +119,25 @@ app.get('/login', async (req, res) => {
       loginUser.email,
       loginUser.password
     );
-    res.send(userCredentials);
+    // Get usercredentials from firestore
+    const userEmailRef = await db.collection('Users');
+    //   .doc(registerUser.username)
+    // .doc(userCredentials.user.uid)
+    const snapshot = await userEmailRef
+      .where('email', '==', loginUser.email)
+      .get();
+
+    if (snapshot.empty) {
+      console.log('No matching documents.');
+      res.send({ message: 'No matching documents!' });
+    }
+
+    snapshot.forEach((doc) => {
+      console.log(doc.id, '=>', doc.data());
+      res.send(doc.data());
+    });
+
+    // res.send(userCredentials);
   } catch (error) {
     console.error(error);
     res.send(error); // for frontend - if error sent/check status code is not 200 then alert(error.message)
@@ -136,10 +171,6 @@ app.post('/logout', async (req, res) => {
 // !Posts
 // GET /posts - get all posts
 app.get('/posts', (req, res) => {
-  //   console.log(getuserNamebyUserId('h2RRCCV8NvMwkaPubu3JyHajKZ33'));
-  // const username = getuserNamebyUserId(doc.data().userId);
-  //   return;
-
   let posts = [];
   db.collection('Posts')
     .get()
@@ -328,9 +359,12 @@ else:
     });
 });
 
+// Comments
+
 // !Helper Function
-function getuserNamebyUserId(userId) {
-  db.collection('Users')
+async function getuserNamebyUserId(userId) {
+  await db
+    .collection('Users')
     .doc(userId)
     .get()
     .then((doc) => {

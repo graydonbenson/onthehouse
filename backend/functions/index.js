@@ -91,14 +91,17 @@ app.post('/signup', async (req, res) => {
           res.send({ message: 'Created User Successfully' });
         })
         .catch((error) => {
+          res.status(404);
           console.error(error);
           res.send(error);
         });
     } else {
+      res.status(404);
       console.log('Document data:', doc.data());
       res.send({ message: 'Username already taken.' });
     }
   } catch (error) {
+    res.status(404);
     console.error(error);
     res.send(error); // for frontend - if error sent/check status code is not 200 then alert(error.message)
   }
@@ -106,7 +109,7 @@ app.post('/signup', async (req, res) => {
 
 // for frontend, if successful login save returned user object (or just email) in session/browser Storage
 // GET /login - get user (from firebase auth) given user's email and password parameters
-app.get('/login', async (req, res) => {
+app.post('/login', async (req, res) => {
   const loginUser = {
     email: req.body.email,
     password: req.body.password,
@@ -128,6 +131,7 @@ app.get('/login', async (req, res) => {
       .get();
 
     if (snapshot.empty) {
+      res.status(404);
       console.log('No matching documents.');
       res.send({ message: 'No matching documents!' });
     }
@@ -139,6 +143,7 @@ app.get('/login', async (req, res) => {
 
     // res.send(userCredentials);
   } catch (error) {
+    res.status(404);
     console.error(error);
     res.send(error); // for frontend - if error sent/check status code is not 200 then alert(error.message)
   }

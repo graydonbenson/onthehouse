@@ -26,7 +26,7 @@ check-in #2:
 - Comments
 
 check-in #3 (GET DONE BY THEN):
-Connect auth to frontend - Mush
+Connect auth to frontend - Mush - DONE
 Set up auth protected routes - Mush
 Set up auth invalid inputs (and dupicate user handling) - Mush
 Set up dashboard-v2 (when logged in/logged out) - Mush

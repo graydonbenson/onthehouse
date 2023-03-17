@@ -1,3 +1,4 @@
+import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -11,6 +12,8 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import axios from 'axios';
+import { Navigate } from "react-router-dom";
 
 function Copyright(props) {
   return (
@@ -28,14 +31,46 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function SignIn() {
-  const handleSubmit = (event) => {
+
+  //Email Address
+  const [signInEmail, setSignInEmail] = React.useState('');
+  //Password
+  const [signInPassword, setSignInPassword] = React.useState('');
+  //Redirect variable
+  const [goToDashboard, setGoToDashboard] = React.useState(false);
+
+  if (goToDashboard){
+    return <Navigate to="/dashboard" />;
+  }
+
+  const handleSubmit = async (event) => {
+    
+    let signInInformation = {
+      email: signInEmail,
+      password: signInPassword,
+    };
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+    try{
+      const response = await axios.post("/login", signInInformation);
+      if (response.status === 200){
+        console.log("success");
+        setGoToDashboard(true);
+      }
+    } catch (error){
+      console.log("success");
+      console.error(error);
+    }
+    
   };
+  
+  // const handleSubmit = (event) => {
+  //   event.preventDefault();
+  //   const data = new FormData(event.currentTarget);
+  //   console.log({
+  //     email: data.get('email'),
+  //     password: data.get('password'),
+  //   });
+  // };
 
   return (
     <ThemeProvider theme={theme}>
@@ -72,6 +107,9 @@ export default function SignIn() {
               name="email"
               autoComplete="email"
               autoFocus
+              onChange={(event) => {
+                setSignInEmail(event.target.value);
+              }}
             />
             <TextField
               margin="normal"
@@ -82,6 +120,9 @@ export default function SignIn() {
               type="password"
               id="password"
               autoComplete="current-password"
+              onChange={(event) => {
+                setSignInPassword(event.target.value);
+              }}
             />
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}

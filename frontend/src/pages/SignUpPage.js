@@ -39,38 +39,16 @@ export default function SignUpPage() {
   const [signUpUser, setSignUpUser] = React.useState('');
   //Password
   const [signUpPassword, setSignUpPassword] = React.useState('');
-  
+  //Redirect variable
   const [goToLogin, setGoToLogin] = React.useState(false);
   
-  
-  // const handleSubmit = (event) => {
-    
-  //   let variable = {
-  //     fullName: signUpName,
-  //     email: signUpEmail,
-  //     username: signUpUser,
-  //     password: signUpPassword,
-  //   };
-  //   event.preventDefault();
-  //   axios.post("/signup", variable).then((response) =>{
-  //     if (response.data.errMessage) {
-  //       alert(response.data.errMessage);
-  //       console.log("error");
-  //     } else {
-  //       if (response.data.successMessage) {
-  //         console.log("success");
-  //         //return <Navigate to="/login" />
-  //         //window.location.reload();
-  //       }
-  //     }
-  //   });
-  // };
 
+  //redirect to login screen 
   if (goToLogin){
     return <Navigate to="/login" />;
   }
-  const handleSubmit = async (event) => {
-    
+
+  const handleSubmit = async (event) => {  
     let signUpInformation = {
       fullName: signUpName,
       email: signUpEmail,
@@ -82,26 +60,12 @@ export default function SignUpPage() {
       const response = await axios.post("/signup", signUpInformation);
       //console.log("success");
       if (response.status === 200){
-        //console.log("success");
-        //return <Navigate to="/login" />;
-        setGoToLogin(true);
+        setGoToLogin(true); //useState variable to enable redirect
       }
     } catch (error){
       console.log("success");
       console.error(error);
     }
-    
-    
-    // if (response.data.errMessage) {
-      //   alert(response.data.errMessage);
-      //   console.log("error");
-      // } else {
-      //   if (response.data.successMessage) {
-      //     console.log("success");
-      //     //return <Navigate to="/login" />
-      //     //window.location.reload();
-      //   }
-      // }
   };
 
   return (

@@ -6,6 +6,9 @@ import TextField from '@mui/material/TextField';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
+import Stack from '@mui/material/Stack';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
@@ -26,6 +29,10 @@ function Copyright(props) {
   );
 }
 
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
+
 const theme = createTheme();
 
 export default function SignUpPage() {
@@ -41,7 +48,16 @@ export default function SignUpPage() {
   const [signUpPassword, setSignUpPassword] = React.useState('');
   //Redirect variable
   const [goToLogin, setGoToLogin] = React.useState(false);
-  
+  //Open Snackbar
+  const [open, setOpen] = React.useState(false);
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpen(false);
+  };
 
   //redirect to login screen 
   if (goToLogin){
@@ -58,12 +74,11 @@ export default function SignUpPage() {
     event.preventDefault();
     try{
       const response = await axios.post("/signup", signUpInformation);
-      //console.log("success");
       if (response.status === 200){
         setGoToLogin(true); //useState variable to enable redirect
       }
     } catch (error){
-      console.log("success");
+      setOpen(true);
       console.error(error);
     }
   };
@@ -174,6 +189,13 @@ export default function SignUpPage() {
         </Box>
         <Copyright sx={{ mt: 5 }} />
       </Container>
+      <Stack spacing={2} sx={{ width: '100%' }}>
+          <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+            <Alert onClose={handleClose} severity="error" sx={{ width: '100%' }}>
+              This is an error message!
+            </Alert>
+          </Snackbar>
+        </Stack>
     </ThemeProvider>
   );
 }

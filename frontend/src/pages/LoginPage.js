@@ -8,12 +8,16 @@ import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
+import Stack from '@mui/material/Stack';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import axios from 'axios';
 import { Navigate } from "react-router-dom";
+//import CustomizedSnackbars from '../components/Snackbar';
 
 function Copyright(props) {
   return (
@@ -28,6 +32,10 @@ function Copyright(props) {
   );
 }
 
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
+
 const theme = createTheme();
 
 export default function SignIn() {
@@ -36,12 +44,24 @@ export default function SignIn() {
   const [signInEmail, setSignInEmail] = React.useState('');
   //Password
   const [signInPassword, setSignInPassword] = React.useState('');
+  //Open Snackbar
+  const [open, setOpen] = React.useState(false);
   //Redirect variable
   const [goToDashboard, setGoToDashboard] = React.useState(false);
 
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpen(false);
+  };
+
   if (goToDashboard){
-    return <Navigate to="/dashboard" />;
-  }
+      return <Navigate to="/dashboard" />;
+  };
+
 
   const handleSubmit = async (event) => {
     
@@ -57,7 +77,7 @@ export default function SignIn() {
         setGoToDashboard(true);
       }
     } catch (error){
-      console.log("success");
+      setOpen(true);
       console.error(error);
     }
     
@@ -152,6 +172,13 @@ export default function SignIn() {
         </Box>
         <Copyright sx={{ mt: 8, mb: 4 }} />
       </Container>
+      <Stack spacing={2} sx={{ width: '100%' }}>
+      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="error" sx={{ width: '100%' }}>
+          This is a error message!
+        </Alert>
+      </Snackbar>
+    </Stack>
     </ThemeProvider>
   );
 }

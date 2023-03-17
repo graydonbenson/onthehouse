@@ -134,7 +134,7 @@ app.get('/login', async (req, res) => {
 
     snapshot.forEach((doc) => {
       console.log(doc.id, '=>', doc.data());
-      res.send(doc.data());
+      res.send({ ...doc.data(), ...userCredentials });
     });
 
     // res.send(userCredentials);

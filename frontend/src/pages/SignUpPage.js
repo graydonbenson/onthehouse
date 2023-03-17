@@ -10,6 +10,8 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import axios from 'axios';
+import { Navigate } from "react-router-dom";
 
 function Copyright(props) {
   return (
@@ -27,13 +29,79 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function SignUpPage() {
-  const handleSubmit = (event) => {
+  
+  //const navigate = useNavigate;
+  //First Name
+  const [signUpName, setSignUpName] = React.useState('');
+  //Email Address
+  const [signUpEmail, setSignUpEmail] = React.useState('');
+  //Username
+  const [signUpUser, setSignUpUser] = React.useState('');
+  //Password
+  const [signUpPassword, setSignUpPassword] = React.useState('');
+  
+  const [goToLogin, setGoToLogin] = React.useState(false);
+  
+  
+  // const handleSubmit = (event) => {
+    
+  //   let variable = {
+  //     fullName: signUpName,
+  //     email: signUpEmail,
+  //     username: signUpUser,
+  //     password: signUpPassword,
+  //   };
+  //   event.preventDefault();
+  //   axios.post("/signup", variable).then((response) =>{
+  //     if (response.data.errMessage) {
+  //       alert(response.data.errMessage);
+  //       console.log("error");
+  //     } else {
+  //       if (response.data.successMessage) {
+  //         console.log("success");
+  //         //return <Navigate to="/login" />
+  //         //window.location.reload();
+  //       }
+  //     }
+  //   });
+  // };
+
+  if (goToLogin){
+    return <Navigate to="/login" />;
+  }
+  const handleSubmit = async (event) => {
+    
+    let signUpInformation = {
+      fullName: signUpName,
+      email: signUpEmail,
+      username: signUpUser,
+      password: signUpPassword,
+    };
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+    try{
+      const response = await axios.post("/signup", signUpInformation);
+      //console.log("success");
+      if (response.status === 200){
+        //console.log("success");
+        //return <Navigate to="/login" />;
+        setGoToLogin(true);
+      }
+    } catch (error){
+      console.log("success");
+      console.error(error);
+    }
+    
+    
+    // if (response.data.errMessage) {
+      //   alert(response.data.errMessage);
+      //   console.log("error");
+      // } else {
+      //   if (response.data.successMessage) {
+      //     console.log("success");
+      //     //return <Navigate to="/login" />
+      //     //window.location.reload();
+      //   }
+      // }
   };
 
   return (
@@ -72,6 +140,9 @@ export default function SignUpPage() {
                   id="fullName"
                   label="Full Name"
                   autoFocus
+                  onChange={(event) => {
+                    setSignUpName(event.target.value);
+                  }}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -82,6 +153,9 @@ export default function SignUpPage() {
                   label="Email Address"
                   name="email"
                   autoComplete="email"
+                  onChange={(event) => {
+                    setSignUpEmail(event.target.value);
+                  }}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -92,6 +166,9 @@ export default function SignUpPage() {
                   label="Username"
                   name="username"
                   autoComplete="username"
+                  onChange={(event) => {
+                    setSignUpUser(event.target.value);
+                  }}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -103,6 +180,9 @@ export default function SignUpPage() {
                   type="password"
                   id="password"
                   autoComplete="new-password"
+                  onChange={(event) => {
+                    setSignUpPassword(event.target.value);
+                  }}
                 />
               </Grid>
               <Grid item xs={12}>

@@ -8,6 +8,7 @@ import axios from 'axios';
 import ForgotPassword from './pages/ForgotPassword';
 import PostPage from './pages/PostPage';
 import CreatePost from './pages/CreatePost';
+import MyRecipes from './pages/MyRecipes';
 
 // axios.defaults.baseURL = "https://us-central1-seng-401-on-the-house.cloudfunctions.net/api";
 
@@ -23,6 +24,7 @@ function App() {
           <Route path="/dashboard" element={<DashboardPage/>} />
           <Route path="/post" element={<PostPage/>} />
           <Route path="/create" element={<CreatePost/>} />
+          <Route path="/my-recipes" element={<MyRecipes/>} />
         </Routes>
       </Router>
     </div>

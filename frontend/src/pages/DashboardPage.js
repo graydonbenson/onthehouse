@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState } from 'react';
 import Navbar from '../components/Navbar';
 import SideDrawer from '../components/SideDrawer';
 import Box from '@mui/material/Box';
@@ -19,7 +19,7 @@ const mainFeaturedPost = {
 
 function DashboardPage() {
 
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
 
   const handleDrawerOpen = () => {
     setOpen(true);

@@ -10,71 +10,71 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import AddIcon from '@mui/icons-material/Add';
-import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
+import FoodBankRoundedIcon from '@mui/icons-material/FoodBankRounded';
 import { Link } from "react-router-dom";
 
 const drawerWidth = 240;
 
 const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
-    ({ theme, open }) => ({
-      '& .MuiDrawer-paper': {
-        position: 'relative',
-        whiteSpace: 'nowrap',
-        width: drawerWidth,
+  ({ theme, open }) => ({
+    '& .MuiDrawer-paper': {
+      position: 'relative',
+      whiteSpace: 'nowrap',
+      width: drawerWidth,
+      transition: theme.transitions.create('width', {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.enteringScreen,
+      }),
+      boxSizing: 'border-box',
+      ...(!open && {
+        overflowX: 'hidden',
         transition: theme.transitions.create('width', {
           easing: theme.transitions.easing.sharp,
-          duration: theme.transitions.duration.enteringScreen,
+          duration: theme.transitions.duration.leavingScreen,
         }),
-        boxSizing: 'border-box',
-        ...(!open && {
-          overflowX: 'hidden',
-          transition: theme.transitions.create('width', {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.leavingScreen,
-          }),
-          width: theme.spacing(7),
-          [theme.breakpoints.up('sm')]: {
-            width: theme.spacing(9),
-          },
-        }),
-      },
-    }),
-  );
+        width: theme.spacing(7),
+        [theme.breakpoints.up('sm')]: {
+          width: theme.spacing(9),
+        },
+      }),
+    },
+  }),
+);
 
-function SideDrawer({open, closeDrawer}) {
+function SideDrawer({ open, closeDrawer }) {
   return (
     <Drawer variant="permanent" open={open}>
-        <Toolbar
+      <Toolbar
         sx={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'flex-end',
-            px: [1],
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'flex-end',
+          px: [1],
         }}
-        >
+      >
         <IconButton onClick={closeDrawer}>
-            <ChevronLeftIcon />
+          <ChevronLeftIcon />
         </IconButton>
-        </Toolbar>
-        <Divider />
-        <List component="nav">
-        <ListItemButton>
-                <ListItemIcon>
-                    <FormatListBulletedIcon />
-                </ListItemIcon>
-                <ListItemText primary="Recipes" />
-            </ListItemButton>
-            <ListItemButton>
-                <Link to={"/create"}>
-                  <ListItemIcon>
-                      <AddIcon />
-                  </ListItemIcon>
-                </Link>
-                <Link to={"/create"} style={{ textDecoration: 'none' }}>
-                  <ListItemText primary="Create"/>
-                </Link>
-            </ListItemButton>
-        </List>
+      </Toolbar>
+      <Divider />
+      <List component="nav">
+        <Link to={"/my-recipes"} style={{ color: 'inherit', textDecoration: 'none' }}>
+          <ListItemButton>
+            <ListItemIcon>
+              <FoodBankRoundedIcon />
+            </ListItemIcon>
+            <ListItemText primary="My Recipes" />
+          </ListItemButton>
+        </Link>
+        <Link to={"/create"} style={{ color: 'inherit', textDecoration: 'none' }}>
+          <ListItemButton>
+            <ListItemIcon>
+              <AddIcon />
+            </ListItemIcon>
+            <ListItemText primary="Create" />
+          </ListItemButton>
+        </Link>
+      </List>
     </Drawer>
   )
 }

@@ -10,7 +10,7 @@ import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import { red } from '@mui/material/colors';
-import FavoriteIcon from '@mui/icons-material/Favorite';
+import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Link } from "react-router-dom";
@@ -45,23 +45,24 @@ function RecipeCard() {
         title="Shrimp and Chorizo Paella"
         subheader="September 14, 2016"
       />
-      <CardMedia
-        component="img"
-        height="194"
-        image="https://media.cnn.com/api/v1/images/stellar/prod/211006114703-best-meal-delivery-service-freshly.jpg?q=w_1601,h_900,x_0,y_0,c_fill"
-        alt="Paella dish"
-      />
+      <Link to={"/post"}>
+        <CardMedia
+          component="img"
+          height="194"
+          image="https://media.cnn.com/api/v1/images/stellar/prod/211006114703-best-meal-delivery-service-freshly.jpg?q=w_1601,h_900,x_0,y_0,c_fill"
+          alt="Paella dish"
+        />
+      </Link>
       <CardContent>
         <Typography variant="body2" color="text.secondary">
           This impressive paella is a perfect party dish and a fun meal to cook
           together with your guests. Add 1 cup of frozen peas along with the mussels,
           if you like.
         </Typography>
-        <Link to={"/post"}>Check this recipe!</Link>
       </CardContent>
       <CardActions disableSpacing>
         <IconButton aria-label="Upvote Recipe">
-          <FavoriteIcon />
+          <ThumbUpIcon />
         </IconButton>
         <IconButton aria-label="Downvote Recipe">
           <ThumbDownIcon/>

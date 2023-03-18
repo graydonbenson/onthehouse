@@ -75,7 +75,7 @@ function PostPage() {
                 <div>
                     <TextField
                         id="filled-multiline-flexible"
-                        label="Multiline"
+                        label="Comment here"
                         multiline
                         maxRows={4}
                         variant="filled"

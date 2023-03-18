@@ -64,6 +64,7 @@ app.post("/signup", async (req, res) => {
 
   if (doc.exists) {
     res.send({code: "Username already taken!"});
+    return;
   }
 
   try {
@@ -83,6 +84,7 @@ app.post("/signup", async (req, res) => {
         { merge: false }
       ).then(() => {
         console.log("User document successfully created!");
+        res.status(200).send("User successfully created!");
       }).catch((error) => {
         res.send(error);
       });

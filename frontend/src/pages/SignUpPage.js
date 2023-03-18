@@ -46,6 +46,8 @@ export default function SignUpPage() {
   const [signUpUser, setSignUpUser] = React.useState('');
   //Password
   const [signUpPassword, setSignUpPassword] = React.useState('');
+  // Error Message
+  const [errorMessage, setErrorMessage] = React.useState('');
   //Redirect variable
   const [goToLogin, setGoToLogin] = React.useState(false);
   //Open Snackbar
@@ -72,14 +74,18 @@ export default function SignUpPage() {
       password: signUpPassword,
     };
     event.preventDefault();
-    try{
-      const response = await axios.post("/signup", signUpInformation);
-      if (response.status === 200){
-        setGoToLogin(true); //useState variable to enable redirect
-      }
-    } catch (error){
+    if (signUpName === '' || signUpEmail === '' || signUpUser === '' || signUpPassword === '') {
+      setErrorMessage("Invalid Input!");
       setOpen(true);
-      console.error(error);
+      return;
+    }
+    const response = await axios.post("/signup", signUpInformation);
+    if (response.data.code) {
+      setErrorMessage(response.data.code);
+      setOpen(true);
+    } else {
+      console.log("success");
+      setGoToLogin(true);
     }
   };
 
@@ -192,7 +198,7 @@ export default function SignUpPage() {
       <Stack spacing={2} sx={{ width: '100%' }}>
           <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
             <Alert onClose={handleClose} severity="error" sx={{ width: '100%' }}>
-              This is an error message!
+              {errorMessage}
             </Alert>
           </Snackbar>
         </Stack>

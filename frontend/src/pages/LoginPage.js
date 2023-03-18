@@ -44,6 +44,8 @@ export default function SignIn() {
   const [signInEmail, setSignInEmail] = React.useState('');
   //Password
   const [signInPassword, setSignInPassword] = React.useState('');
+  // Error Message
+  const [errorMessage, setErrorMessage] = React.useState('');
   //Open Snackbar
   const [open, setOpen] = React.useState(false);
   //Redirect variable
@@ -70,15 +72,19 @@ export default function SignIn() {
       password: signInPassword,
     };
     event.preventDefault();
-    try{
-      const response = await axios.post("/login", signInInformation);
-      if (response.status === 200){
-        console.log("success");
-        setGoToDashboard(true);
-      }
-    } catch (error){
+    if (signInEmail === '' || signInPassword === '') {
+      setErrorMessage("Invalid Input!");
       setOpen(true);
-      console.error(error);
+      return;
+    }
+    const response = await axios.post("/login", signInInformation);
+    if (response.data.code) {
+      console.log(response.data);
+      setErrorMessage(response.data.code);
+      setOpen(true);
+    } else {
+      console.log("success");
+      setGoToDashboard(true);
     }
     
   };
@@ -175,7 +181,7 @@ export default function SignIn() {
       <Stack spacing={2} sx={{ width: '100%' }}>
       <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
         <Alert onClose={handleClose} severity="error" sx={{ width: '100%' }}>
-          This is a error message!
+          {errorMessage}
         </Alert>
       </Snackbar>
     </Stack>

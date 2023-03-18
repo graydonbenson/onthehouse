@@ -1,10 +1,11 @@
 import React from 'react';
-import { styled, useTheme } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 import MuiAppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
+import { Link } from "react-router-dom";
 
 const drawerWidth = 240;
 
@@ -42,15 +43,23 @@ function Navbar({open, openDrawer}) {
             >
               <MenuIcon />
             </IconButton>
-            <Typography
-              component="h1"
-              variant="h6"
-              color="inherit"
-              noWrap
-              sx={{ flexGrow: 1 }}
-            >
-              On The House
-            </Typography>
+            <Link to={"/dashboard"}>
+              <Typography
+                style={{
+                  position: "absolute", 
+                  left: '50%', 
+                  top: '50%', 
+                  transform: 'translate(-50%, -50%)'
+                }}
+                component="h1"
+                variant="h6"
+                color="white"
+                noWrap
+                sx={{ flexGrow: 1 }}
+              >
+                On The House
+              </Typography>
+            </Link>
           </Toolbar>
     </AppBar>
   )

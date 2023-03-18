@@ -1,5 +1,5 @@
 import React from 'react';
-import { styled, useTheme } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 import MuiDrawer from '@mui/material/Drawer';
 import Toolbar from '@mui/material/Toolbar';
 import List from '@mui/material/List';
@@ -9,8 +9,9 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import DashboardIcon from '@mui/icons-material/Dashboard';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import AddIcon from '@mui/icons-material/Add';
+import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
+import { Link } from "react-router-dom";
 
 const drawerWidth = 240;
 
@@ -57,30 +58,21 @@ function SideDrawer({open, closeDrawer}) {
         </Toolbar>
         <Divider />
         <List component="nav">
-            <ListItemButton>
+        <ListItemButton>
                 <ListItemIcon>
-                    <DashboardIcon />
+                    <FormatListBulletedIcon />
                 </ListItemIcon>
-                <ListItemText primary="Dashboard" />
+                <ListItemText primary="Recipes" />
             </ListItemButton>
             <ListItemButton>
-                <ListItemIcon>
-                    <ShoppingCartIcon />
-                </ListItemIcon>
-                <ListItemText primary="Orders" />
-            </ListItemButton>
-        <Divider sx={{ my: 1 }} />
-            <ListItemButton>
-                <ListItemIcon>
-                    <DashboardIcon />
-                </ListItemIcon>
-                <ListItemText primary="Dashboard" />
-            </ListItemButton>
-            <ListItemButton>
-                <ListItemIcon>
-                    <ShoppingCartIcon />
-                </ListItemIcon>
-                <ListItemText primary="Orders" />
+                <Link to={"/create"}>
+                  <ListItemIcon>
+                      <AddIcon />
+                  </ListItemIcon>
+                </Link>
+                <Link to={"/create"} style={{ textDecoration: 'none' }}>
+                  <ListItemText primary="Create"/>
+                </Link>
             </ListItemButton>
         </List>
     </Drawer>

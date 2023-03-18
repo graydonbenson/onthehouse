@@ -6,6 +6,8 @@ import SignUpPage from './pages/SignUpPage';
 import DashboardPage from './pages/DashboardPage';
 import axios from 'axios';
 import ForgotPassword from './pages/ForgotPassword';
+import PostPage from './pages/PostPage';
+import CreatePost from './pages/CreatePost';
 
 // axios.defaults.baseURL = "https://us-central1-seng-401-on-the-house.cloudfunctions.net/api";
 
@@ -19,6 +21,8 @@ function App() {
           <Route path="/signup" element={<SignUpPage/>} />
           <Route path="/forgotpassword" element={<ForgotPassword/>} />
           <Route path="/dashboard" element={<DashboardPage/>} />
+          <Route path="/post" element={<PostPage/>} />
+          <Route path="/create" element={<CreatePost/>} />
         </Routes>
       </Router>
     </div>

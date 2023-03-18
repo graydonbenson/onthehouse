@@ -400,6 +400,21 @@ else:
     });
 });
 
+// DELETE /posts/:id - deletes a specific post
+app.delete('/posts/:id', (req, res) => {
+  db.collection('Posts')
+    .doc(req.params.id)
+    .delete()
+    .then(() => {
+      console.log("Post successfully deleted.");
+      res.send("Post successfully deleted.");
+    })
+    .catch(error => {
+      console.log(error);
+      res.send(error);
+    })
+});
+
 // Comments
 // POST /comments/:postId - add a comment to a specific post
 app.post('/comments/:postId', async (req, res) => {

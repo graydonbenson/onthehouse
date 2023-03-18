@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Navbar from '../components/Navbar';
 import SideDrawer from '../components/SideDrawer';
 import Box from '@mui/material/Box';
@@ -15,6 +15,13 @@ const MyRecipes = () => {
     const handleDrawerClose = () => {
         setOpen(false);
     };
+
+    useEffect(() => {
+        const API = `${process.env.API_URL}/users/:userId`;
+        // TO DO:
+        // - get userId from localStorage or something of that sort
+        // - fetch posts and populate RecipeCard with that information instead
+    }, []);
 
     const cards = [];
     for (let i = 0; i < 8; i++) {

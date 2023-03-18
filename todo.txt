@@ -31,11 +31,11 @@ Set up auth protected routes - Mush
 Set up auth invalid inputs (and dupicate user handling) - Mush
 Set up dashboard-v2 (when logged in/logged out) - Mush
 Create individual recipe post screen frontend + connect (with comments, recipe flair tag, upvote/downvote, etc) - Graydon, Eduardo, David
-User "my recipes" recipes screen (rectangles) - Athul
+User "my recipes" recipes screen (rectangles) - Athul - DONE
 Recipe create/deletion/edit form screen - Athul
 Create posts in backend - Mush (baseline endpoint) - DONE
     + Get all posts from backend - Mush - DONE
-    + my recipes in backend - Athul
+    + my recipes in backend - Athul - DONE
     + Delete/edit posts in backend - Athul
     + Update upvote counter posts in backend - Ahad - DONE
     + Get all comments for specific post (based on post ID) - Ahad - DONE (in GET /post/:id)

@@ -250,6 +250,22 @@ app.get('/posts/:id', (req, res) => {
     });
 });
 
+// PATCH /posts/:id - updates a specific post without overwriting previously defined attributes
+app.patch('/posts/:id', (req, res) => {
+  console.log(req.body);
+  db.collection('Posts')
+    .doc(req.params.id)
+    .update(req.body)
+    .then(() => {
+      console.log("Post updated successfully.");
+      res.send("Post updated successfully.");
+    })
+    .catch(error => {
+      console.log(error);
+      res.send(error);
+    })
+});
+
 // POST /posts - create a new post
 app.post('/posts', (req, res) => {
   const newPost = {

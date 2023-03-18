@@ -190,6 +190,31 @@ app.get('/posts', (req, res) => {
     .catch((error) => console.error(error));
 });
 
+// GET /posts/user/:userId - get posts associated with a userId
+app.get('/posts/user/:userId', (req, res) => {
+  db.collection('Posts')
+    .where('userId', '==', req.params.userId)
+    .get()
+    .then(querySnap => {
+      if (!querySnap.empty) {
+        let userPosts = [];
+        querySnap.forEach(doc => {
+          userPosts.push(doc.data());
+        })
+            
+        return res.json({ ...userPosts });
+      }
+      else {
+        console.log('No posts associated with this user');
+        res.send({ message: 'No posts associated with this user' });
+      }
+    })
+    .catch((error) => {
+      console.error("error");
+      res.send(error);
+    });
+});
+
 // GET /posts/:id - get post by post id
 app.get('/posts/:id', (req, res) => {
   db.collection('Posts')

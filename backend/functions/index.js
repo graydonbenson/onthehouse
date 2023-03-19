@@ -270,7 +270,9 @@ app.post('/posts', (req, res) => {
   const newPost = {
     title: req.body.title,
     description: req.body.description,
-    recipe: req.body.recipe,
+    // recipe: req.body.recipe, - split up recipe below
+    ingredients: req.body.ingredients,
+    directions: req.body.directions,
     image: req.body.image,
     flair: req.body.flair,
     userId: req.body.userId,

@@ -235,7 +235,7 @@ app.post('/posts', (req, res) => {
     flair: req.body.flair,
     userId: req.body.userId,
     upvoteCount: 0,
-    date: new Date(),
+    date: new Date('2022-03-01'),
   };
 
   db.collection('Posts')
@@ -398,6 +398,39 @@ async function getuserNamebyUserId(userId) {
       console.error(error);
     });
 }
+//MOTW
+// GET /motw - get motw (by most upvoted)
+app.get('/motw', async (req, res) => {
+  let motw = [];
+  let upvoteCountPrev = null;
+  //let datePrev = null;
+  const moment = require('moment');
+  db.collection('Posts')
+    .get()
+    .then((querySnap) => {
+      querySnap.forEach((doc) => {
+        let upvoteCountCurr = doc.data().upvoteCount;
+        let dateCurr = doc.data().date;
+        //need to fix weekly function
+        if (moment(dateCurr).isoWeek() === moment().isoWeek()){
+          if ((upvoteCountPrev === null)){
+            upvoteCountPrev = doc.data().upvoteCount;
+            motw.push(doc.data());
+          }
+          else if (upvoteCountCurr >= upvoteCountPrev){
+            motw.pop();
+            motw.push(doc.data());
+          }
+          else{
+            upvoteCountPrev = upvoteCountCurr;
+          }
+        }
+      });
+      return res.json(motw);
+    })
+    .catch((error) => console.error(error));
+});
+
 
 // Setting endpoint routes to start with /api
 exports.api = functions.https.onRequest(app);

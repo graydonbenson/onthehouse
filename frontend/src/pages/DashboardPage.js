@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Navbar from '../components/Navbar';
 import SideDrawer from '../components/SideDrawer';
 import Box from '@mui/material/Box';
@@ -6,19 +6,24 @@ import Typography from '@mui/material/Typography';
 import { Grid, Paper } from '@mui/material';
 import RecipeCard from '../components/RecipeCard';
 import MainFeaturedPost from '../components/Motw';
+import axios from 'axios';
 
-const mainFeaturedPost = {
-    title: 'Meal of the Week',
-    description:
-      "Multiple lines of text that form the lede, informing new readers quickly and efficiently about what's most interesting in this post's contents.",
-    image: 'https://source.unsplash.com/random',
-    imageText: 'main image description',
-    linkText: 'Continue reading…',
-    
-};
+
 
 function DashboardPage() {
+  const [MOTW, setMOTW] = useState([]);
+  
+  useEffect(() => {
+    const fetchMOTW = async () => {
+      const { data } = await axios.get("/motw");
+      //console.log(data);
+      setMOTW(data);
+    };
 
+    fetchMOTW();
+  }, []);
+
+  console.log(MOTW);
   const [open, setOpen] = React.useState(false);
 
   const handleDrawerOpen = () => {
@@ -35,6 +40,25 @@ function DashboardPage() {
                     <RecipeCard/>
                </Grid>);
   }
+  const title = "";
+  const description = "";
+  const image = "";
+  // MOTW.map((value) => {
+  //   title = value.title;
+  //   description = value.description;
+  //   image = value.image;
+  // });
+  //console.log(MOTW[0].title);
+  const mainFeaturedPost = {
+    
+    title: "example",
+    description:
+      "Multiple lines of text that form the lede, informing new readers quickly and efficiently about what's most interesting in this post's contents.",
+    image: 'https://source.unsplash.com/random',
+    imageText: 'main image description',
+    linkText: 'Continue reading…',
+    
+  };
 
   return (
     <>
@@ -42,7 +66,7 @@ function DashboardPage() {
     <Navbar open={open} openDrawer={handleDrawerOpen}></Navbar>
     <SideDrawer open={open} closeDrawer={handleDrawerClose}></SideDrawer>
     <Box component="main" sx={{ flexGrow: 1, p: 3, marginTop: 8}}>
-    <MainFeaturedPost post={mainFeaturedPost}/>
+      <MainFeaturedPost post={mainFeaturedPost}/>
         <Grid container spacing={2}>
             {cards}
         </Grid>

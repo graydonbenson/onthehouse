@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 //import { Link } from "react-router-dom";
 import PropTypes from 'prop-types';
 import Paper from '@mui/material/Paper';
@@ -10,7 +10,7 @@ import Box from '@mui/material/Box';
 
 function MainFeaturedPost(props) {
     const { post } = props;
-  
+
     return (
       <Paper
         sx={{

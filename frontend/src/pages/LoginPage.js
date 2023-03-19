@@ -17,6 +17,7 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import axios from 'axios';
 import { Navigate } from "react-router-dom";
+import { LinearProgress } from '@mui/material';
 //import CustomizedSnackbars from '../components/Snackbar';
 
 function Copyright(props) {
@@ -46,6 +47,8 @@ export default function SignIn() {
   const [signInPassword, setSignInPassword] = React.useState('');
   // Error Message
   const [errorMessage, setErrorMessage] = React.useState('');
+  // Loading Linear
+  const [isLoading, setLoading] = React.useState(false);
   //Open Snackbar
   const [open, setOpen] = React.useState(false);
   //Redirect variable
@@ -66,7 +69,7 @@ export default function SignIn() {
 
 
   const handleSubmit = async (event) => {
-    
+    setLoading(true);
     let signInInformation = {
       email: signInEmail,
       password: signInPassword,
@@ -74,16 +77,18 @@ export default function SignIn() {
     event.preventDefault();
     if (signInEmail === '' || signInPassword === '') {
       setErrorMessage("Invalid Input!");
+      setLoading(false);
       setOpen(true);
       return;
     }
     const response = await axios.post("/login", signInInformation);
     if (response.data.code) {
-      console.log(response.data);
       setErrorMessage(response.data.code);
+      setLoading(false);
       setOpen(true);
     } else {
       console.log("success");
+      setLoading(false);
       setGoToDashboard(true);
     }
     
@@ -154,14 +159,24 @@ export default function SignIn() {
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"
             />
+            {isLoading ? (<><LinearProgress color='secondary'/>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              disabled="true"
+              sx={{ mt: 3, mb: 2 }}
+            >
+              Sign Up
+            </Button></>) : (<>
             <Button
               type="submit"
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Sign In
-            </Button>
+              Sign Up
+            </Button></>)}
             <Grid container>
               <Grid item xs>
                 <Link href="forgotpassword" variant="body2">

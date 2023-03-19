@@ -15,6 +15,7 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import axios from 'axios';
 import { Navigate } from "react-router-dom";
+import { LinearProgress } from '@mui/material';
 
 function Copyright(props) {
   return (
@@ -48,6 +49,8 @@ export default function SignUpPage() {
   const [signUpPassword, setSignUpPassword] = React.useState('');
   // Error Message
   const [errorMessage, setErrorMessage] = React.useState('');
+  // Loading Linear
+  const [isLoading, setLoading] = React.useState(false);
   //Redirect variable
   const [goToLogin, setGoToLogin] = React.useState(false);
   //Open Snackbar
@@ -67,6 +70,7 @@ export default function SignUpPage() {
   }
 
   const handleSubmit = async (event) => {  
+    setLoading(true);
     let signUpInformation = {
       fullName: signUpName,
       email: signUpEmail,
@@ -76,15 +80,18 @@ export default function SignUpPage() {
     event.preventDefault();
     if (signUpName === '' || signUpEmail === '' || signUpUser === '' || signUpPassword === '') {
       setErrorMessage("Invalid Input!");
+      setLoading(false);
       setOpen(true);
       return;
     }
     const response = await axios.post("/signup", signUpInformation);
     if (response.data.code) {
       setErrorMessage(response.data.code);
+      setLoading(false);
       setOpen(true);
     } else {
       console.log("success");
+      setLoading(false);
       setGoToLogin(true);
     }
   };
@@ -171,11 +178,18 @@ export default function SignUpPage() {
                 />
               </Grid>
               <Grid item xs={12}>
-              <Typography component="body1" variant="body2">
-              By signing up, you agree to our Terms, Privacy Policy and Cookies Policy
-              </Typography>
               </Grid>
             </Grid>
+            {isLoading ? (<><LinearProgress color='secondary'/>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              disabled="true"
+              sx={{ mt: 3, mb: 2 }}
+            >
+              Sign Up
+            </Button></>) : (<>
             <Button
               type="submit"
               fullWidth
@@ -183,7 +197,7 @@ export default function SignUpPage() {
               sx={{ mt: 3, mb: 2 }}
             >
               Sign Up
-            </Button>
+            </Button></>)}
             <Grid container justifyContent="flex-end">
               <Grid item>
                 <Link href="login" variant="body2">

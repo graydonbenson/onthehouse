@@ -5,6 +5,8 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
+import { Avatar, Button, Tooltip } from '@mui/material';
+import { red } from '@mui/material/colors';
 
 const drawerWidth = 240;
 
@@ -29,7 +31,7 @@ const AppBar = styled(MuiAppBar, {
 function Navbar({open, openDrawer}) {
   return (
     <AppBar position="absolute" open={open}>
-          <Toolbar sx={{pr: '24px', }}>
+          <Toolbar sx={{pr: '24px'}}>
             <IconButton
               edge="start"
               color="inherit"
@@ -47,10 +49,17 @@ function Navbar({open, openDrawer}) {
               variant="h6"
               color="inherit"
               noWrap
+              textAlign={'left'}
               sx={{ flexGrow: 1 }}
             >
-              On The House
+              On The House 🍜
             </Typography>
+            <Button variant="contained" color="secondary" sx={{fontStyle: "oblique"}}>Login</Button>
+            <Button variant="contained" color="success" sx={{fontStyle: "oblique"}}>Sign Up</Button>
+            <Button variant="contained" color="error" sx={{fontStyle: "oblique", mr: 1}}>Logout</Button>
+            <Tooltip title="Username">
+            <Avatar sx={{ bgcolor: red[500] }}> R </Avatar>
+            </Tooltip>
           </Toolbar>
     </AppBar>
   )

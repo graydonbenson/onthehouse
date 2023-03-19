@@ -17,14 +17,14 @@ const MyRecipes = () => {
     };
 
     useEffect(() => {
-        const API = `${process.env.API_URL}/users/:userId`;
+        const API = `${process.env.REACT_APP_API_URL}/users/:userId`;
         // TO DO:
         // - get userId from localStorage or something of that sort
         // - fetch posts and populate RecipeCard with that information instead
     }, []);
 
     const cards = [];
-    for (let i = 0; i < 8; i++) {
+    for (let i = 0; i < 2; i++) {
         cards.push(<Grid item xs={12} sm={6} md={5} lg={3}>
             <RecipeCard />
         </Grid>);

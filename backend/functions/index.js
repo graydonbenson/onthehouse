@@ -269,8 +269,6 @@ app.patch('/posts/:id', (req, res) => {
 app.post('/posts', (req, res) => {
   const newPost = {
     title: req.body.title,
-    description: req.body.description,
-    // recipe: req.body.recipe, - split up recipe below
     ingredients: req.body.ingredients,
     directions: req.body.directions,
     image: req.body.image,

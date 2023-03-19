@@ -10,10 +10,6 @@ import {
   TextField,
   Box
 } from "@mui/material";
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-import { Link } from "react-router-dom";
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
 
 function CreatePost() {
   const [title, setTitle] = useState('');

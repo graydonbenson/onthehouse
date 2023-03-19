@@ -195,22 +195,21 @@ app.get('/posts/user/:userId', (req, res) => {
   db.collection('Posts')
     .where('userId', '==', req.params.userId)
     .get()
-    .then(querySnap => {
+    .then((querySnap) => {
       if (!querySnap.empty) {
         let userPosts = [];
-        querySnap.forEach(doc => {
+        querySnap.forEach((doc) => {
           userPosts.push(doc.data());
-        })
-            
+        });
+
         return res.json({ ...userPosts });
-      }
-      else {
+      } else {
         console.log('No posts associated with this user');
         res.send({ message: 'No posts associated with this user' });
       }
     })
     .catch((error) => {
-      console.error("error");
+      console.error('error');
       res.send(error);
     });
 });
@@ -257,13 +256,13 @@ app.patch('/posts/:id', (req, res) => {
     .doc(req.params.id)
     .update(req.body)
     .then(() => {
-      console.log("Post updated successfully.");
-      res.send("Post updated successfully.");
+      console.log('Post updated successfully.');
+      res.send('Post updated successfully.');
     })
-    .catch(error => {
+    .catch((error) => {
       console.log(error);
       res.send(error);
-    })
+    });
 });
 
 // POST /posts - create a new post
@@ -290,6 +289,28 @@ app.post('/posts', (req, res) => {
       console.error(error);
       res.send(error);
     });
+});
+
+// GET /upvotes - check if specific user upvoted specific post
+app.get('/upvotes', async (req, res) => {
+  const docId = `${req.body.postId}_${req.body.userId}`;
+  try {
+    const upvotesRef = await db.collection('Upvotes').doc(docId);
+    const doc = await upvotesRef.get();
+
+    if (!doc.exists) {
+      console.log('No upvotes associated with this user on this post');
+      res.send({
+        message: 'No upvotes associated with this user on this post',
+      });
+    } else {
+      console.log('Document data:', doc.data());
+      res.send(doc.data());
+    }
+  } catch (error) {
+    console.error(error);
+    res.send(error);
+  }
 });
 
 // POST /upvotes - upvote a post
@@ -406,13 +427,13 @@ app.delete('/posts/:id', (req, res) => {
     .doc(req.params.id)
     .delete()
     .then(() => {
-      console.log("Post successfully deleted.");
-      res.send("Post successfully deleted.");
+      console.log('Post successfully deleted.');
+      res.send('Post successfully deleted.');
     })
-    .catch(error => {
+    .catch((error) => {
       console.log(error);
       res.send(error);
-    })
+    });
 });
 
 // Comments

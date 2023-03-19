@@ -37,6 +37,7 @@ Create posts in backend - Mush (baseline endpoint) - DONE
     + Get all posts from backend - Mush - DONE
     + my recipes in backend - Athul - DONE
     + Delete/edit posts in backend - Athul - DONE
+    + Get upvote counter posts in backend - Ahad - DONE
     + Update upvote counter posts in backend - Ahad - DONE
     + Get all comments for specific post (based on post ID) - Ahad - DONE (in GET /post/:id)
     + Add comments to posts in backend - Ahad - DONE

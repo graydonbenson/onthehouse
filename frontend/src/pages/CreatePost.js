@@ -37,7 +37,7 @@ function CreatePost() {
           <Card>
             <CardHeader title="Upload a New Recipe" />
             <CardContent>
-              <PostForm initialTitle='' initialDesc='' initialTags='' initialImageUrl=''/>
+              <PostForm initialTitle='' initialDesc='' initialTags='' initialImageUrl='' action='CREATE'/>
             </CardContent>
           </Card>
         </Container>

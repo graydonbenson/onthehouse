@@ -1,25 +1,51 @@
 import { useState } from 'react';
 import { Button, TextField } from "@mui/material";
+import { usePostsContext } from '../hooks/usePostsContext';
+import { redirect } from 'react-router-dom';
 
-const PostForm = ({initialTitle, initialDesc, initialTags, initialImageUrl}) => {
+const PostForm = ({ initialTitle, initialIngredients, initialDirections, initialTags, initialImageUrl, action }) => {
+    const { dispatch } = usePostsContext();
+
     const [title, setTitle] = useState(initialTitle);
-    const [description, setDescription] = useState(initialDesc);
+    const [ingredients, setIngredients] = useState(initialIngredients);
+    const [directions, setDirections] = useState(initialDirections);
     const [tags, setTags] = useState(initialTags);
     const [imageUrl, setImageUrl] = useState(initialImageUrl);
+    const [error, setError] = useState('');
 
     const handleTitleChange = (event) => setTitle(event.target.value);
-    const handleDescriptionChange = (event) => setDescription(event.target.value);
+    const handleIngredientsChange = (event) => setIngredients(event.target.value);
+    const handleDirectionsChange = (event) => setDirections(event.target.value);
     const handleTagsChange = (event) => setTags(event.target.value);
     const handleImageUrlChange = (event) => setImageUrl(event.target.value);
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
-        // handle submit logic here
-
-        console.log(title);
-        console.log(description);
-        console.log(tags);
-        console.log(imageUrl);
+        const newPost = {
+            title,
+            ingredients,
+            directions,
+            flair: tags,
+            image: imageUrl,
+            // TODO: change this to dynamic userId when auth implemented
+            userId: 'JohnDoe2'
+        };
+        if (action === 'CREATE') {
+            const response = await fetch(`${process.env.REACT_APP_API_URL}/posts`, {
+                method: 'POST',
+                body: JSON.stringify(newPost),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            const json = await response.json();
+            if (!response.ok) {
+                setError("Error: " + json.error);
+            } else {
+                dispatch({ type: 'CREATE_POST', payload: json });
+                redirect("/my-recipes");
+            }
+        }
     };
 
     return (
@@ -38,8 +64,8 @@ const PostForm = ({initialTitle, initialDesc, initialTags, initialImageUrl}) => 
                 fullWidth
                 margin="normal"
                 multiline
-                value={description}
-                onChange={handleDescriptionChange}
+                value={ingredients}
+                onChange={handleIngredientsChange}
                 required
             />
             <TextField
@@ -49,8 +75,8 @@ const PostForm = ({initialTitle, initialDesc, initialTags, initialImageUrl}) => 
                 margin="normal"
                 multiline
                 rows={4}
-                value={description}
-                onChange={handleDescriptionChange}
+                value={directions}
+                onChange={handleDirectionsChange}
                 required
             />
             <TextField
@@ -82,6 +108,11 @@ const PostForm = ({initialTitle, initialDesc, initialTags, initialImageUrl}) => 
             >
                 Create ✨
             </Button>
+            {error &&
+                <div>
+                    {error}
+                </div>
+            }
         </form>
     );
 }

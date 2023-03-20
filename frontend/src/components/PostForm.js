@@ -1,10 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Button, TextField } from "@mui/material";
-import { usePostsContext } from '../hooks/usePostsContext';
 import { useNavigate, useParams } from 'react-router-dom';
 
 const PostForm = ({ initialTitle, initialIngredients, initialDirections, initialTags, initialImageUrl, action }) => {
-    const { dispatch } = usePostsContext();
     const navigate = useNavigate();
     const params = useParams();
 

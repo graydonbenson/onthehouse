@@ -225,6 +225,31 @@ app.get('/posts/:id', (req, res) => {
     });
 });
 
+// GET /posts/flair - get posts associated with a flair tag
+app.get('/posts/flair/:flair', (req, res) => {
+  db.collection('Posts')
+    .where('flair', '==', req.params.flair)
+    .get()
+    .then((querySnap) => {
+      if (!querySnap.empty) {
+        let flairPost = [];
+        querySnap.forEach((doc) => {
+          flairPost.push(doc.data());
+        });
+
+        return res.json({ ...flairPost });
+      } else {
+        console.log('No posts associated with this user');
+        res.send({ message: 'No posts associated with this user' });
+      }
+    })
+    .catch((error) => {
+      console.error('error');
+      res.send(error);
+    });
+});
+
+
 // POST /posts - create a new post
 app.post('/posts', (req, res) => {
   const newPost = {

@@ -85,9 +85,8 @@ export default function SignIn() {
     if (response.data.code) {
       setErrorMessage(response.data.code);
       setLoading(false);
-      setOpen(true);
     } else {
-      console.log("success");
+      localStorage.setItem("userData", JSON.stringify(response.data));
       setLoading(false);
       setGoToDashboard(true);
     }

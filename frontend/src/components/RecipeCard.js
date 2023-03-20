@@ -36,7 +36,7 @@ export const RecipeCard = ({ postId }) => {
   };
 
   const fetchData = async () => {
-    const response = await fetch(`${process.env.REACT_APP_API_URL}/posts/9B0Voyx2CVe2HKqunyNK`);
+    const response = await fetch(`https://us-central1-seng-401-on-the-house.cloudfunctions.net/api/posts/9B0Voyx2CVe2HKqunyNK`);
     const json = await response.json();
     if (response.ok) {
       setData(json);
@@ -61,14 +61,15 @@ export const RecipeCard = ({ postId }) => {
           title={data.title}
           subheader="September 14, 2016"
         />
-      }
+        }
       <Link to={"/post"}>
+        {data &&
         <CardMedia
           component="img"
           height="194"
-          image="https://media.cnn.com/api/v1/images/stellar/prod/211006114703-best-meal-delivery-service-freshly.jpg?q=w_1601,h_900,x_0,y_0,c_fill"
+          image={data.image}
           alt="Paella dish"
-        />
+        />}
       </Link>
       <CardContent>
         <Typography variant="body2" color="text.secondary">

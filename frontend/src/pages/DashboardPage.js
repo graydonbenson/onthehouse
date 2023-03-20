@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Navbar from '../components/Navbar';
 import SideDrawer from '../components/SideDrawer';
 import Box from '@mui/material/Box';
@@ -20,6 +20,7 @@ const mainFeaturedPost = {
 function DashboardPage() {
 
   const [open, setOpen] = useState(false);
+  const [data, setData] = useState([]);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -29,10 +30,24 @@ function DashboardPage() {
     setOpen(false);
   };
 
+  const fetchData = async () => {
+    const response = await fetch(`https://us-central1-seng-401-on-the-house.cloudfunctions.net/api/posts/`);
+    const json = await response.json();
+    if (response.ok) {
+      setData(json);
+    } else {
+      console.log("did not work")
+    }
+  }
+
+  useEffect(() => {
+      fetchData();
+  }, []);
+
   const cards = [];
-  for (let i = 0; i < 8; i++) {
+  for (let i = 0; i < data.length; i++) {
     cards.push(<Grid item xs={12} sm={6} md={5} lg={3} key={i}>
-                    <RecipeCard/>
+                    <RecipeCard />
                </Grid>);
   }
 

@@ -57,7 +57,7 @@ export const RecipeCard = ({ postId }) => {
             <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">{data.userId?.substring(0, 1)}</Avatar>
           }
           title={data.title}
-          subheader="{data.date._seconds}"
+          subheader={new Date(data.date?._seconds * 1000).toLocaleDateString("en-US")}
         />
       }
       <Link to={"/post"}>

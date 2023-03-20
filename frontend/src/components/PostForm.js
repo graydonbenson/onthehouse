@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
 import { Button, TextField } from "@mui/material";
 import { usePostsContext } from '../hooks/usePostsContext';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const PostForm = ({ initialTitle, initialIngredients, initialDirections, initialTags, initialImageUrl, action }) => {
     const { dispatch } = usePostsContext();
     const navigate = useNavigate();
+    const params = useParams();
 
     const [title, setTitle] = useState(initialTitle);
     const [ingredients, setIngredients] = useState(initialIngredients);
@@ -30,16 +31,16 @@ const PostForm = ({ initialTitle, initialIngredients, initialDirections, initial
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        const newPost = {
-            title,
-            ingredients,
-            directions,
-            flair: tags,
-            image: imageUrl,
-            // TODO: change this to dynamic userId when auth implemented
-            userId: 'JohnDoe2'
-        };
         if (action === 'CREATE') {
+            const newPost = {
+                title,
+                ingredients,
+                directions,
+                flair: tags,
+                image: imageUrl,
+                // TODO: change this to dynamic userId when auth implemented
+                userId: 'JohnDoe2'
+            };
             const response = await fetch(`${process.env.REACT_APP_API_URL}/posts`, {
                 method: 'POST',
                 body: JSON.stringify(newPost),
@@ -47,11 +48,30 @@ const PostForm = ({ initialTitle, initialIngredients, initialDirections, initial
                     'Content-Type': 'application/json'
                 }
             });
-            const json = await response.json();
             if (!response.ok) {
-                setError("Error: " + json.error);
+                setError("Error: Post could not be created.");
             } else {
-                dispatch({ type: 'CREATE_POST', payload: json });
+                navigate("/my-recipes");
+            }
+        }
+        else if (action === 'UPDATE') {
+            const updatedPost = {
+                title,
+                ingredients,
+                directions,
+                flair: tags,
+                image: imageUrl
+            };
+            const response = await fetch(`${process.env.REACT_APP_API_URL}/posts/${params.id}`, {
+                method: 'PATCH',
+                body: JSON.stringify(updatedPost),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            if (!response.ok) {
+                setError("Error: Post could not be updated.");
+            } else {
                 navigate("/my-recipes");
             }
         }
@@ -62,7 +82,7 @@ const PostForm = ({ initialTitle, initialIngredients, initialDirections, initial
             <TextField
                 label="Title"
                 InputLabelProps={{
-                    shrink: action === 'CREATE' ? false : true,
+                    shrink: true
                 }}
                 fullWidth
                 margin="normal"
@@ -73,7 +93,7 @@ const PostForm = ({ initialTitle, initialIngredients, initialDirections, initial
             <TextField
                 label="Ingredients"
                 InputLabelProps={{
-                    shrink: action === 'CREATE' ? false : true,
+                    shrink: true,
                 }}
                 placeholder="e.g. Tomato, Ginger, Eggs, etc."
                 fullWidth
@@ -86,7 +106,7 @@ const PostForm = ({ initialTitle, initialIngredients, initialDirections, initial
             <TextField
                 label="Directions to Prepare"
                 InputLabelProps={{
-                    shrink: action === 'CREATE' ? false : true,
+                    shrink: true,
                 }}
                 placeholder="Step 1."
                 fullWidth
@@ -100,9 +120,10 @@ const PostForm = ({ initialTitle, initialIngredients, initialDirections, initial
             <TextField
                 label="Tag(s)"
                 InputLabelProps={{
-                    shrink: action === 'CREATE' ? false : true,
+                    shrink: true,
                 }}
                 placeholder="e.g. Quick Meal, Greek, Dessert, etc."
+                sx={{mb: 3}}
                 fullWidth
                 margin="normal"
                 multiline
@@ -113,7 +134,7 @@ const PostForm = ({ initialTitle, initialIngredients, initialDirections, initial
             <TextField
                 label="Add Image URL"
                 InputLabelProps={{
-                    shrink: action === 'CREATE' ? false : true,
+                    shrink: true,
                 }}
                 type="url"
                 placeholder="https://www.linktoimage.com"

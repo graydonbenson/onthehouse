@@ -35,66 +35,65 @@ export const RecipeCard = ({ postId }) => {
     setExpanded(!expanded);
   };
 
-  const fetchData = async () => {
-    const response = await fetch(`https://us-central1-seng-401-on-the-house.cloudfunctions.net/api/posts/${postId}`);
-    const json = await response.json();
-    if (response.ok) {
-      setData(json);
-    } else {
-      console.log("did not work")
-    }
-  }
-
   useEffect(() => {
-      fetchData();
-  }, []);
+    const fetchData = async () => {
+      const response = await fetch(`https://us-central1-seng-401-on-the-house.cloudfunctions.net/api/posts/${postId}`);
+      const json = await response.json();
+      if (response.ok) {
+        setData(json);
+      } else {
+        console.log("did not work")
+      }
+    }
+
+    fetchData();
+  }, [postId]);
 
   return (
     <Card sx={{ maxWidth: 345 }}>
-      {data &&
+      {data && <>
         <CardHeader
           avatar={
-            <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">{data.userId?.substring(0,1)}</Avatar>
+            <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">{data.userId?.substring(0, 1)}</Avatar>
           }
           title={data.title}
-          subheader="{data.date._seconds}"
+          subheader={new Date(data.date?._seconds * 1000).toLocaleDateString("en-US")}
         />
-        }
-      <Link to={"/post"}>
-        {data &&
-        <CardMedia
-          component="img"
-          height="194"
-          image={data.image}
-          alt="Paella dish"
-        />}
-      </Link>
-      <CardContent>
-        <Typography variant="body2" color="text.secondary">
-        {data.description}
-        </Typography>
-      </CardContent>
-      <CardActions disableSpacing>
-        <IconButton aria-label="Upvote Recipe">
-          <ThumbUpIcon />
-        </IconButton>
-        <IconButton aria-label="Downvote Recipe">
-          <ThumbDownIcon />
-        </IconButton>
-        <ExpandMore
-          expand={expanded}
-          onClick={handleExpandClick}
-          aria-expanded={expanded}
-          aria-label="Show More"
-        >
-          <ExpandMoreIcon />
-        </ExpandMore>
-      </CardActions>
-      <Collapse in={expanded} timeout="auto" unmountOnExit>
+        <Link to={`/post/${data.postId}`}>
+          <CardMedia
+            component="img"
+            height="194"
+            image={data.image}
+            alt=""
+          />
+        </Link>
         <CardContent>
-          <Typography paragraph>{data.directions}</Typography>
+          <Typography variant="body2" color="text.secondary">
+            {data.description}
+          </Typography>
         </CardContent>
-      </Collapse>
+        <CardActions disableSpacing>
+          <IconButton aria-label="Upvote Recipe">
+            <ThumbUpIcon />
+          </IconButton>
+          <IconButton aria-label="Downvote Recipe">
+            <ThumbDownIcon />
+          </IconButton>
+          <ExpandMore
+            expand={expanded}
+            onClick={handleExpandClick}
+            aria-expanded={expanded}
+            aria-label="Show More"
+          >
+            <ExpandMoreIcon />
+          </ExpandMore>
+        </CardActions>
+        <Collapse in={expanded} timeout="auto" unmountOnExit>
+          <CardContent>
+            <Typography paragraph>{data.directions}</Typography>
+          </CardContent>
+        </Collapse>
+      </>}
     </Card>
   )
 }

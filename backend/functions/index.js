@@ -180,7 +180,7 @@ app.get('/posts', (req, res) => {
         console.log(postId);
         console.log(getuserNamebyUserId(doc.data().userId));
         posts.push({
-          postId,
+          id: postId,
           username: getuserNamebyUserId(doc.data().userId),
           ...doc.data(),
         });

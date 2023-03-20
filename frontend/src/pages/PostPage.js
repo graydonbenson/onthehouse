@@ -12,6 +12,8 @@ import { Grid} from '@mui/material';
 import TextField from '@mui/material/TextField';
 import SendIcon from '@mui/icons-material/Send';
 
+const commentAPI = 'https://us-central1-seng-401-on-the-house.cloudfunctions.net/api/comments/:'
+
 function PostPage() {
 
   const [open, setOpen] = React.useState(false);
@@ -23,6 +25,29 @@ function PostPage() {
   const handleDrawerClose = () => {
     setOpen(false);
   };
+
+
+  function postComment(text, pID) {
+    const data = {text: text}; // data to be sent in the request body
+    console.log(commentAPI+pID);
+    fetch(commentAPI+pID, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      message: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(data => {
+      // Handle the response from the server here
+      console.log(data);
+    })
+    .catch(error => {
+    });
+  }
+  
+  postComment("This is a test", "9B0Voyx2CVe2HKqunyNK");
+  console.log("Done");
 
   return (
     <>

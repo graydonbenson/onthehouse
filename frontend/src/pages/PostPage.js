@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import SideDrawer from '../components/SideDrawer';
 import Box from '@mui/material/Box';
@@ -6,17 +6,20 @@ import Typography from '@mui/material/Typography';
 import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
-import ThumbDownIcon from '@mui/icons-material/ThumbDown'; 
+import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 import Comments from '../components/Comments';
-import { Grid} from '@mui/material';
+import { Grid } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import SendIcon from '@mui/icons-material/Send';
+import { useParams } from 'react-router-dom';
 
 const commentAPI = 'https://us-central1-seng-401-on-the-house.cloudfunctions.net/api/comments/:'
 
-function PostPage() {
+export const PostPage = () => {
+  const params = useParams();
 
-  const [open, setOpen] = React.useState(false);
+  const [post, setPost] = useState({});
+  const [open, setOpen] = useState(false);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -26,93 +29,105 @@ function PostPage() {
     setOpen(false);
   };
 
+  useEffect(() => {
+    const fetchPost = async () => {
+      const response = await fetch(`https://us-central1-seng-401-on-the-house.cloudfunctions.net/api/posts/${params.id}`);
+      const json = await response.json();
+      if (response.ok) {
+        setPost(json);
+      } else {
+        console.log("did not work")
+      }
+    }
 
-  function postComment(text, pID) {
-    const data = {text: text}; // data to be sent in the request body
-    console.log(commentAPI+pID);
-    fetch(commentAPI+pID, {
+    fetchPost();
+  }, [params.id]);
+
+
+  const postComment = (text, pID) => {
+    const data = { text: text }; // data to be sent in the request body
+    console.log(commentAPI + pID);
+    fetch(commentAPI + pID, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
       message: JSON.stringify(data)
     })
-    .then(response => response.json())
-    .then(data => {
-      // Handle the response from the server here
-      console.log(data);
-    })
-    .catch(error => {
-    });
+      .then(response => response.json())
+      .then(data => {
+        // Handle the response from the server here
+        console.log(data);
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }
-  
+
   postComment("This is a test", "9B0Voyx2CVe2HKqunyNK");
   console.log("Done");
 
   return (
     <>
-    <Box sx={{ display: 'flex' }}>
-    <Navbar open={open} openDrawer={handleDrawerOpen}></Navbar>
-    <SideDrawer open={open} closeDrawer={handleDrawerClose}></SideDrawer>
-    <Box component="main" 
-        sx={{  mt: 15, mb: 15, ml: 15, width: 650, height: 700, backgroundColor: '#def9f5' }}
-        style={{ alignItems: "center", justifyContent: "center" }}>
-        <Typography paragraph>
-          Chicken Parmegiano
-        </Typography>
-        <Box component="img"
-            sx={{
+      {post && <>
+        <Box sx={{ display: 'flex' }}>
+          <Navbar open={open} openDrawer={handleDrawerOpen}></Navbar>
+          <SideDrawer open={open} closeDrawer={handleDrawerClose}></SideDrawer>
+          <Box component="main"
+            sx={{ mt: 15, mb: 15, ml: 15, width: 650, backgroundColor: '#def9f5' }}
+            style={{ alignItems: "center", justifyContent: "center" }}>
+            <Typography paragraph>
+              {post.title}
+            </Typography>
+            <Box component="img"
+              sx={{
                 width: 600
-            }}
-            src="https://media.cnn.com/api/v1/images/stellar/prod/211006114703-best-meal-delivery-service-freshly.jpg?q=w_1601,h_900,x_0,y_0,c_fill">    
-        </Box>
-        <Box sx={{ flexGrow: 1, mt: 1 }} style={{ display: "flex"}}>
-          <Avatar sx={{ bgcolor: "red", width: 30, height: 30, ml: 3}} aria-label="recipe">
-            R
-          </Avatar>
-          <Typography sx={{ ml: 2 }}>Rodrygo</Typography>
-          <IconButton aria-label="Upvote Recipe" sx={{ ml: 52 }}>
-            <ThumbUpIcon />
-          </IconButton>
-          <IconButton aria-label="Downvote Recipe">
-            <ThumbDownIcon />
-          </IconButton>
-        </Box>
-        <Typography sx={{ mt: 2, ml: 3, mr: 3, textAlign: "justify"}} paragraph>Ingredients: 
-            Chicken, shrimp and chorizo pimentón, bay leaves, garlic, tomatoes, onion,
-             salt and pepper, 4 1/2 cups chicken broth; bring to a boil.</Typography>
-        <Typography sx={{ ml: 3, mr: 3, textAlign: "justify"}} paragraph>Method: 
-            Heat oil in a (14- to 16-inch) paella pan or a large, deep skillet over
-            medium-high heat. Add chicken, shrimp and chorizo, and cook, stirring
-            occasionally until lightly browned, 6 to 8 minutes. Transfer shrimp to a
-            large plate and set aside, leaving chicken and chorizo in the pan. Add
-            pimentón, bay leaves, garlic, tomatoes, onion, salt and pepper, and cook,
-            stirring often until thickened and fragrant, about 10 minutes. Add
-            saffron broth and remaining 4 1/2 cups chicken broth; bring to a boil.</Typography>
-    </Box>
-    <Box component="main" 
-        sx={{ mt: 15, mb: 15, pr: 10 }}
-        style={{ alignItems: "center", justifyContent: "center" }}>
+              }}
+              src={post.image}>
+            </Box>
+            <Box sx={{ flexGrow: 1, mt: 1 }} style={{ display: "flex" }}>
+              <Avatar sx={{ bgcolor: "red", width: 30, height: 30, ml: 3 }} aria-label="recipe">
+                {post.userId?.substring(0, 1)}
+              </Avatar>
+              <Typography sx={{ ml: 2 }}>{post.userId}</Typography>
+              <IconButton aria-label="Upvote Recipe" sx={{ ml: 52 }}>
+                <ThumbUpIcon />
+              </IconButton>
+              <IconButton aria-label="Downvote Recipe">
+                <ThumbDownIcon />
+              </IconButton>
+            </Box>
+            <Typography sx={{ mt: 2, ml: 3, mr: 3, textAlign: "justify" }} paragraph>
+              <b>Ingredients:</b> {post.ingredients}
+            </Typography>
+            <Typography sx={{ ml: 3, mr: 3, textAlign: "justify" }} paragraph>
+              <b>Directions:</b> {post.directions}
+            </Typography>
+          </Box>
+          <Box component="main"
+            sx={{ mt: 15, mb: 15, pr: 10 }}
+            style={{ alignItems: "center", justifyContent: "center" }}>
             <Grid>
-                <Comments />
+              <Comments />
             </Grid>
             <Grid>
-                <div>
-                    <TextField
-                        id="filled-multiline-flexible"
-                        label="Comment here"
-                        multiline
-                        maxRows={4}
-                        variant="filled"
-                        style={{ width: 360}}
-                    />
-                </div>
-                <IconButton aria-label="Send Comment" >
-                    <SendIcon />
-                </IconButton>
+              <div>
+                <TextField
+                  id="filled-multiline-flexible"
+                  label="Comment here"
+                  multiline
+                  maxRows={4}
+                  variant="filled"
+                  style={{ width: 360 }}
+                />
+              </div>
+              <IconButton aria-label="Send Comment" >
+                <SendIcon />
+              </IconButton>
             </Grid>
-    </Box>
-    </Box>
+          </Box>
+        </Box>
+      </>}
     </>
   )
 }

@@ -51,7 +51,7 @@ export const RecipeCard = ({ postId }) => {
 
   return (
     <Card sx={{ maxWidth: 345 }}>
-      {data &&
+      {data && <>
         <CardHeader
           avatar={
             <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">{data.userId?.substring(0, 1)}</Avatar>
@@ -59,42 +59,41 @@ export const RecipeCard = ({ postId }) => {
           title={data.title}
           subheader={new Date(data.date?._seconds * 1000).toLocaleDateString("en-US")}
         />
-      }
-      <Link to={"/post"}>
-        {data &&
+        <Link to={`/post/${data.postId}`}>
           <CardMedia
             component="img"
             height="194"
             image={data.image}
             alt=""
-          />}
-      </Link>
-      <CardContent>
-        <Typography variant="body2" color="text.secondary">
-          {data.description}
-        </Typography>
-      </CardContent>
-      <CardActions disableSpacing>
-        <IconButton aria-label="Upvote Recipe">
-          <ThumbUpIcon />
-        </IconButton>
-        <IconButton aria-label="Downvote Recipe">
-          <ThumbDownIcon />
-        </IconButton>
-        <ExpandMore
-          expand={expanded}
-          onClick={handleExpandClick}
-          aria-expanded={expanded}
-          aria-label="Show More"
-        >
-          <ExpandMoreIcon />
-        </ExpandMore>
-      </CardActions>
-      <Collapse in={expanded} timeout="auto" unmountOnExit>
+          />
+        </Link>
         <CardContent>
-          <Typography paragraph>{data.directions}</Typography>
+          <Typography variant="body2" color="text.secondary">
+            {data.description}
+          </Typography>
         </CardContent>
-      </Collapse>
+        <CardActions disableSpacing>
+          <IconButton aria-label="Upvote Recipe">
+            <ThumbUpIcon />
+          </IconButton>
+          <IconButton aria-label="Downvote Recipe">
+            <ThumbDownIcon />
+          </IconButton>
+          <ExpandMore
+            expand={expanded}
+            onClick={handleExpandClick}
+            aria-expanded={expanded}
+            aria-label="Show More"
+          >
+            <ExpandMoreIcon />
+          </ExpandMore>
+        </CardActions>
+        <Collapse in={expanded} timeout="auto" unmountOnExit>
+          <CardContent>
+            <Typography paragraph>{data.directions}</Typography>
+          </CardContent>
+        </Collapse>
+      </>}
     </Card>
   )
 }

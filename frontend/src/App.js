@@ -22,7 +22,7 @@ function App() {
           <Route path="/signup" element={<SignUpPage/>} />
           <Route path="/forgotpassword" element={<ForgotPassword/>} />
           <Route path="/dashboard" element={<DashboardPage/>} />
-          <Route path="/post" element={<PostPage/>} />
+          <Route path="/post/:id" element={<PostPage/>} />
           <Route path="/create" element={<CreatePost/>} />
           <Route path="/my-recipes" element={<MyRecipes/>} />
         </Routes>

@@ -239,8 +239,8 @@ app.get('/posts/flair/:flair', (req, res) => {
 
         return res.json({ ...flairPost });
       } else {
-        console.log('No posts associated with this user');
-        res.send({ message: 'No posts associated with this user' });
+        console.log('No posts associated with this flair');
+        res.send({ message: 'No posts associated with this flair' });
       }
     })
     .catch((error) => {

@@ -54,8 +54,16 @@ const MyRecipes = () => {
     }, [dispatch]);
 
     const handleDelete = async (id) => {
-
-    }
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/posts/${id}`, {
+            method: 'DELETE'
+        });
+        if (response.ok) {
+            dispatch({ type: 'DELETE_POST', payload: id })
+            handleAlertClose();
+        } else {
+            window.alert("Error: Could not delete post.");
+        }
+    };
 
     return (
         <>

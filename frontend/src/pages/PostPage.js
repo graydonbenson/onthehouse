@@ -97,8 +97,8 @@ export const PostPage = () => {
                 <ThumbDownIcon />
               </IconButton>
             </Box>
-            <Typography sx={{ mt: 2, ml: 3, mr: 3, textAlign: "justify" }} paragraph>
-              <b>Ingredients:</b> {post.ingredients}
+            <Typography sx={{ mt: 2, ml: 3, mr: 3, textAlign: "justify", whiteSpace: "pre-wrap" }} paragraph>
+              <b>Ingredients:</b><br />{post.ingredients}
             </Typography>
             <Typography sx={{ ml: 3, mr: 3, textAlign: "justify", whiteSpace: "pre-wrap" }} paragraph>
               <b>Directions:</b><br />{post.directions}

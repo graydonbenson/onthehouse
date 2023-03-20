@@ -30,10 +30,10 @@ export const postsReducer = (state, action) => {
             }
         case 'DELETE_POST':
             return {
-                // action.payload is deleted post, state.posts is past
+                // action.payload is deleted post id, state.posts is past
                 // representation of posts
-                posts: state.posts.filter(post =>
-                    post.postId !== action.payload.postId
+                posts: Object.values(state.posts).filter(post =>
+                    post.id !== action.payload
                 )
             }
     }

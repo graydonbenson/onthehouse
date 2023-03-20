@@ -16,9 +16,9 @@ export const postsReducer = (state, action) => {
             }
         case 'CREATE_POST':
             return {
-                // action.payload is a new post, state.posts is past
+                // action.payload.post is the new post, state.posts is past
                 // representation of posts
-                posts: [action.payload, ...state.posts]
+                posts: [action.payload.post, ...Object.values(state.posts)]
             }
         case 'UPDATE_POST':
             return {
@@ -41,7 +41,7 @@ export const postsReducer = (state, action) => {
 
 export const PostsContextProvider = ({ children }) => {
     const [state, dispatch] = useReducer(postsReducer, {
-        posts: null
+        posts: []
     });
 
     return (

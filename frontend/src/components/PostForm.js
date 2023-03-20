@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { Button, TextField } from "@mui/material";
 import { usePostsContext } from '../hooks/usePostsContext';
-import { redirect } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const PostForm = ({ initialTitle, initialIngredients, initialDirections, initialTags, initialImageUrl, action }) => {
     const { dispatch } = usePostsContext();
+    const navigate = useNavigate();
 
     const [title, setTitle] = useState(initialTitle);
     const [ingredients, setIngredients] = useState(initialIngredients);
@@ -43,7 +44,7 @@ const PostForm = ({ initialTitle, initialIngredients, initialDirections, initial
                 setError("Error: " + json.error);
             } else {
                 dispatch({ type: 'CREATE_POST', payload: json });
-                redirect("/my-recipes");
+                navigate("/my-recipes");
             }
         }
     };

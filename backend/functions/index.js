@@ -202,7 +202,7 @@ app.get('/posts/user/:userId', (req, res) => {
           userPosts.push({
             id: doc.id,
             ...doc.data()
-        });
+          });
         });
 
         return res.json({ ...userPosts });
@@ -281,17 +281,25 @@ app.post('/posts', (req, res) => {
     date: new Date(),
   };
 
-  db.collection('Posts')
-    .doc()
-    .set(newPost)
-    .then(() => {
-      console.log('Post document successfully created!');
-      res.send({ message: 'Created Post Successfully' });
-    })
-    .catch((error) => {
-      console.error(error);
-      res.send(error);
-    });
+  try {
+    const docRef = db.collection('Posts').doc();
+    const docId = docRef.id;
+
+    docRef.set(newPost)
+      .then(() => {
+        console.log('Post document successfully created!');
+        res.send({
+          message: 'Created Post Successfully',
+          post: {
+            id: docId,
+            ...newPost
+          }
+        });
+      })
+  } catch (error) {
+    console.error(error);
+    res.send(error);
+  }
 });
 
 // GET /upvotes - check if specific user upvoted specific post
@@ -328,9 +336,9 @@ app.post('/upvotes', (req, res) => {
 
   /*if documentId w/ post and user id exists:
   if isUpvote matches
-  	throw error
+    throw error
   else
-  	update isUpvote for found record
+    update isUpvote for found record
 else:
   create a new record
 */
@@ -358,17 +366,17 @@ else:
             });
 
           /*
-			user upvoted it, so
-			upvoteCount: 1
+      user upvoted it, so
+      upvoteCount: 1
 
-			then downvote it: -1
+      then downvote it: -1
 
-			
-			user downvoted it, so
-			upvoteCount: 1
+    	
+      user downvoted it, so
+      upvoteCount: 1
 
-			then upvote it: 3
-			*/
+      then upvote it: 3
+      */
 
           // Update upvoteCount in posts
           db.collection('Posts')

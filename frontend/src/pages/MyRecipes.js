@@ -33,19 +33,12 @@ const MyRecipes = () => {
                     payload: json
                 })
             } else {
-                setError("Error: " + json.error); 
+                setError("Error: " + json.error);
             }
         }
 
         fetchUserPosts();
     }, [dispatch]);
-
-    const cards = [];
-    for (let i = 0; i < 2; i++) {
-        cards.push(<Grid item xs={12} sm={6} md={5} lg={3} key={i}>
-            <RecipeCard />
-        </Grid>);
-    }
 
     return (
         <>
@@ -61,12 +54,9 @@ const MyRecipes = () => {
                     }
                     <Grid container spacing={2}>
                         {posts && Object.values(posts).map(post =>
-                            <div key={post.id}>
-                                <p>{post.image}</p>
-                                <p>{post.title}</p>
-                                <p>{post.ingredients}</p>
-                                <p>{post.directions}</p>
-                            </div>
+                            <Grid item xs={12} sm={6} md={5} lg={3} key={post.id}>
+                                <RecipeCard postId={post.id} />
+                            </Grid>
                         )}
                     </Grid>
                 </Box>

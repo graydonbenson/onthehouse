@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState, useEffect } from 'react';
 import { styled } from '@mui/material/styles';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
@@ -16,35 +16,52 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Link } from "react-router-dom";
 
 const ExpandMore = styled((props) => {
-    const { expand, ...other } = props;
-    return <IconButton {...other} />;
-  })(({ theme, expand }) => ({
-    transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
-    marginLeft: 'auto',
-    transition: theme.transitions.create('transform', {
-      duration: theme.transitions.duration.shortest,
-    }),
+  const { expand, ...other } = props;
+  return <IconButton {...other} />;
+})(({ theme, expand }) => ({
+  transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
+  marginLeft: 'auto',
+  transition: theme.transitions.create('transform', {
+    duration: theme.transitions.duration.shortest,
+  }),
 }));
 
-function RecipeCard() {
+export const RecipeCard = ({ postId }) => {
 
-    const [expanded, setExpanded] = React.useState(false);
+  const [expanded, setExpanded] = useState(false);
+  const [data, setData] = useState([]);
 
-    const handleExpandClick = () => {
-        setExpanded(!expanded);
-    };
+  const handleExpandClick = () => {
+    setExpanded(!expanded);
+  };
+
+  const fetchData = async () => {
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/posts/9B0Voyx2CVe2HKqunyNK`);
+    const json = await response.json();
+    if (response.ok) {
+      setData(json);
+    } else {
+      console.log("did not work")
+    }
+  }
+
+  useEffect(() => {
+      fetchData();
+  }, []);
 
   return (
     <Card sx={{ maxWidth: 345 }}>
-      <CardHeader
-        avatar={
-          <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-            R
-          </Avatar>
-        }
-        title="Shrimp and Chorizo Paella"
-        subheader="September 14, 2016"
-      />
+      {data &&
+        <CardHeader
+          avatar={
+            <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
+              R
+            </Avatar>
+          }
+          title={data.title}
+          subheader="September 14, 2016"
+        />
+      }
       <Link to={"/post"}>
         <CardMedia
           component="img"
@@ -65,7 +82,7 @@ function RecipeCard() {
           <ThumbUpIcon />
         </IconButton>
         <IconButton aria-label="Downvote Recipe">
-          <ThumbDownIcon/>
+          <ThumbDownIcon />
         </IconButton>
         <ExpandMore
           expand={expanded}

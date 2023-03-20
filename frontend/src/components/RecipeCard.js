@@ -69,7 +69,7 @@ export const RecipeCard = ({ postId }) => {
         </Link>
         <CardContent>
           <Typography variant="body2" color="text.secondary">
-            {data.description}
+            {data.ingredients}
           </Typography>
         </CardContent>
         <CardActions disableSpacing>

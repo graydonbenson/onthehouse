@@ -22,18 +22,18 @@ export const postsReducer = (state, action) => {
             }
         case 'UPDATE_POST':
             return {
-                // action.payload is updated post, state.posts is past
+                // action.payload.post is updated post, state.posts is past
                 // representation of posts
-                posts: [action.payload, ...state.posts.filter(post =>
+                posts: [action.payload.post, ...Object.values(state.posts).filter(post =>
                     post.postId !== action.payload.postId
                 )]
             }
         case 'DELETE_POST':
             return {
-                // action.payload is deleted post, state.posts is past
+                // action.payload is deleted post id, state.posts is past
                 // representation of posts
-                posts: state.posts.filter(post =>
-                    post.postId !== action.payload.postId
+                posts: Object.values(state.posts).filter(post =>
+                    post.id !== action.payload
                 )
             }
     }

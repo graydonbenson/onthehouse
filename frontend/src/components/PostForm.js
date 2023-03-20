@@ -1,11 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button, TextField } from "@mui/material";
-import { usePostsContext } from '../hooks/usePostsContext';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const PostForm = ({ initialTitle, initialIngredients, initialDirections, initialTags, initialImageUrl, action }) => {
-    const { dispatch } = usePostsContext();
     const navigate = useNavigate();
+    const params = useParams();
 
     const [title, setTitle] = useState(initialTitle);
     const [ingredients, setIngredients] = useState(initialIngredients);
@@ -20,18 +19,26 @@ const PostForm = ({ initialTitle, initialIngredients, initialDirections, initial
     const handleTagsChange = (event) => setTags(event.target.value);
     const handleImageUrlChange = (event) => setImageUrl(event.target.value);
 
+    useEffect(() => {
+        setTitle(initialTitle);
+        setIngredients(initialIngredients);
+        setDirections(initialDirections);
+        setTags(initialTags);
+        setImageUrl(initialImageUrl);
+    }, [initialTitle, initialIngredients, initialDirections, initialTags, initialImageUrl]);
+
     const handleSubmit = async (event) => {
         event.preventDefault();
-        const newPost = {
-            title,
-            ingredients,
-            directions,
-            flair: tags,
-            image: imageUrl,
-            // TODO: change this to dynamic userId when auth implemented
-            userId: 'JohnDoe2'
-        };
         if (action === 'CREATE') {
+            const newPost = {
+                title,
+                ingredients,
+                directions,
+                flair: tags,
+                image: imageUrl,
+                // TODO: change this to dynamic userId when auth implemented
+                userId: 'JohnDoe2'
+            };
             const response = await fetch(`${process.env.REACT_APP_API_URL}/posts`, {
                 method: 'POST',
                 body: JSON.stringify(newPost),
@@ -39,11 +46,30 @@ const PostForm = ({ initialTitle, initialIngredients, initialDirections, initial
                     'Content-Type': 'application/json'
                 }
             });
-            const json = await response.json();
             if (!response.ok) {
-                setError("Error: " + json.error);
+                setError("Error: Post could not be created.");
             } else {
-                dispatch({ type: 'CREATE_POST', payload: json });
+                navigate("/my-recipes");
+            }
+        }
+        else if (action === 'UPDATE') {
+            const updatedPost = {
+                title,
+                ingredients,
+                directions,
+                flair: tags,
+                image: imageUrl
+            };
+            const response = await fetch(`${process.env.REACT_APP_API_URL}/posts/${params.id}`, {
+                method: 'PATCH',
+                body: JSON.stringify(updatedPost),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            if (!response.ok) {
+                setError("Error: Post could not be updated.");
+            } else {
                 navigate("/my-recipes");
             }
         }
@@ -53,50 +79,66 @@ const PostForm = ({ initialTitle, initialIngredients, initialDirections, initial
         <form onSubmit={handleSubmit}>
             <TextField
                 label="Title"
+                InputLabelProps={{
+                    shrink: true
+                }}
                 fullWidth
                 margin="normal"
-                value={title}
+                value={title || ''}
                 onChange={handleTitleChange}
                 required
             />
             <TextField
                 label="Ingredients"
+                InputLabelProps={{
+                    shrink: true,
+                }}
                 placeholder="e.g. Tomato, Ginger, Eggs, etc."
                 fullWidth
                 margin="normal"
                 multiline
-                value={ingredients}
+                value={ingredients || ''}
                 onChange={handleIngredientsChange}
                 required
             />
             <TextField
                 label="Directions to Prepare"
+                InputLabelProps={{
+                    shrink: true,
+                }}
                 placeholder="Step 1."
                 fullWidth
                 margin="normal"
                 multiline
                 rows={4}
-                value={directions}
+                value={directions || ''}
                 onChange={handleDirectionsChange}
                 required
             />
             <TextField
                 label="Tag(s)"
+                InputLabelProps={{
+                    shrink: true,
+                }}
                 placeholder="e.g. Quick Meal, Greek, Dessert, etc."
+                sx={{mb: 3}}
                 fullWidth
                 margin="normal"
                 multiline
-                value={tags}
+                value={tags || ''}
                 onChange={handleTagsChange}
                 required
             />
             <TextField
                 label="Add Image URL"
+                InputLabelProps={{
+                    shrink: true,
+                }}
                 type="url"
                 placeholder="https://www.linktoimage.com"
                 pattern="https://.*"
                 fullWidth
-                value={imageUrl}
+                value={imageUrl || ''}
                 onChange={handleImageUrlChange}
                 required
             />
@@ -107,7 +149,7 @@ const PostForm = ({ initialTitle, initialIngredients, initialDirections, initial
                 sx={{ marginTop: 3 }}
                 onSubmit={handleSubmit}
             >
-                Create ✨
+                {action === 'CREATE' ? "Create ✨" : "Save Changes"}
             </Button>
             {error &&
                 <div>

@@ -36,7 +36,7 @@ export const RecipeCard = ({ postId }) => {
   };
 
   const fetchData = async () => {
-    const response = await fetch(`https://us-central1-seng-401-on-the-house.cloudfunctions.net/api/posts/9B0Voyx2CVe2HKqunyNK`);
+    const response = await fetch(`https://us-central1-seng-401-on-the-house.cloudfunctions.net/api/posts/${postId}`);
     const json = await response.json();
     if (response.ok) {
       setData(json);
@@ -54,12 +54,10 @@ export const RecipeCard = ({ postId }) => {
       {data &&
         <CardHeader
           avatar={
-            <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-              R
-            </Avatar>
+            <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">{data.userId?.substring(0,1)}</Avatar>
           }
           title={data.title}
-          subheader="September 14, 2016"
+          subheader="{data.date._seconds}"
         />
         }
       <Link to={"/post"}>
@@ -73,9 +71,7 @@ export const RecipeCard = ({ postId }) => {
       </Link>
       <CardContent>
         <Typography variant="body2" color="text.secondary">
-          This impressive paella is a perfect party dish and a fun meal to cook
-          together with your guests. Add 1 cup of frozen peas along with the mussels,
-          if you like.
+        {data.description}
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
@@ -96,13 +92,7 @@ export const RecipeCard = ({ postId }) => {
       </CardActions>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
-          <Typography paragraph>Method: Heat oil in a (14- to 16-inch) paella pan or a large, deep skillet over
-            medium-high heat. Add chicken, shrimp and chorizo, and cook, stirring
-            occasionally until lightly browned, 6 to 8 minutes. Transfer shrimp to a
-            large plate and set aside, leaving chicken and chorizo in the pan. Add
-            pimentón, bay leaves, garlic, tomatoes, onion, salt and pepper, and cook,
-            stirring often until thickened and fragrant, about 10 minutes. Add
-            saffron broth and remaining 4 1/2 cups chicken broth; bring to a boil.</Typography>
+          <Typography paragraph>{data.directions}</Typography>
         </CardContent>
       </Collapse>
     </Card>

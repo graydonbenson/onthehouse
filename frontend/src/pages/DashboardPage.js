@@ -47,7 +47,7 @@ function DashboardPage() {
   const cards = [];
   for (let i = 0; i < data.length; i++) {
     cards.push(<Grid item xs={12} sm={6} md={5} lg={3} key={i}>
-                    <RecipeCard />
+                    <RecipeCard postId={data[i].postId}/>
                </Grid>);
   }
 

@@ -23,6 +23,7 @@ const DashboardPage = () => {
 
   const [open, setOpen] = useState(false);
   const [error, setError] = useState('');
+  const [data, setData] = useState([]);
 
   const handleDrawerOpen = () => {
     setOpen(true);

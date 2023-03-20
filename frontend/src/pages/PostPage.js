@@ -100,8 +100,8 @@ export const PostPage = () => {
             <Typography sx={{ mt: 2, ml: 3, mr: 3, textAlign: "justify" }} paragraph>
               <b>Ingredients:</b> {post.ingredients}
             </Typography>
-            <Typography sx={{ ml: 3, mr: 3, textAlign: "justify" }} paragraph>
-              <b>Directions:</b> {post.directions}
+            <Typography sx={{ ml: 3, mr: 3, textAlign: "justify", whiteSpace: "pre-wrap" }} paragraph>
+              <b>Directions:</b><br />{post.directions}
             </Typography>
           </Box>
           <Box component="main"

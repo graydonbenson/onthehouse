@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import PostForm from '../components/PostForm';
 
-function CreatePost() {
+const CreatePost = () => {
   const [open, setOpen] = useState(false);
 
   const handleDrawerOpen = () => {
@@ -37,7 +37,7 @@ function CreatePost() {
           <Card>
             <CardHeader title="Upload a New Recipe" />
             <CardContent>
-              <PostForm initialTitle='' initialDesc='' initialTags='' initialImageUrl='' action='CREATE'/>
+              <PostForm initialTitle='' initialIngredients='' initialDirections='' initialTags='' initialImageUrl='' action='CREATE' />
             </CardContent>
           </Card>
         </Container>

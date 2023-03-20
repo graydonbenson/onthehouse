@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button, TextField } from "@mui/material";
 import { usePostsContext } from '../hooks/usePostsContext';
 import { useNavigate } from 'react-router-dom';
@@ -19,6 +19,14 @@ const PostForm = ({ initialTitle, initialIngredients, initialDirections, initial
     const handleDirectionsChange = (event) => setDirections(event.target.value);
     const handleTagsChange = (event) => setTags(event.target.value);
     const handleImageUrlChange = (event) => setImageUrl(event.target.value);
+
+    useEffect(() => {
+        setTitle(initialTitle);
+        setIngredients(initialIngredients);
+        setDirections(initialDirections);
+        setTags(initialTags);
+        setImageUrl(initialImageUrl);
+    }, [initialTitle, initialIngredients, initialDirections, initialTags, initialImageUrl]);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -53,50 +61,65 @@ const PostForm = ({ initialTitle, initialIngredients, initialDirections, initial
         <form onSubmit={handleSubmit}>
             <TextField
                 label="Title"
+                InputLabelProps={{
+                    shrink: action === 'CREATE' ? false : true,
+                }}
                 fullWidth
                 margin="normal"
-                value={title}
+                value={title || ''}
                 onChange={handleTitleChange}
                 required
             />
             <TextField
                 label="Ingredients"
+                InputLabelProps={{
+                    shrink: action === 'CREATE' ? false : true,
+                }}
                 placeholder="e.g. Tomato, Ginger, Eggs, etc."
                 fullWidth
                 margin="normal"
                 multiline
-                value={ingredients}
+                value={ingredients || ''}
                 onChange={handleIngredientsChange}
                 required
             />
             <TextField
                 label="Directions to Prepare"
+                InputLabelProps={{
+                    shrink: action === 'CREATE' ? false : true,
+                }}
                 placeholder="Step 1."
                 fullWidth
                 margin="normal"
                 multiline
                 rows={4}
-                value={directions}
+                value={directions || ''}
                 onChange={handleDirectionsChange}
                 required
             />
             <TextField
                 label="Tag(s)"
+                InputLabelProps={{
+                    shrink: action === 'CREATE' ? false : true,
+                }}
                 placeholder="e.g. Quick Meal, Greek, Dessert, etc."
                 fullWidth
                 margin="normal"
                 multiline
-                value={tags}
+                value={tags || ''}
                 onChange={handleTagsChange}
                 required
             />
             <TextField
                 label="Add Image URL"
+                InputLabelProps={{
+                    shrink: action === 'CREATE' ? false : true,
+                }}
                 type="url"
                 placeholder="https://www.linktoimage.com"
                 pattern="https://.*"
                 fullWidth
-                value={imageUrl}
+                value={imageUrl || ''}
                 onChange={handleImageUrlChange}
                 required
             />
@@ -107,7 +130,7 @@ const PostForm = ({ initialTitle, initialIngredients, initialDirections, initial
                 sx={{ marginTop: 3 }}
                 onSubmit={handleSubmit}
             >
-                Create ✨
+                {action === 'CREATE' ? "Create ✨" : "Save Changes"}
             </Button>
             {error &&
                 <div>

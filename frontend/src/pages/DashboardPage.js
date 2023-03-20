@@ -3,23 +3,26 @@ import Navbar from '../components/Navbar';
 import SideDrawer from '../components/SideDrawer';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import { Grid} from '@mui/material';
+import { Grid } from '@mui/material';
 import RecipeCard from '../components/RecipeCard';
 import MainFeaturedPost from '../components/Motw';
+import { usePostsContext } from '../hooks/usePostsContext';
 
 const mainFeaturedPost = {
-    title: 'Meal of the Week',
-    description:
-      "Multiple lines of text that form the lede, informing new readers quickly and efficiently about what's most interesting in this post's contents.",
-    image: 'https://source.unsplash.com/random',
-    imageText: 'main image description',
-    linkText: 'Continue reading…',
-    
+  title: 'Meal of the Week',
+  description:
+    "Multiple lines of text that form the lede, informing new readers quickly and efficiently about what's most interesting in this post's contents.",
+  image: 'https://source.unsplash.com/random',
+  imageText: 'main image description',
+  linkText: 'Continue reading…',
+
 };
 
-function DashboardPage() {
+const DashboardPage = () => {
+  const { posts, dispatch } = usePostsContext();
 
   const [open, setOpen] = useState(false);
+  const [error, setError] = useState('');
   const [data, setData] = useState([]);
 
   const handleDrawerOpen = () => {
@@ -30,39 +33,49 @@ function DashboardPage() {
     setOpen(false);
   };
 
-  const fetchData = async () => {
-    const response = await fetch(`https://us-central1-seng-401-on-the-house.cloudfunctions.net/api/posts/`);
-    const json = await response.json();
-    if (response.ok) {
-      setData(json);
-    } else {
-      console.log("did not work")
-    }
-  }
-
   useEffect(() => {
-      fetchData();
-  }, []);
+    const fetchPosts = async () => {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/posts`);
+      const json = await response.json();
+      if (response.ok) {
+        dispatch({
+          type: 'SET_POSTS',
+          payload: json
+        })
+      } else {
+        setError("Error: " + json.error);
+      }
+    }
+
+    fetchPosts();
+  }, [dispatch]);
 
   const cards = [];
-  for (let i = 0; i < data.length; i++) {
+  for (let i = 0; i < 8; i++) {
     cards.push(<Grid item xs={12} sm={6} md={5} lg={3} key={i}>
-                    <RecipeCard postId={data[i].postId}/>
-               </Grid>);
+      <RecipeCard />
+    </Grid>);
   }
 
   return (
     <>
-    <Box sx={{ display: 'flex' }}>
-    <Navbar open={open} openDrawer={handleDrawerOpen}></Navbar>
-    <SideDrawer open={open} closeDrawer={handleDrawerClose}></SideDrawer>
-    <Box component="main" sx={{ flexGrow: 1, p: 3, marginTop: 8}}>
-    <MainFeaturedPost post={mainFeaturedPost}/>
-        <Grid container spacing={2}>
-            {cards}
-        </Grid>
-    </Box>
-    </Box>
+      <Box sx={{ display: 'flex' }}>
+        <Navbar open={open} openDrawer={handleDrawerOpen}></Navbar>
+        <SideDrawer open={open} closeDrawer={handleDrawerClose}></SideDrawer>
+        <Box component="main" sx={{ flexGrow: 1, p: 3, marginTop: 8 }}>
+          <MainFeaturedPost post={mainFeaturedPost} />
+          <Grid container spacing={2}>
+            {posts && Object.values(posts).map(post =>
+              <div key={post.id}>
+                <p>{post.image}</p>
+                <p>{post.title}</p>
+                <p>{post.ingredients}</p>
+                <p>{post.directions}</p>
+              </div>
+            )}
+          </Grid>
+        </Box>
+      </Box>
     </>
   )
 }

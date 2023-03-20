@@ -180,7 +180,7 @@ app.get('/posts', (req, res) => {
         console.log(postId);
         console.log(getuserNamebyUserId(doc.data().userId));
         posts.push({
-          postId,
+          id: postId,
           username: getuserNamebyUserId(doc.data().userId),
           ...doc.data(),
         });
@@ -199,7 +199,10 @@ app.get('/posts/user/:userId', (req, res) => {
       if (!querySnap.empty) {
         let userPosts = [];
         querySnap.forEach((doc) => {
-          userPosts.push(doc.data());
+          userPosts.push({
+            id: doc.id,
+            ...doc.data()
+        });
         });
 
         return res.json({ ...userPosts });

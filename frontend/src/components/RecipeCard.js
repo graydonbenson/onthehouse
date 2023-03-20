@@ -35,43 +35,43 @@ export const RecipeCard = ({ postId }) => {
     setExpanded(!expanded);
   };
 
-  const fetchData = async () => {
-    const response = await fetch(`https://us-central1-seng-401-on-the-house.cloudfunctions.net/api/posts/${postId}`);
-    const json = await response.json();
-    if (response.ok) {
-      setData(json);
-    } else {
-      console.log("did not work")
-    }
-  }
-
   useEffect(() => {
-      fetchData();
-  }, []);
+    const fetchData = async () => {
+      const response = await fetch(`https://us-central1-seng-401-on-the-house.cloudfunctions.net/api/posts/${postId}`);
+      const json = await response.json();
+      if (response.ok) {
+        setData(json);
+      } else {
+        console.log("did not work")
+      }
+    }
+
+    fetchData();
+  }, [postId]);
 
   return (
     <Card sx={{ maxWidth: 345 }}>
       {data &&
         <CardHeader
           avatar={
-            <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">{data.userId?.substring(0,1)}</Avatar>
+            <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">{data.userId?.substring(0, 1)}</Avatar>
           }
           title={data.title}
           subheader="{data.date._seconds}"
         />
-        }
+      }
       <Link to={"/post"}>
         {data &&
-        <CardMedia
-          component="img"
-          height="194"
-          image={data.image}
-          alt="Paella dish"
-        />}
+          <CardMedia
+            component="img"
+            height="194"
+            image={data.image}
+            alt=""
+          />}
       </Link>
       <CardContent>
         <Typography variant="body2" color="text.secondary">
-        {data.description}
+          {data.description}
         </Typography>
       </CardContent>
       <CardActions disableSpacing>

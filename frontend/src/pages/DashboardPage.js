@@ -3,7 +3,7 @@ import Navbar from '../components/Navbar';
 import SideDrawer from '../components/SideDrawer';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import { Grid, LinearProgress, Paper, Skeleton, Stack } from '@mui/material';
+import { Grid, LinearProgress, Paper, Skeleton, Stack, createTheme, ThemeProvider } from '@mui/material';
 import RecipeCard from '../components/RecipeCard';
 import MainFeaturedPost from '../components/Motw';
 import { usePostsContext } from '../hooks/usePostsContext';
@@ -20,6 +20,18 @@ const mainFeaturedPost = {
 
 const DashboardPage = () => {
   const { posts, dispatch } = usePostsContext();
+
+  const theme = createTheme({
+    palette: {
+      mode: 'light',
+      primary: {
+        main: '#ba68c8',
+      },
+      secondary: {
+        main: '#f50057',
+      },
+    },
+  });
 
   const [open, setOpen] = useState(false);
   const [isLoading, setLoading] = useState(false);
@@ -60,6 +72,7 @@ const DashboardPage = () => {
   } else {
     return (
       <>
+        <ThemeProvider theme={theme}>
         <Box sx={{ display: 'flex' }}>
           <Navbar open={open} openDrawer={handleDrawerOpen}></Navbar>
           <SideDrawer open={open} closeDrawer={handleDrawerClose}></SideDrawer>
@@ -92,6 +105,7 @@ const DashboardPage = () => {
             </Grid>
           </Box>
         </Box>
+        </ThemeProvider>
       </>
     )
   }

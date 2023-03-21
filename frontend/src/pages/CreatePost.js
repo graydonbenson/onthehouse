@@ -6,12 +6,26 @@ import {
   CardContent,
   CardHeader,
   Container,
-  Box
+  Box,
+  createTheme,
+  ThemeProvider
 } from "@mui/material";
 import PostForm from '../components/PostForm';
 
 const CreatePost = () => {
   const [open, setOpen] = useState(false);
+
+  const theme = createTheme({
+    palette: {
+      mode: 'light',
+      primary: {
+        main: '#ba68c8',
+      },
+      secondary: {
+        main: '#f50057',
+      },
+    },
+  });
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -22,6 +36,7 @@ const CreatePost = () => {
   };
 
   return (
+    <ThemeProvider theme={theme}>
     <Box sx={{ display: 'flex', height: '100vh' }}>
       <Navbar open={open} openDrawer={handleDrawerOpen}></Navbar>
       <SideDrawer open={open} closeDrawer={handleDrawerClose}></SideDrawer>
@@ -43,6 +58,7 @@ const CreatePost = () => {
         </Container>
       </Box>
     </Box>
+    </ThemeProvider>
   );
 };
 

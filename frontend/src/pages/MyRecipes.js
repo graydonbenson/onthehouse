@@ -2,13 +2,25 @@ import { useEffect, useState } from 'react';
 import Navbar from '../components/Navbar';
 import SideDrawer from '../components/SideDrawer';
 import Box from '@mui/material/Box';
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, Skeleton, Stack } from '@mui/material';
+import { Button, createTheme, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, Skeleton, Stack, ThemeProvider } from '@mui/material';
 import RecipeCard from '../components/RecipeCard';
 import { usePostsContext } from '../hooks/usePostsContext';
 import { Link } from "react-router-dom";
 
 const MyRecipes = () => {
     const { posts, dispatch } = usePostsContext();
+
+    const theme = createTheme({
+        palette: {
+          mode: 'light',
+          primary: {
+            main: '#ba68c8',
+          },
+          secondary: {
+            main: '#f50057',
+          },
+        },
+      });
 
     const [open, setOpen] = useState(false);
     const [alertOpen, setAlertOpen] = useState(false);
@@ -76,6 +88,7 @@ const MyRecipes = () => {
 
     return (
         <>
+        <ThemeProvider theme={theme}>
             <Box sx={{ display: 'flex', height: '100vh' }}>
                 <Navbar open={open} openDrawer={handleDrawerOpen}></Navbar>
                 <SideDrawer open={open} closeDrawer={handleDrawerClose}></SideDrawer>
@@ -170,6 +183,7 @@ const MyRecipes = () => {
                     </>
                 </Box>
             </Box>
+            </ThemeProvider>
         </>
     );
 }

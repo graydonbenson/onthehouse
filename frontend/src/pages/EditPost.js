@@ -6,13 +6,27 @@ import {
     CardContent,
     CardHeader,
     Container,
-    Box
+    Box,
+    createTheme,
+    ThemeProvider
 } from "@mui/material";
 import PostForm from '../components/PostForm';
 import { useParams } from 'react-router-dom';
 
 const EditPost = () => {
     const params = useParams();
+
+    const theme = createTheme({
+        palette: {
+          mode: 'light',
+          primary: {
+            main: '#ba68c8',
+          },
+          secondary: {
+            main: '#f50057',
+          },
+        },
+      });
 
     const [open, setOpen] = useState(false);
     const [post, setPost] = useState({});
@@ -40,6 +54,7 @@ const EditPost = () => {
     }, [params.id]);
 
     return (
+        <ThemeProvider theme={theme}>
         <Box sx={{ display: 'flex', height: '100vh' }}>
             <Navbar open={open} openDrawer={handleDrawerOpen}></Navbar>
             <SideDrawer open={open} closeDrawer={handleDrawerClose}></SideDrawer>
@@ -70,6 +85,7 @@ const EditPost = () => {
                 </Container>
             </Box>
         </Box>
+        </ThemeProvider>
     );
 };
 

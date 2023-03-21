@@ -88,7 +88,7 @@ function Navbar({ open, openDrawer }) {
 
         <Typography
           component="h1"
-          variant="h6"
+          variant="h5"
           color="inherit"
           noWrap
           textAlign={'left'}
@@ -106,8 +106,8 @@ function Navbar({ open, openDrawer }) {
             </Tooltip>
           </>) :
           (<>
-            <Button component={Link} to="/login" variant="contained" color="secondary" sx={{ fontStyle: "oblique", mr: 1 }}>Login</Button>
-            <Button component={Link} to="/signup" variant="contained" color="success" sx={{ fontStyle: "oblique" }}>Sign Up</Button>
+            <Button component={Link} to="/login" variant="contained" color="secondary" sx={{ fontStyle: "oblique", fontWeight: "bold", mr: 1 }}>Login</Button>
+            <Button component={Link} to="/signup" variant="contained" color="info" sx={{ fontStyle: "oblique", fontWeight: "bold" }}>Sign Up</Button>
           </>)}
       </Toolbar>
     </AppBar>

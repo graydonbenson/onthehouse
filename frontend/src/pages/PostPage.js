@@ -8,7 +8,7 @@ import IconButton from '@mui/material/IconButton';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 import Comments from '../components/Comments';
-import { Grid } from '@mui/material';
+import { Grid, createTheme, ThemeProvider } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import SendIcon from '@mui/icons-material/Send';
 import { useParams } from 'react-router-dom';
@@ -17,6 +17,18 @@ const commentAPI = 'https://us-central1-seng-401-on-the-house.cloudfunctions.net
 
 export const PostPage = () => {
   const params = useParams();
+
+  const theme = createTheme({
+    palette: {
+      mode: 'light',
+      primary: {
+        main: '#ba68c8',
+      },
+      secondary: {
+        main: '#f50057',
+      },
+    },
+  });
 
   const [post, setPost] = useState({});
   const [open, setOpen] = useState(false);
@@ -74,6 +86,7 @@ export const PostPage = () => {
 
   return (
     <>
+      <ThemeProvider theme={theme}>
       {post && <>
         <Box sx={{ display: 'flex' }}>
           <Navbar open={open} openDrawer={handleDrawerOpen}></Navbar>
@@ -134,6 +147,7 @@ export const PostPage = () => {
           </Box>
         </Box>
       </>}
+      </ThemeProvider>
     </>
   )
 }

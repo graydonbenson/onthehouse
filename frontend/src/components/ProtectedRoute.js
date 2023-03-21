@@ -2,7 +2,7 @@ import axios from 'axios';
 import React from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
 
-async function ProtectedRoute() {
+function ProtectedRoute() {
     
     const [isAuthenticated, setAuthentication] = React.useState(false);
 

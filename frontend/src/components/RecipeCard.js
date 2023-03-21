@@ -54,7 +54,7 @@ export const RecipeCard = ({ postId }) => {
       {data && <>
         <CardHeader
           avatar={
-            <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">{data.userId?.substring(0, 1)}</Avatar>
+            <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">{data.userId?.charAt(0)}</Avatar>
           }
           title={data.title}
           subheader={new Date(data.date?._seconds * 1000).toLocaleDateString("en-US")}

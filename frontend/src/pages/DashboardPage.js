@@ -3,7 +3,7 @@ import Navbar from '../components/Navbar';
 import SideDrawer from '../components/SideDrawer';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import { Grid, LinearProgress, Paper } from '@mui/material';
+import { Grid, LinearProgress, Paper, Skeleton } from '@mui/material';
 import RecipeCard from '../components/RecipeCard';
 import MainFeaturedPost from '../components/Motw';
 import axios from 'axios';
@@ -37,11 +37,12 @@ const DashboardPage = () => {
 
     authStatus();
   }, []);
-  
+
 
   const [open, setOpen] = useState(false);
   const [isAuthenticated, setAuthentication] = useState(false);
   const [isLoading, setLoading] = useState(false);
+  const [cardIsLoading, setCardIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [data, setData] = useState([]);
 
@@ -54,6 +55,7 @@ const DashboardPage = () => {
   };
 
   useEffect(() => {
+    setCardIsLoading(true);
     const fetchPosts = async () => {
       const response = await fetch(`${process.env.REACT_APP_API_URL}/posts`);
       const json = await response.json();
@@ -62,8 +64,10 @@ const DashboardPage = () => {
           type: 'SET_POSTS',
           payload: json
         })
+        setCardIsLoading(false);
       } else {
         setError("Error: " + json.error);
+        setCardIsLoading(false);
       }
     }
 
@@ -71,27 +75,36 @@ const DashboardPage = () => {
   }, [dispatch]);
 
   if (isLoading) {
-    return (<LinearProgress color='secondary'/>)
+    return (<LinearProgress color='secondary' />)
   } else {
     return (
-    <>
-      <Box sx={{ display: 'flex' }}>
-        <Navbar open={open} openDrawer={handleDrawerOpen} authentication={isAuthenticated}></Navbar>
-        <SideDrawer open={open} closeDrawer={handleDrawerClose}></SideDrawer>
-        <Box component="main" sx={{ flexGrow: 1, p: 3, marginTop: 8 }}>
-          <MainFeaturedPost post={mainFeaturedPost} />
-          <Grid container spacing={2}>
-            {posts && Object.values(posts).map(post =>
-              <Grid item xs={12} sm={6} md={5} lg={3} key={post.id}>
-                <RecipeCard postId={post.id} />
-              </Grid>
-            )}
-          </Grid>
+      <>
+        <Box sx={{ display: 'flex' }}>
+          <Navbar open={open} openDrawer={handleDrawerOpen} authentication={isAuthenticated}></Navbar>
+          <SideDrawer open={open} closeDrawer={handleDrawerClose}></SideDrawer>
+          <Box component="main" sx={{ flexGrow: 1, p: 3, marginTop: 8 }}>
+            <MainFeaturedPost post={mainFeaturedPost} />
+            <Grid container spacing={2}>
+              {cardIsLoading ?
+                <>
+                  <Skeleton variant="text" sx={{ fontSize: '1rem' }} />
+                  <Skeleton variant="circular" width={40} height={40} />
+                  <Skeleton variant="rectangular" width={210} height={60} />
+                  <Skeleton variant="rounded" width={210} height={60} />
+                </>
+                :
+                posts && Object.values(posts).map(post =>
+                  <Grid item xs={12} sm={6} md={5} lg={3} key={post.id}>
+                    <RecipeCard postId={post.id} />
+                  </Grid>
+                )
+              }
+            </Grid>
+          </Box>
         </Box>
-      </Box>
-    </>
-  )
-}
+      </>
+    )
+  }
 }
 
 export default DashboardPage;

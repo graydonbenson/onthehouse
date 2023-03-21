@@ -6,10 +6,16 @@ import TextField from '@mui/material/TextField';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
+import Stack from '@mui/material/Stack';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import axios from 'axios';
+import { Navigate } from "react-router-dom";
+import { LinearProgress } from '@mui/material';
 
 function Copyright(props) {
   return (
@@ -24,16 +30,70 @@ function Copyright(props) {
   );
 }
 
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
+
 const theme = createTheme();
 
 export default function SignUpPage() {
-  const handleSubmit = (event) => {
+  
+  //const navigate = useNavigate;
+  //First Name
+  const [signUpName, setSignUpName] = React.useState('');
+  //Email Address
+  const [signUpEmail, setSignUpEmail] = React.useState('');
+  //Username
+  const [signUpUser, setSignUpUser] = React.useState('');
+  //Password
+  const [signUpPassword, setSignUpPassword] = React.useState('');
+  // Error Message
+  const [errorMessage, setErrorMessage] = React.useState('');
+  // Loading Linear
+  const [isLoading, setLoading] = React.useState(false);
+  //Redirect variable
+  const [goToDashboard, setGoToDashboard] = React.useState(false);
+  //Open Snackbar
+  const [open, setOpen] = React.useState(false);
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpen(false);
+  };
+
+  //redirect to dashboard
+  if (goToDashboard){
+    return <Navigate to="/dashboard" />;
+  }
+
+  const handleSubmit = async (event) => {  
+    setLoading(true);
+    let signUpInformation = {
+      fullName: signUpName,
+      email: signUpEmail,
+      username: signUpUser,
+      password: signUpPassword,
+    };
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+    if (signUpName === '' || signUpEmail === '' || signUpUser === '' || signUpPassword === '') {
+      setErrorMessage("Invalid Input!");
+      setLoading(false);
+      setOpen(true);
+      return;
+    }
+    const response = await axios.post("/signup", signUpInformation);
+    if (response.data.code) {
+      setErrorMessage(response.data.code);
+      setLoading(false);
+      setOpen(true);
+    } else {
+      localStorage.setItem("userData", JSON.stringify(response.data));
+      setLoading(false);
+      setGoToDashboard(true);
+    }
   };
 
   return (
@@ -72,6 +132,9 @@ export default function SignUpPage() {
                   id="fullName"
                   label="Full Name"
                   autoFocus
+                  onChange={(event) => {
+                    setSignUpName(event.target.value);
+                  }}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -82,6 +145,9 @@ export default function SignUpPage() {
                   label="Email Address"
                   name="email"
                   autoComplete="email"
+                  onChange={(event) => {
+                    setSignUpEmail(event.target.value);
+                  }}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -92,6 +158,9 @@ export default function SignUpPage() {
                   label="Username"
                   name="username"
                   autoComplete="username"
+                  onChange={(event) => {
+                    setSignUpUser(event.target.value);
+                  }}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -103,14 +172,24 @@ export default function SignUpPage() {
                   type="password"
                   id="password"
                   autoComplete="new-password"
+                  onChange={(event) => {
+                    setSignUpPassword(event.target.value);
+                  }}
                 />
               </Grid>
               <Grid item xs={12}>
-              <Typography component="body1" variant="body2">
-              By signing up, you agree to our Terms, Privacy Policy and Cookies Policy
-              </Typography>
               </Grid>
             </Grid>
+            {isLoading ? (<><LinearProgress color='secondary'/>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              disabled="true"
+              sx={{ mt: 3, mb: 2 }}
+            >
+              Sign Up
+            </Button></>) : (<>
             <Button
               type="submit"
               fullWidth
@@ -118,7 +197,7 @@ export default function SignUpPage() {
               sx={{ mt: 3, mb: 2 }}
             >
               Sign Up
-            </Button>
+            </Button></>)}
             <Grid container justifyContent="flex-end">
               <Grid item>
                 <Link href="login" variant="body2">
@@ -130,6 +209,13 @@ export default function SignUpPage() {
         </Box>
         <Copyright sx={{ mt: 5 }} />
       </Container>
+      <Stack spacing={2} sx={{ width: '100%' }}>
+          <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+            <Alert onClose={handleClose} severity="error" sx={{ width: '100%' }}>
+              {errorMessage}
+            </Alert>
+          </Snackbar>
+        </Stack>
     </ThemeProvider>
   );
 }

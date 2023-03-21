@@ -44,25 +44,30 @@ export const PostPage = () => {
   }, [params.id]);
 
 
-  const postComment = (text, pID) => {
+  const postComment = (text, pID, uID) => {
     const data = { text: text }; // data to be sent in the request body
     console.log(commentAPI + pID);
     fetch(commentAPI + pID, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
-      message: JSON.stringify(data)
+      message: JSON.stringify(data),
+      //   Use below to make a comment, pass in message and userId into function, below values are placeholder
+      body: JSON.stringify({ message: text, userId: uID}),
     })
-      .then(response => response.json())
-      .then(data => {
+      .then((response) => response.json())
+      .then((data) => {
         // Handle the response from the server here
         console.log(data);
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
-  }
+  };
+  
+  postComment("This is a test", "9B0Voyx2CVe2HKqunyNK", "hi");
+  console.log("Done");
 
   postComment("This is a test", "9B0Voyx2CVe2HKqunyNK");
   console.log("Done");

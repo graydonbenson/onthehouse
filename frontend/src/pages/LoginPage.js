@@ -1,3 +1,4 @@
+import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -7,10 +8,17 @@ import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
+import Stack from '@mui/material/Stack';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import axios from 'axios';
+import { Navigate } from "react-router-dom";
+import { LinearProgress } from '@mui/material';
+//import CustomizedSnackbars from '../components/Snackbar';
 
 function Copyright(props) {
   return (
@@ -25,17 +33,74 @@ function Copyright(props) {
   );
 }
 
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
+
 const theme = createTheme();
 
 export default function SignIn() {
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+
+  //Email Address
+  const [signInEmail, setSignInEmail] = React.useState('');
+  //Password
+  const [signInPassword, setSignInPassword] = React.useState('');
+  // Error Message
+  const [errorMessage, setErrorMessage] = React.useState('');
+  // Loading Linear
+  const [isLoading, setLoading] = React.useState(false);
+  //Open Snackbar
+  const [open, setOpen] = React.useState(false);
+  //Redirect variable
+  const [goToDashboard, setGoToDashboard] = React.useState(false);
+
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpen(false);
   };
+
+  if (goToDashboard){
+      return <Navigate to="/dashboard" />;
+  };
+
+
+  const handleSubmit = async (event) => {
+    setLoading(true);
+    let signInInformation = {
+      email: signInEmail,
+      password: signInPassword,
+    };
+    event.preventDefault();
+    if (signInEmail === '' || signInPassword === '') {
+      setErrorMessage("Invalid Input!");
+      setLoading(false);
+      setOpen(true);
+      return;
+    }
+    const response = await axios.post("/login", signInInformation);
+    if (response.data.code) {
+      setErrorMessage(response.data.code);
+      setLoading(false);
+    } else {
+      localStorage.setItem("userData", JSON.stringify(response.data));
+      setLoading(false);
+      setGoToDashboard(true);
+    }
+    
+  };
+  
+  // const handleSubmit = (event) => {
+  //   event.preventDefault();
+  //   const data = new FormData(event.currentTarget);
+  //   console.log({
+  //     email: data.get('email'),
+  //     password: data.get('password'),
+  //   });
+  // };
 
   return (
     <ThemeProvider theme={theme}>
@@ -72,6 +137,9 @@ export default function SignIn() {
               name="email"
               autoComplete="email"
               autoFocus
+              onChange={(event) => {
+                setSignInEmail(event.target.value);
+              }}
             />
             <TextField
               margin="normal"
@@ -82,19 +150,32 @@ export default function SignIn() {
               type="password"
               id="password"
               autoComplete="current-password"
+              onChange={(event) => {
+                setSignInPassword(event.target.value);
+              }}
             />
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"
             />
+            {isLoading ? (<><LinearProgress color='secondary'/>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              disabled="true"
+              sx={{ mt: 3, mb: 2 }}
+            >
+              Sign Up
+            </Button></>) : (<>
             <Button
               type="submit"
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Sign In
-            </Button>
+              Sign Up
+            </Button></>)}
             <Grid container>
               <Grid item xs>
                 <Link href="forgotpassword" variant="body2">
@@ -111,6 +192,13 @@ export default function SignIn() {
         </Box>
         <Copyright sx={{ mt: 8, mb: 4 }} />
       </Container>
+      <Stack spacing={2} sx={{ width: '100%' }}>
+      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="error" sx={{ width: '100%' }}>
+          {errorMessage}
+        </Alert>
+      </Snackbar>
+    </Stack>
     </ThemeProvider>
   );
 }

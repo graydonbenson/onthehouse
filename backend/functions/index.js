@@ -1,44 +1,45 @@
-const functions = require('firebase-functions');
-const admin = require('firebase-admin');
-const cors = require('cors');
-const { initializeApp } = require('firebase/app');
+const functions = require("firebase-functions");
+const admin = require("firebase-admin");
+const cors = require("cors");
+const { initializeApp } = require("firebase/app");
 const {
   getAuth,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   sendPasswordResetEmail,
   signOut,
-} = require('firebase/auth');
+} = require("firebase/auth");
 
-const { FieldValue } = require('firebase-admin/firestore');
+const { FieldValue } = require("firebase-admin/firestore");
 
 admin.initializeApp();
 const db = admin.firestore();
 
-const express = require('express');
+const express = require("express");
 const app = express();
 app.use(cors());
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyAZToVDJJDQle7Z6Q-fevMs9CF-xWZfbFw',
-  authDomain: 'seng-401-on-the-house.firebaseapp.com',
-  projectId: 'seng-401-on-the-house',
-  storageBucket: 'seng-401-on-the-house.appspot.com',
-  messagingSenderId: '439573630964',
-  appId: '1:439573630964:web:98ca7406811fc583fef3a1',
-  measurementId: 'G-EFH2Y2NN1X',
+  apiKey: "AIzaSyAZToVDJJDQle7Z6Q-fevMs9CF-xWZfbFw",
+  authDomain: "seng-401-on-the-house.firebaseapp.com",
+  projectId: "seng-401-on-the-house",
+  storageBucket: "seng-401-on-the-house.appspot.com",
+  messagingSenderId: "439573630964",
+  appId: "1:439573630964:web:98ca7406811fc583fef3a1",
+  measurementId: "G-EFH2Y2NN1X",
 };
 
 initializeApp(firebaseConfig);
+const auth = getAuth();
 
 // Create and deploy your first functions
 // https://firebase.google.com/docs/functions/get-started
 
 // ! Users Endpoints
 // GET /users - get all users (from firestore)
-app.get('/users', (req, res) => {
+app.get("/users", (req, res) => {
   let users = [];
-  db.collection('Users')
+  db.collection("Users")
     .get()
     .then((querySnap) => {
       querySnap.forEach((doc) => {
@@ -51,7 +52,7 @@ app.get('/users', (req, res) => {
 
 // for frontend if /signup api request is successful, redirect to login page
 // POST /signup - add user (to firebase auth and firestore)
-app.post('/signup', async (req, res) => {
+app.post("/signup", async (req, res) => {
   const registerUser = {
     fullName: req.body.fullName,
     email: req.body.email,
@@ -59,95 +60,91 @@ app.post('/signup', async (req, res) => {
     password: req.body.password,
   };
 
+  const usernameRef = await db.collection("Users").doc(registerUser.username);
+  const doc = await usernameRef.get();
+
+  if (doc.exists) {
+    res.send({ code: "Username already taken!" });
+    return;
+  }
+
   try {
-    const auth = await getAuth();
     const userCredentials = await createUserWithEmailAndPassword(
       auth,
       registerUser.email,
       registerUser.password
     );
 
-    // Check if username exists
-    const usernameRef = await db.collection('Users').doc(registerUser.username);
+    await db.collection("Users").doc(registerUser.username).set(
+      {
+        fullName: registerUser.fullName,
+        email: registerUser.email,
+        username: registerUser.username,
+      },
+      { merge: false }
+    );
+    const userEmailRef = await db.collection("Users");
+    //   .doc(registerUser.username)
+    // .doc(userCredentials.user.uid)
+    const snapshot = await userEmailRef
+      .where("email", "==", registerUser.email)
+      .get();
 
-    const doc = await usernameRef.get();
-    if (!doc.exists) {
-      console.log('No such document!');
-
-      await db
-        .collection('Users')
-        .doc(registerUser.username)
-        //   .doc(userCredentials.user.uid)
-        .set(
-          {
-            fullName: registerUser.fullName,
-            email: registerUser.email,
-            username: registerUser.username,
-          },
-          { merge: false }
-        )
-        .then(() => {
-          console.log('User document successfully created!');
-          res.send({ message: 'Created User Successfully' });
-        })
-        .catch((error) => {
-          console.error(error);
-          res.send(error);
-        });
-    } else {
-      console.log('Document data:', doc.data());
-      res.send({ message: 'Username already taken.' });
+    if (snapshot.empty) {
+      res.status(404);
+      console.log("No matching documents.");
+      res.send({ message: "No matching documents!" });
     }
+
+    snapshot.forEach((doc) => {
+      res.send({ ...doc.data() });
+    });
   } catch (error) {
-    console.error(error);
-    res.send(error); // for frontend - if error sent/check status code is not 200 then alert(error.message)
+    res.send(error);
   }
 });
 
 // for frontend, if successful login save returned user object (or just email) in session/browser Storage
 // GET /login - get user (from firebase auth) given user's email and password parameters
-app.get('/login', async (req, res) => {
+app.post("/login", async (req, res) => {
   const loginUser = {
     email: req.body.email,
     password: req.body.password,
   };
 
   try {
-    const auth = getAuth();
     const userCredentials = await signInWithEmailAndPassword(
       auth,
       loginUser.email,
       loginUser.password
     );
+
+    //const userCredentialsToken = await getIdToken(userCredentials.user, true);
     // Get usercredentials from firestore
-    const userEmailRef = await db.collection('Users');
+    const userEmailRef = await db.collection("Users");
     //   .doc(registerUser.username)
     // .doc(userCredentials.user.uid)
     const snapshot = await userEmailRef
-      .where('email', '==', loginUser.email)
+      .where("email", "==", loginUser.email)
       .get();
 
     if (snapshot.empty) {
-      console.log('No matching documents.');
-      res.send({ message: 'No matching documents!' });
+      res.status(404);
+      console.log("No matching documents.");
+      res.send({ message: "No matching documents!" });
     }
 
     snapshot.forEach((doc) => {
-      console.log(doc.id, '=>', doc.data());
-      res.send({ ...doc.data(), ...userCredentials });
+      res.send({ ...doc.data() });
     });
-
-    // res.send(userCredentials);
   } catch (error) {
-    console.error(error);
     res.send(error); // for frontend - if error sent/check status code is not 200 then alert(error.message)
   }
 });
 
 // POST /resetPassword - send user a password reset link to their email address
-app.post('/resetPassword', async (req, res) => {
+app.post("/resetPassword", async (req, res) => {
   try {
-    const auth = getAuth();
     await sendPasswordResetEmail(auth, req.body.email);
     res.send({ message: `Password reset link sent to ${req.body.email}!` });
   } catch (error) {
@@ -156,12 +153,24 @@ app.post('/resetPassword', async (req, res) => {
   }
 });
 
-// POST /logout - signout user
-app.post('/logout', async (req, res) => {
+// Verify JWT Authentication token
+app.get("/verifyAuth", async (req, res) => {
   try {
-    const auth = getAuth();
+    if (auth.currentUser) {
+      res.send({ successMessage: "User is authenticated!" });
+    } else {
+      res.send({ errorMessage: "User is not authenticated!" });
+    }
+  } catch (error) {
+    res.send(error);
+  }
+});
+
+// POST /logout - signout user
+app.post("/logout", async (req, res) => {
+  try {
     signOut(auth);
-    res.send({ message: 'Successfully logged out user' });
+    res.status(200).send({ message: "Successfully logged out user" });
   } catch (error) {
     console.error(error);
     res.send(error); // for frontend - if error sent/check status code is not 200 then alert(error.message)
@@ -170,9 +179,9 @@ app.post('/logout', async (req, res) => {
 
 // !Posts
 // GET /posts - get all posts
-app.get('/posts', (req, res) => {
+app.get("/posts", (req, res) => {
   let posts = [];
-  db.collection('Posts')
+  db.collection("Posts")
     .get()
     .then((querySnap) => {
       querySnap.forEach((doc) => {
@@ -181,7 +190,6 @@ app.get('/posts', (req, res) => {
         console.log(getuserNamebyUserId(doc.data().userId));
         posts.push({
           id: postId,
-          username: getuserNamebyUserId(doc.data().userId),
           ...doc.data(),
         });
       });
@@ -218,16 +226,16 @@ app.get('/posts/user/:userId', (req, res) => {
 });
 
 // GET /posts/:id - get post by post id
-app.get('/posts/:id', (req, res) => {
-  db.collection('Posts')
+app.get("/posts/:id", (req, res) => {
+  db.collection("Posts")
     .doc(req.params.id)
     .get()
     .then((doc) => {
       if (doc.exists) {
         let comments = [];
-        db.collection('Posts')
+        db.collection("Posts")
           .doc(doc.id)
-          .collection('Comments')
+          .collection("Comments")
           .get()
           .then((querySnap) => {
             querySnap.forEach((doc) => {
@@ -242,8 +250,8 @@ app.get('/posts/:id', (req, res) => {
             res.send(error);
           });
       } else {
-        console.log('No such document!');
-        res.send({ message: 'No such document!' });
+        console.log("No such document!");
+        res.send({ message: "No such document!" });
       }
     })
     .catch((error) => {
@@ -269,7 +277,7 @@ app.patch('/posts/:id', (req, res) => {
 });
 
 // POST /posts - create a new post
-app.post('/posts', (req, res) => {
+app.post("/posts", (req, res) => {
   const newPost = {
     title: req.body.title,
     ingredients: req.body.ingredients,
@@ -325,7 +333,7 @@ app.get('/upvotes', async (req, res) => {
 });
 
 // POST /upvotes - upvote a post
-app.post('/upvotes', (req, res) => {
+app.post("/upvotes", (req, res) => {
   const newUpvote = {
     postId: req.body.postId,
     userId: req.body.userId,
@@ -343,22 +351,22 @@ else:
   create a new record
 */
 
-  db.collection('Upvotes')
+  db.collection("Upvotes")
     .doc(docId)
     .get()
     .then((doc) => {
       if (doc.exists) {
         if (doc.data().isUpvote === newUpvote.isUpvote) {
-          const message = 'Post has already been upvoted/downvoted by user.';
+          const message = "Post has already been upvoted/downvoted by user.";
           console.log(message);
           res.send({ message: message });
         } else {
           // Update isUpvote in found record
-          db.collection('Upvotes')
+          db.collection("Upvotes")
             .doc(docId)
             .update({ isUpvote: newUpvote.isUpvote })
             .then(() => {
-              console.log('IsUpvote attribute updated!');
+              console.log("IsUpvote attribute updated!");
             })
             .catch((error) => {
               console.error(error);
@@ -379,7 +387,7 @@ else:
       */
 
           // Update upvoteCount in posts
-          db.collection('Posts')
+          db.collection("Posts")
             .doc(newUpvote.postId)
             .update({
               upvoteCount: newUpvote.isUpvote
@@ -387,8 +395,8 @@ else:
                 : FieldValue.increment(-2),
             })
             .then(() => {
-              console.log('upvoteCount attribute updated!');
-              res.send({ message: 'Upvoted/Downvoted Post Successfully' });
+              console.log("upvoteCount attribute updated!");
+              res.send({ message: "Upvoted/Downvoted Post Successfully" });
             })
             .catch((error) => {
               console.error(error);
@@ -397,11 +405,11 @@ else:
         }
       } else {
         // Create a new record
-        db.collection('Upvotes')
+        db.collection("Upvotes")
           .doc(docId)
           .set(newUpvote)
           .then(() => {
-            console.log('Upvote document successfully created!');
+            console.log("Upvote document successfully created!");
           })
           .catch((error) => {
             console.error(error);
@@ -409,7 +417,7 @@ else:
           });
 
         // Update upvoteCount in posts
-        db.collection('Posts')
+        db.collection("Posts")
           .doc(newUpvote.postId)
           .update({
             upvoteCount: newUpvote.isUpvote
@@ -417,8 +425,8 @@ else:
               : FieldValue.increment(-1),
           })
           .then(() => {
-            console.log('upvoteCount attribute updated!');
-            res.send({ message: 'Upvoted/Downvoted Post Successfully' });
+            console.log("upvoteCount attribute updated!");
+            res.send({ message: "Upvoted/Downvoted Post Successfully" });
           })
           .catch((error) => {
             console.error(error);
@@ -449,21 +457,21 @@ app.delete('/posts/:id', (req, res) => {
 
 // Comments
 // POST /comments/:postId - add a comment to a specific post
-app.post('/comments/:postId', async (req, res) => {
+app.post("/comments/:postId", async (req, res) => {
   const newComment = {
     message: req.body.message,
     userId: req.body.userId,
   };
 
   await db
-    .collection('Posts')
+    .collection("Posts")
     .doc(req.params.postId)
-    .collection('Comments')
+    .collection("Comments")
     .doc()
     .set(newComment)
     .then(() => {
-      console.log('Comment document successfully created!');
-      res.send({ message: 'Created Comment Successfully' });
+      console.log("Comment document successfully created!");
+      res.send({ message: "Created Comment Successfully" });
     })
     .catch((error) => {
       console.error(error);
@@ -474,12 +482,12 @@ app.post('/comments/:postId', async (req, res) => {
 // !Helper Function
 async function getuserNamebyUserId(userId) {
   await db
-    .collection('Users')
+    .collection("Users")
     .doc(userId)
     .get()
     .then((doc) => {
       const username = doc.data().username;
-      console.log('Document data:', username);
+      console.log("Document data:", username);
       return { username };
     })
     .catch((error) => {

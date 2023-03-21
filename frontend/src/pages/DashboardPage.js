@@ -6,7 +6,6 @@ import Typography from '@mui/material/Typography';
 import { Grid, LinearProgress, Paper, Skeleton } from '@mui/material';
 import RecipeCard from '../components/RecipeCard';
 import MainFeaturedPost from '../components/Motw';
-import axios from 'axios';
 import { usePostsContext } from '../hooks/usePostsContext';
 
 const mainFeaturedPost = {
@@ -22,25 +21,7 @@ const mainFeaturedPost = {
 const DashboardPage = () => {
   const { posts, dispatch } = usePostsContext();
 
-  useEffect(() => {
-    setLoading(true);
-    async function authStatus() {
-      const response = await axios.get("/verifyAuth");
-      if (response.data.successMessage) {
-        setAuthentication(true);
-        setLoading(false);
-      } else {
-        setAuthentication(false);
-        setLoading(false);
-      }
-    }
-
-    authStatus();
-  }, []);
-
-
   const [open, setOpen] = useState(false);
-  const [isAuthenticated, setAuthentication] = useState(false);
   const [isLoading, setLoading] = useState(false);
   const [cardIsLoading, setCardIsLoading] = useState(false);
   const [error, setError] = useState('');
@@ -80,7 +61,7 @@ const DashboardPage = () => {
     return (
       <>
         <Box sx={{ display: 'flex' }}>
-          <Navbar open={open} openDrawer={handleDrawerOpen} authentication={isAuthenticated}></Navbar>
+          <Navbar open={open} openDrawer={handleDrawerOpen}></Navbar>
           <SideDrawer open={open} closeDrawer={handleDrawerClose}></SideDrawer>
           <Box component="main" sx={{ flexGrow: 1, p: 3, marginTop: 8 }}>
             <MainFeaturedPost post={mainFeaturedPost} />

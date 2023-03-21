@@ -90,7 +90,12 @@ export const RecipeCard = ({ postId, userId, title, date, image, ingredients, di
         </CardActions>
         <Collapse in={expanded} timeout="auto" unmountOnExit>
           <CardContent>
-            <Typography paragraph>{directions}</Typography>
+            <Typography 
+              style={{
+                textAlign: 'left',
+                whiteSpace: 'pre-wrap'
+              }}
+            >{directions}</Typography>
           </CardContent>
         </Collapse>
       </>}

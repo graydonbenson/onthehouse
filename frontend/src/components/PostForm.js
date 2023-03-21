@@ -30,6 +30,7 @@ const PostForm = ({ initialTitle, initialIngredients, initialDirections, initial
     const handleSubmit = async (event) => {
         event.preventDefault();
         if (action === 'CREATE') {
+            const userData = JSON.parse(localStorage.getItem("userData"));
             const newPost = {
                 title,
                 ingredients,
@@ -37,7 +38,7 @@ const PostForm = ({ initialTitle, initialIngredients, initialDirections, initial
                 flair: tags,
                 image: imageUrl,
                 // TODO: change this to dynamic userId when auth implemented
-                userId: 'JohnDoe2'
+                userId: userData.username
             };
             const response = await fetch(`${process.env.REACT_APP_API_URL}/posts`, {
                 method: 'POST',

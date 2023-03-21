@@ -1,5 +1,5 @@
 import React from 'react';
-import { styled, useTheme } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 import MuiAppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
@@ -64,16 +64,18 @@ function Navbar({open, openDrawer, authentication}) {
             >
               <MenuIcon />
             </IconButton>
-            <Typography
-              component="h1"
-              variant="h6"
-              color="inherit"
-              noWrap
-              textAlign={'left'}
-              sx={{ flexGrow: 1 }}
-            >
-              On The House 🍜
-            </Typography>
+            <Link to={"/dashboard"}>
+              <Typography
+                component="h1"
+                variant="h6"
+                color="inherit"
+                noWrap
+                textAlign={'left'}
+                sx={{ flexGrow: 1 }}
+              >
+                On The House 🍜
+              </Typography>
+            </Link>
             {authentication ? 
             (<>
               <Button onClick={handleLogout} variant="contained" color="error" sx={{fontStyle: "oblique", mr: 1}}>Logout</Button>

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Navbar from '../components/Navbar';
 import SideDrawer from '../components/SideDrawer';
 import Box from '@mui/material/Box';
@@ -7,18 +7,20 @@ import { Grid, LinearProgress, Paper } from '@mui/material';
 import RecipeCard from '../components/RecipeCard';
 import MainFeaturedPost from '../components/Motw';
 import axios from 'axios';
+import { usePostsContext } from '../hooks/usePostsContext';
 
 const mainFeaturedPost = {
-    title: 'Meal of the Week',
-    description:
-      "Multiple lines of text that form the lede, informing new readers quickly and efficiently about what's most interesting in this post's contents.",
-    image: 'https://source.unsplash.com/random',
-    imageText: 'main image description',
-    linkText: 'Continue reading…',
-    
+  title: 'Meal of the Week',
+  description:
+    "Multiple lines of text that form the lede, informing new readers quickly and efficiently about what's most interesting in this post's contents.",
+  image: 'https://source.unsplash.com/random',
+  imageText: 'main image description',
+  linkText: 'Continue reading…',
+
 };
 
-function DashboardPage() {
+const DashboardPage = () => {
+  const { posts, dispatch } = usePostsContext();
 
   useEffect(() => {
     setLoading(true);
@@ -37,9 +39,11 @@ function DashboardPage() {
   }, []);
   
 
-  const [open, setOpen] = React.useState(false);
-  const [isAuthenticated, setAuthentication] = React.useState(false);
-  const [isLoading, setLoading] = React.useState(false);
+  const [open, setOpen] = useState(false);
+  const [isAuthenticated, setAuthentication] = useState(false);
+  const [isLoading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [data, setData] = useState([]);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -49,28 +53,42 @@ function DashboardPage() {
     setOpen(false);
   };
 
-  const cards = [];
-  for (let i = 0; i < 8; i++) {
-    cards.push(<Grid item xs={12} sm={6} md={5} lg={3}>
-                    <RecipeCard/>
-               </Grid>);
-  }
+  useEffect(() => {
+    const fetchPosts = async () => {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/posts`);
+      const json = await response.json();
+      if (response.ok) {
+        dispatch({
+          type: 'SET_POSTS',
+          payload: json
+        })
+      } else {
+        setError("Error: " + json.error);
+      }
+    }
+
+    fetchPosts();
+  }, [dispatch]);
 
   if (isLoading) {
     return (<LinearProgress color='secondary'/>)
   } else {
     return (
     <>
-    <Box sx={{ display: 'flex' }}>
-    <Navbar open={open} openDrawer={handleDrawerOpen} authentication={isAuthenticated}></Navbar>
-    <SideDrawer open={open} closeDrawer={handleDrawerClose}></SideDrawer>
-    <Box component="main" sx={{ flexGrow: 1, p: 3, marginTop: 8}}>
-    <MainFeaturedPost post={mainFeaturedPost}/>
-        <Grid container spacing={2}>
-            {cards}
-        </Grid>
-    </Box>
-    </Box>
+      <Box sx={{ display: 'flex' }}>
+        <Navbar open={open} openDrawer={handleDrawerOpen} authentication={isAuthenticated}></Navbar>
+        <SideDrawer open={open} closeDrawer={handleDrawerClose}></SideDrawer>
+        <Box component="main" sx={{ flexGrow: 1, p: 3, marginTop: 8 }}>
+          <MainFeaturedPost post={mainFeaturedPost} />
+          <Grid container spacing={2}>
+            {posts && Object.values(posts).map(post =>
+              <Grid item xs={12} sm={6} md={5} lg={3} key={post.id}>
+                <RecipeCard postId={post.id} />
+              </Grid>
+            )}
+          </Grid>
+        </Box>
+      </Box>
     </>
   )
 }

@@ -178,7 +178,7 @@ app.get("/posts", (req, res) => {
         console.log(postId);
         console.log(getuserNamebyUserId(doc.data().userId));
         posts.push({
-          postId,
+          id: postId,
           username: getuserNamebyUserId(doc.data().userId),
           ...doc.data(),
         });
@@ -186,6 +186,33 @@ app.get("/posts", (req, res) => {
       return res.json(posts);
     })
     .catch((error) => console.error(error));
+});
+
+// GET /posts/user/:userId - get posts associated with a userId
+app.get('/posts/user/:userId', (req, res) => {
+  db.collection('Posts')
+    .where('userId', '==', req.params.userId)
+    .get()
+    .then((querySnap) => {
+      if (!querySnap.empty) {
+        let userPosts = [];
+        querySnap.forEach((doc) => {
+          userPosts.push({
+            id: doc.id,
+            ...doc.data()
+          });
+        });
+
+        return res.json({ ...userPosts });
+      } else {
+        console.log('No posts associated with this user');
+        res.send({ message: 'No posts associated with this user' });
+      }
+    })
+    .catch((error) => {
+      console.error('error');
+      res.send(error);
+    });
 });
 
 // GET /posts/:id - get post by post id
@@ -223,12 +250,28 @@ app.get("/posts/:id", (req, res) => {
     });
 });
 
+// PATCH /posts/:id - updates a specific post without overwriting previously defined attributes
+app.patch('/posts/:id', (req, res) => {
+  console.log(req.body);
+  db.collection('Posts')
+    .doc(req.params.id)
+    .update(req.body)
+    .then(() => {
+      console.log('Post updated successfully.');
+      res.send('Post updated successfully.');
+    })
+    .catch((error) => {
+      console.log(error);
+      res.send(error);
+    });
+});
+
 // POST /posts - create a new post
 app.post("/posts", (req, res) => {
   const newPost = {
     title: req.body.title,
-    description: req.body.description,
-    recipe: req.body.recipe,
+    ingredients: req.body.ingredients,
+    directions: req.body.directions,
     image: req.body.image,
     flair: req.body.flair,
     userId: req.body.userId,
@@ -236,17 +279,47 @@ app.post("/posts", (req, res) => {
     date: new Date(),
   };
 
-  db.collection("Posts")
-    .doc()
-    .set(newPost)
-    .then(() => {
-      console.log("Post document successfully created!");
-      res.send({ message: "Created Post Successfully" });
-    })
-    .catch((error) => {
-      console.error(error);
-      res.send(error);
-    });
+  try {
+    const docRef = db.collection('Posts').doc();
+    const docId = docRef.id;
+
+    docRef.set(newPost)
+      .then(() => {
+        console.log('Post document successfully created!');
+        res.send({
+          message: 'Created Post Successfully',
+          post: {
+            id: docId,
+            ...newPost
+          }
+        });
+      })
+  } catch (error) {
+    console.error(error);
+    res.send(error);
+  }
+});
+
+// GET /upvotes - check if specific user upvoted specific post
+app.get('/upvotes', async (req, res) => {
+  const docId = `${req.body.postId}_${req.body.userId}`;
+  try {
+    const upvotesRef = await db.collection('Upvotes').doc(docId);
+    const doc = await upvotesRef.get();
+
+    if (!doc.exists) {
+      console.log('No upvotes associated with this user on this post');
+      res.send({
+        message: 'No upvotes associated with this user on this post',
+      });
+    } else {
+      console.log('Document data:', doc.data());
+      res.send(doc.data());
+    }
+  } catch (error) {
+    console.error(error);
+    res.send(error);
+  }
 });
 
 // POST /upvotes - upvote a post
@@ -261,9 +334,9 @@ app.post("/upvotes", (req, res) => {
 
   /*if documentId w/ post and user id exists:
   if isUpvote matches
-  	throw error
+    throw error
   else
-  	update isUpvote for found record
+    update isUpvote for found record
 else:
   create a new record
 */
@@ -291,17 +364,17 @@ else:
             });
 
           /*
-			user upvoted it, so
-			upvoteCount: 1
+      user upvoted it, so
+      upvoteCount: 1
 
-			then downvote it: -1
+      then downvote it: -1
 
-			
-			user downvoted it, so
-			upvoteCount: 1
+    	
+      user downvoted it, so
+      upvoteCount: 1
 
-			then upvote it: 3
-			*/
+      then upvote it: 3
+      */
 
           // Update upvoteCount in posts
           db.collection("Posts")
@@ -353,6 +426,21 @@ else:
     })
     .catch((error) => {
       console.error(error);
+      res.send(error);
+    });
+});
+
+// DELETE /posts/:id - deletes a specific post
+app.delete('/posts/:id', (req, res) => {
+  db.collection('Posts')
+    .doc(req.params.id)
+    .delete()
+    .then(() => {
+      console.log('Post successfully deleted.');
+      res.send('Post successfully deleted.');
+    })
+    .catch((error) => {
+      console.log(error);
       res.send(error);
     });
 });

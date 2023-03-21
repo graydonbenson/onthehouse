@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState, useEffect } from 'react';
 import { styled } from '@mui/material/styles';
 import MuiAppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
@@ -7,7 +7,7 @@ import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import { Avatar, Button, Tooltip } from '@mui/material';
 import { red } from '@mui/material/colors';
-import { Link, Navigate } from 'react-router-dom';
+import { Link, Navigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
 
 const drawerWidth = 240;
@@ -30,10 +30,31 @@ const AppBar = styled(MuiAppBar, {
   }),
 }));
 
-function Navbar({ open, openDrawer, authentication }) {
+function Navbar({ open, openDrawer }) {
+  const location = useLocation();
 
-  const [gotToHome, setGoToHome] = React.useState(false);
+  const [gotToHome, setGoToHome] = useState(false);
   const userData = JSON.parse(localStorage.getItem("userData"));
+
+  const [isAuthenticated, setisAuthenticated] = useState(false);
+
+  useEffect(() => {
+    if (userData) {
+      setisAuthenticated(true);
+    } else {
+      setisAuthenticated(false);
+    }
+    /* async function authStatus() {
+      const response = await axios.get("/verifyAuth");
+      if (response.data.successMessage) {
+        setisAuthenticated(true);
+      } else {
+        setisAuthenticated(false);
+      }
+    }
+
+    authStatus(); */
+  }, [location]);
 
   if (gotToHome) {
     return <Navigate to="/" />
@@ -73,11 +94,11 @@ function Navbar({ open, openDrawer, authentication }) {
           textAlign={'left'}
           sx={{ flexGrow: 1 }}
         >
-          <Link to={"/dashboard"} style={{color: 'inherit', textDecoration: 'none'}}>
+          <Link to={"/dashboard"} style={{ color: 'inherit', textDecoration: 'none' }}>
             On The House 🍜
           </Link>
         </Typography>
-        {authentication ?
+        {isAuthenticated ?
           (<>
             <Button onClick={handleLogout} variant="contained" color="error" sx={{ fontStyle: "oblique", mr: 1 }}>Logout</Button>
             <Tooltip title={userData.username}>

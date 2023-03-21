@@ -90,7 +90,7 @@ export const PostPage = () => {
               }}
               src={post.image}>
             </Box>
-            <Box sx={{ flexGrow: 1, mt: 1 }} style={{ display: "flex" }}>
+            <Box sx={{ flexGrow: 1, mt: 1 }} style={{ display: "flex", alignItems: 'center' }}>
               <Avatar sx={{ bgcolor: "red", width: 30, height: 30, ml: 3 }} aria-label="recipe">
                 {post.userId?.substring(0, 1)}
               </Avatar>
@@ -98,6 +98,7 @@ export const PostPage = () => {
               <IconButton aria-label="Upvote Recipe" sx={{ ml: 52 }}>
                 <ThumbUpIcon />
               </IconButton>
+              {post.upvoteCount}
               <IconButton aria-label="Downvote Recipe">
                 <ThumbDownIcon />
               </IconButton>

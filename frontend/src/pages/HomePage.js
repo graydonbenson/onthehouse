@@ -1,3 +1,4 @@
+import { Button, Typography } from '@mui/material';
 import React from 'react';
 import { Link } from "react-router-dom";
 import videoSrc from "../media/production_ID_4253147.mp4";
@@ -8,11 +9,12 @@ function HomePage() {
     <>
       <video src={videoSrc} autoPlay loop muted/>
       <div className='info'>
-        <h1>On The House</h1>
-        <h6 className='phrase'>Find your next meal.</h6>
+        <Typography variant="h1">On The House</Typography>
+        <Typography variant="h4" sx={{fontStyle: "italic", fontFamily: "Georgia"}}>Find Your Next Meal Today.</Typography>
         <div>
-          <Link to={"/login"}><button className="homeButtons">Log In!</button></Link>
-          <Link to={"/signup"}><button className="homeButtons">Sign Up!</button></Link>
+          <Button component={Link} to="/dashboard" variant="contained" color="warning" sx={{ fontStyle: "oblique", mr: 1 }}>View Recipes</Button>
+          <Button component={Link} to="/login" variant="contained" color="success" sx={{ mr: 1 }}>Log In!</Button>
+          <Button component={Link} to="/signup" variant="contained" color="info">Sign Up!</Button>
         </div>
       </div>
     </>

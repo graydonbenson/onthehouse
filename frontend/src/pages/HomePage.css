@@ -23,12 +23,3 @@ video {
     background-color: rgba(0, 0, 0, .6);
     font-size: 40px;
 }
-
-.phrase {
-    font-family: Georgia, 'Times New Roman', Times, serif;
-    font-style: italic;
-}
-
-.homeButtons {
-    font-size: 20px;
-}

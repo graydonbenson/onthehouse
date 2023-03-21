@@ -83,6 +83,7 @@ const DashboardPage = () => {
                       image={post.image}
                       ingredients={post.ingredients}
                       directions={post.directions}
+                      upvoteCount={post.upvoteCount}
                     />
                   }
                 </Grid>

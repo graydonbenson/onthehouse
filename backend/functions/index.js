@@ -64,7 +64,7 @@ app.post("/signup", async (req, res) => {
   const doc = await usernameRef.get();
 
   if (doc.exists) {
-    res.send({code: "Username already taken!"});
+    res.send({ code: "Username already taken!" });
     return;
   }
 
@@ -76,18 +76,29 @@ app.post("/signup", async (req, res) => {
     );
 
     await db.collection("Users").doc(registerUser.username).set(
-        {
-          fullName: registerUser.fullName,
-          email: registerUser.email,
-          username: registerUser.username,
-        },
-        { merge: false }
-      ).then(() => {
-        console.log("User document successfully created!");
-        res.status(200).send("User successfully created!");
-      }).catch((error) => {
-        res.send(error);
-      });
+      {
+        fullName: registerUser.fullName,
+        email: registerUser.email,
+        username: registerUser.username,
+      },
+      { merge: false }
+    );
+    const userEmailRef = await db.collection("Users");
+    //   .doc(registerUser.username)
+    // .doc(userCredentials.user.uid)
+    const snapshot = await userEmailRef
+      .where("email", "==", registerUser.email)
+      .get();
+
+    if (snapshot.empty) {
+      res.status(404);
+      console.log("No matching documents.");
+      res.send({ message: "No matching documents!" });
+    }
+
+    snapshot.forEach((doc) => {
+      res.send({ ...doc.data() });
+    });
   } catch (error) {
     res.send(error);
   }

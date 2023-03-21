@@ -52,7 +52,7 @@ export default function SignUpPage() {
   // Loading Linear
   const [isLoading, setLoading] = React.useState(false);
   //Redirect variable
-  const [goToLogin, setGoToLogin] = React.useState(false);
+  const [goToDashboard, setGoToDashboard] = React.useState(false);
   //Open Snackbar
   const [open, setOpen] = React.useState(false);
 
@@ -64,9 +64,9 @@ export default function SignUpPage() {
     setOpen(false);
   };
 
-  //redirect to login screen 
-  if (goToLogin){
-    return <Navigate to="/login" />;
+  //redirect to dashboard
+  if (goToDashboard){
+    return <Navigate to="/dashboard" />;
   }
 
   const handleSubmit = async (event) => {  
@@ -90,9 +90,9 @@ export default function SignUpPage() {
       setLoading(false);
       setOpen(true);
     } else {
-      console.log("success");
+      localStorage.setItem("userData", JSON.stringify(response.data));
       setLoading(false);
-      setGoToLogin(true);
+      setGoToDashboard(true);
     }
   };
 

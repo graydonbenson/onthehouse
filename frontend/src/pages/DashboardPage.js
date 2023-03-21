@@ -3,9 +3,10 @@ import Navbar from '../components/Navbar';
 import SideDrawer from '../components/SideDrawer';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import { Grid } from '@mui/material';
+import { Grid, LinearProgress, Paper } from '@mui/material';
 import RecipeCard from '../components/RecipeCard';
 import MainFeaturedPost from '../components/Motw';
+import axios from 'axios';
 import { usePostsContext } from '../hooks/usePostsContext';
 
 const mainFeaturedPost = {
@@ -21,7 +22,26 @@ const mainFeaturedPost = {
 const DashboardPage = () => {
   const { posts, dispatch } = usePostsContext();
 
+  useEffect(() => {
+    setLoading(true);
+    async function authStatus() {
+      const response = await axios.get("/verifyAuth");
+      if (response.data.successMessage) {
+        setAuthentication(true);
+        setLoading(false);
+      } else {
+        setAuthentication(false);
+        setLoading(false);
+      }
+    }
+
+    authStatus();
+  }, []);
+  
+
   const [open, setOpen] = useState(false);
+  const [isAuthenticated, setAuthentication] = useState(false);
+  const [isLoading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [data, setData] = useState([]);
 
@@ -50,10 +70,13 @@ const DashboardPage = () => {
     fetchPosts();
   }, [dispatch]);
 
-  return (
+  if (isLoading) {
+    return (<LinearProgress color='secondary'/>)
+  } else {
+    return (
     <>
       <Box sx={{ display: 'flex' }}>
-        <Navbar open={open} openDrawer={handleDrawerOpen}></Navbar>
+        <Navbar open={open} openDrawer={handleDrawerOpen} authentication={isAuthenticated}></Navbar>
         <SideDrawer open={open} closeDrawer={handleDrawerClose}></SideDrawer>
         <Box component="main" sx={{ flexGrow: 1, p: 3, marginTop: 8 }}>
           <MainFeaturedPost post={mainFeaturedPost} />
@@ -68,6 +91,7 @@ const DashboardPage = () => {
       </Box>
     </>
   )
+}
 }
 
 export default DashboardPage;

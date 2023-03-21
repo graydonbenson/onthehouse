@@ -26,7 +26,7 @@ const ExpandMore = styled((props) => {
   }),
 }));
 
-export const RecipeCard = ({ postId }) => {
+export const RecipeCard = ({ postId, userId, title, date, image, ingredients, directions }) => {
 
   const [expanded, setExpanded] = useState(false);
   const [data, setData] = useState([]);
@@ -54,22 +54,22 @@ export const RecipeCard = ({ postId }) => {
       {data && <>
         <CardHeader
           avatar={
-            <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">{data.userId?.charAt(0)}</Avatar>
+            <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">{userId.charAt(0)}</Avatar>
           }
-          title={data.title}
-          subheader={new Date(data.date?._seconds * 1000).toLocaleDateString("en-US")}
+          title={title}
+          subheader={new Date(date._seconds * 1000).toLocaleDateString("en-US")}
         />
-        <Link to={`/post/${data.postId}`}>
+        <Link to={`/post/${postId}`}>
           <CardMedia
             component="img"
             height="194"
-            image={data.image}
+            image={image}
             alt=""
           />
         </Link>
         <CardContent>
           <Typography variant="body2" color="text.secondary">
-            {data.ingredients}
+            {ingredients}
           </Typography>
         </CardContent>
         <CardActions disableSpacing>
@@ -90,7 +90,7 @@ export const RecipeCard = ({ postId }) => {
         </CardActions>
         <Collapse in={expanded} timeout="auto" unmountOnExit>
           <CardContent>
-            <Typography paragraph>{data.directions}</Typography>
+            <Typography paragraph>{directions}</Typography>
           </CardContent>
         </Collapse>
       </>}

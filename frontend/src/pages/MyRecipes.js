@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import Navbar from '../components/Navbar';
 import SideDrawer from '../components/SideDrawer';
 import Box from '@mui/material/Box';
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid } from '@mui/material';
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, Skeleton, Stack } from '@mui/material';
 import RecipeCard from '../components/RecipeCard';
 import { usePostsContext } from '../hooks/usePostsContext';
 import { Link } from "react-router-dom";
@@ -14,6 +14,7 @@ const MyRecipes = () => {
     const [alertOpen, setAlertOpen] = useState(false);
     const [deleteId, setDeleteId] = useState('');
     const [error, setError] = useState('');
+    const [cardIsLoading, setCardIsLoading] = useState(false);
 
     const handleDrawerOpen = () => {
         setOpen(true);
@@ -37,6 +38,7 @@ const MyRecipes = () => {
         // TO DO:
         // - get userId from localStorage or something of that sort (replace JohnDoe2 in URL below)
         // - fetch posts and populate RecipeCard with that information instead
+        setCardIsLoading(true);
         const fetchUserPosts = async () => {
             const response = await fetch(`${process.env.REACT_APP_API_URL}/posts/user/JohnDoe2`);
             const json = await response.json();
@@ -44,9 +46,11 @@ const MyRecipes = () => {
                 dispatch({
                     type: 'SET_POSTS',
                     payload: json
-                })
+                });
+                setCardIsLoading(false);
             } else {
                 setError("Error: " + json.error);
+                setCardIsLoading(false);
             }
         }
 
@@ -80,33 +84,51 @@ const MyRecipes = () => {
                     <Grid container spacing={2}>
                         {Object.values(posts).map(post =>
                             <Grid item xs={12} sm={6} md={5} lg={3} key={post.id}>
-                                <RecipeCard postId={post.id} />
-                                <Box
-                                    display='flex'
-                                    justifyContent='center'
-                                    maxWidth={345}
-                                    pt={2}
-                                    gap={3}
-                                >
-                                    <Button
-                                        variant='outlined'
-                                    >
-                                        <Link
-                                            style={{ color: 'inherit', textDecoration: 'none' }}
-                                            to={`/edit/${post.id}`}
-                                        >
-                                            Edit
-                                        </Link>
-                                    </Button>
-                                    <Button
-                                        variant='contained'
-                                        color='error'
-                                        onClick={() => handleAlertOpen(post.id)}
-                                    >
-                                        Delete
-                                    </Button>
+                                {cardIsLoading ?
+                                    <Stack spacing={1}>
+                                        <Skeleton variant="circular" width={40} height={40} />
+                                        <Skeleton variant="rectangular" width={210} height={100} />
+                                        <Skeleton variant="rounded" width={210} height={100} />
+                                    </Stack>
+                                    :
+                                    <>
+                                        <RecipeCard
+                                            postId={post.id}
+                                            userId={post.userId}
+                                            title={post.title}
+                                            date={post.date}
+                                            image={post.image}
+                                            ingredients={post.ingredients}
+                                            directions={post.directions}
+                                        />
 
-                                </Box>
+                                        <Box
+                                            display='flex'
+                                            justifyContent='center'
+                                            maxWidth={345}
+                                            pt={2}
+                                            gap={3}
+                                        >
+                                            <Button
+                                                variant='outlined'
+                                            >
+                                                <Link
+                                                    style={{ color: 'inherit', textDecoration: 'none' }}
+                                                    to={`/edit/${post.id}`}
+                                                >
+                                                    Edit
+                                                </Link>
+                                            </Button>
+                                            <Button
+                                                variant='contained'
+                                                color='error'
+                                                onClick={() => handleAlertOpen(post.id)}
+                                            >
+                                                Delete
+                                            </Button>
+                                        </Box>
+                                    </>
+                                }
                             </Grid>
                         )}
                     </Grid>

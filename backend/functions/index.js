@@ -9,6 +9,7 @@ const {
   sendPasswordResetEmail,
   signOut,
 } = require("firebase/auth");
+const cookieParser = require('cookie-parser');
 
 const { FieldValue } = require("firebase-admin/firestore");
 
@@ -17,7 +18,8 @@ const db = admin.firestore();
 
 const express = require("express");
 const app = express();
-app.use(cors());
+app.use(cors({ origin: true, credentials: true }));
+app.use(cookieParser());
 
 const firebaseConfig = {
   apiKey: "AIzaSyAZToVDJJDQle7Z6Q-fevMs9CF-xWZfbFw",
@@ -134,6 +136,8 @@ app.post("/login", async (req, res) => {
       res.send({ message: "No matching documents!" });
     }
 
+    // set authToken cookie
+    res.cookie("authToken", true, { expires: new Date(Date.now() + 30 * 60 * 1000) });
     snapshot.forEach((doc) => {
       res.send({ ...doc.data() });
     });
@@ -156,7 +160,9 @@ app.post("/resetPassword", async (req, res) => {
 // Verify JWT Authentication token
 app.get("/verifyAuth", async (req, res) => {
   try {
-    if (auth.currentUser) {
+    // check for authentication cookie
+    const authToken = req.cookies.authToken;
+    if (authToken) {
       res.send({ successMessage: "User is authenticated!" });
     } else {
       res.send({ errorMessage: "User is not authenticated!" });
@@ -170,6 +176,8 @@ app.get("/verifyAuth", async (req, res) => {
 app.post("/logout", async (req, res) => {
   try {
     signOut(auth);
+    // clear authToken cookie
+    res.clearCookie("authToken");
     res.status(200).send({ message: "Successfully logged out user" });
   } catch (error) {
     console.error(error);

@@ -163,7 +163,7 @@ export default function SignIn() {
               type="submit"
               fullWidth
               variant="contained"
-              disabled="true"
+              disabled={true}
               sx={{ mt: 3, mb: 2 }}
             >
               Sign In

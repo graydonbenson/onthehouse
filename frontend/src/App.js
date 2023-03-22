@@ -32,18 +32,18 @@ function App() {
             <Route path="/forgotpassword" element={<ForgotPassword />} />
           </Route>
           <Route path="/dashboard" element={<DashboardPage />} />
-          {/* <Route path="/post/:id" element={<ProtectedRoute />}> */}
+          <Route path="/post/:id" element={<ProtectedRoute />}>
             <Route path="/post/:id" element={<PostPage />} />
-          {/* </Route> */}
-          {/* <Route path="/edit/:id" element={<ProtectedRoute />}> */}
+          </Route>
+          <Route path="/edit/:id" element={<ProtectedRoute />}>
             <Route path="/edit/:id" element={<EditPost />} />
-          {/* </Route> */}
-          {/* <Route path="/create" element={<ProtectedRoute />}> */}
+          </Route>
+          <Route path="/create" element={<ProtectedRoute />}>
             <Route path="/create" element={<CreatePost />} />
-          {/* </Route> */}
-          {/* <Route path="/my-recipes" element={<ProtectedRoute />}> */}
+          </Route>
+          <Route path="/my-recipes" element={<ProtectedRoute />}>
             <Route path="/my-recipes" element={<MyRecipes />} />
-          {/* </Route> */}
+          </Route>
         </Routes>
       </Router>
     </div>

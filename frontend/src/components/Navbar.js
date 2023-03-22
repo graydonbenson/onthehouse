@@ -5,7 +5,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
-import { Avatar, Button, Tooltip } from '@mui/material';
+import { Avatar, Backdrop, Button, Tooltip } from '@mui/material';
 import { red } from '@mui/material/colors';
 import { Link, Navigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
@@ -31,30 +31,31 @@ const AppBar = styled(MuiAppBar, {
 }));
 
 function Navbar({ open, openDrawer }) {
-  const location = useLocation();
 
   const [gotToHome, setGoToHome] = useState(false);
+  const [isAuthenticated, setAuthentication] = useState(false);
+  const [isLoading, setLoading] = useState(true);
   const userData = JSON.parse(localStorage.getItem("userData"));
 
-  const [isAuthenticated, setisAuthenticated] = useState(false);
-
   useEffect(() => {
-    if (userData) {
-      setisAuthenticated(true);
-    } else {
-      setisAuthenticated(false);
-    }
-    /* async function authStatus() {
-      const response = await axios.get("/verifyAuth");
-      if (response.data.successMessage) {
-        setisAuthenticated(true);
-      } else {
-        setisAuthenticated(false);
-      }
-    }
+    async function authStatus() {
+        const response = await axios.get("/verifyAuth");
+        if (response.data.successMessage) {
+            setAuthentication(true);
+        }
+        setLoading(false);
+    };
+    authStatus();
+}, [isLoading])
 
-    authStatus(); */
-  }, [location]);
+  if (isLoading) {
+    return (
+      <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={true}>
+      <img alt={"Loading"} src={"https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExZDE4NGE2N2M0NThhNmE3ZmQ5MTUzZjE1NTdhZjJkZWFiYjNmMjc0YyZjdD1z/KcWaUe5tKkIrSI2LaU/giphy.gif"} width="100" height="100" />
+      <Typography variant="h4">Loading....</Typography>
+      </Backdrop>
+    )
+  }
 
   if (gotToHome) {
     return <Navigate to="/" />

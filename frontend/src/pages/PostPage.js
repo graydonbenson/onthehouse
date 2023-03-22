@@ -8,10 +8,11 @@ import IconButton from '@mui/material/IconButton';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 import Comments from '../components/Comments';
-import { Grid, createTheme, ThemeProvider } from '@mui/material';
+import { Grid, createTheme, ThemeProvider, Backdrop } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import SendIcon from '@mui/icons-material/Send';
 import { useParams } from 'react-router-dom';
+import axios from 'axios';
 
 const commentAPI = 'https://us-central1-seng-401-on-the-house.cloudfunctions.net/api/comments/:'
 
@@ -86,8 +87,8 @@ export const PostPage = () => {
 
   return (
     <>
-      <ThemeProvider theme={theme}>
-      {post && <>
+      <ThemeProvider theme={theme}> 
+        {post && <>
         <Box sx={{ display: 'flex' }}>
           <Navbar open={open} openDrawer={handleDrawerOpen}></Navbar>
           <SideDrawer open={open} closeDrawer={handleDrawerClose}></SideDrawer>
@@ -146,7 +147,7 @@ export const PostPage = () => {
             </Grid>
           </Box>
         </Box>
-      </>}
+        </>}
       </ThemeProvider>
     </>
   )

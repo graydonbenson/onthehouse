@@ -3,10 +3,11 @@ import Navbar from '../components/Navbar';
 import SideDrawer from '../components/SideDrawer';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import { Grid, LinearProgress, Paper, Skeleton, Stack, createTheme, ThemeProvider } from '@mui/material';
+import { Grid, LinearProgress, Paper, Skeleton, Stack, createTheme, ThemeProvider, Backdrop } from '@mui/material';
 import RecipeCard from '../components/RecipeCard';
 import MainFeaturedPost from '../components/Motw';
 import { usePostsContext } from '../hooks/usePostsContext';
+import axios from 'axios';
 
 const mainFeaturedPost = {
   title: 'Meal of the Week',
@@ -34,7 +35,6 @@ const DashboardPage = () => {
   });
 
   const [open, setOpen] = useState(false);
-  const [isLoading, setLoading] = useState(false);
   const [cardIsLoading, setCardIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [data, setData] = useState([]);
@@ -67,13 +67,10 @@ const DashboardPage = () => {
     fetchPosts();
   }, [dispatch]);
 
-  if (isLoading) {
-    return (<LinearProgress color='secondary' />)
-  } else {
     return (
       <>
         <ThemeProvider theme={theme}>
-        <Box sx={{ display: 'flex' }}>
+          <Box sx={{ display: 'flex' }}>
           <Navbar open={open} openDrawer={handleDrawerOpen}></Navbar>
           <SideDrawer open={open} closeDrawer={handleDrawerClose}></SideDrawer>
           <Box component="main" sx={{ flexGrow: 1, p: 3, marginTop: 8 }}>
@@ -104,11 +101,10 @@ const DashboardPage = () => {
               }
             </Grid>
           </Box>
-        </Box>
+          </Box>
         </ThemeProvider>
       </>
     )
-  }
 }
 
 export default DashboardPage;

@@ -2,10 +2,11 @@ import { useEffect, useState } from 'react';
 import Navbar from '../components/Navbar';
 import SideDrawer from '../components/SideDrawer';
 import Box from '@mui/material/Box';
-import { Button, createTheme, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, Skeleton, Stack, ThemeProvider } from '@mui/material';
+import { Backdrop, Button, createTheme, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, Skeleton, Stack, ThemeProvider, Typography } from '@mui/material';
 import RecipeCard from '../components/RecipeCard';
 import { usePostsContext } from '../hooks/usePostsContext';
 import { Link } from "react-router-dom";
+import axios from 'axios';
 
 const MyRecipes = () => {
     const { posts, dispatch } = usePostsContext();

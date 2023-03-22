@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Navbar from '../components/Navbar';
 import SideDrawer from '../components/SideDrawer';
 import {
@@ -8,9 +8,12 @@ import {
   Container,
   Box,
   createTheme,
-  ThemeProvider
+  ThemeProvider,
+  Backdrop,
+  Typography
 } from "@mui/material";
 import PostForm from '../components/PostForm';
+import axios from 'axios';
 
 const CreatePost = () => {
   const [open, setOpen] = useState(false);
@@ -37,7 +40,7 @@ const CreatePost = () => {
 
   return (
     <ThemeProvider theme={theme}>
-    <Box sx={{ display: 'flex', height: '100vh' }}>
+      <Box sx={{ display: 'flex', height: '100vh' }}>
       <Navbar open={open} openDrawer={handleDrawerOpen}></Navbar>
       <SideDrawer open={open} closeDrawer={handleDrawerClose}></SideDrawer>
       <Box component="main" sx={{ display: 'flex', flexGrow: 1, p: 3, marginTop: 8 }}>
@@ -57,7 +60,7 @@ const CreatePost = () => {
           </Card>
         </Container>
       </Box>
-    </Box>
+      </Box>
     </ThemeProvider>
   );
 };

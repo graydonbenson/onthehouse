@@ -61,7 +61,7 @@ const PostForm = ({ initialTitle, initialIngredients, initialDirections, initial
                 flair: tags,
                 image: imageUrl
             };
-            const response = await fetch(`${process.env.REACT_APP_API_URL}/posts/${params.id}`, {
+            const response = await fetch(`${process.env.REACT_APP_DEPLOYED_API_URL}/posts/${params.id}`, {
                 method: 'PATCH',
                 body: JSON.stringify(updatedPost),
                 headers: {

@@ -25,9 +25,9 @@ check-in #2:
 - Tags
 - Comments
 
-check-in #3 (GET DONE BY THEN):
+check-in #3:
 Connect auth to frontend - Mush - DONE
-Set up auth protected routes - Mush
+Set up auth protected routes - Mush - DONE
 Set up auth invalid inputs (and dupicate user handling) - Mush
 Set up dashboard-v2 (when logged in/logged out) - Mush
 Create individual recipe post screen frontend + connect (with comments, recipe flair tag, upvote/downvote, etc) - Graydon, Eduardo, David
@@ -47,6 +47,37 @@ Manage all users screen? (admin) (firestore)
 Manage all posts screen? (admin) (firestore)
 Edit user profile screen? (if we have time)
 
+
+TBC by SUBMISSION DATE:
+
+From Checkin 3:
+- Handle meal of the week based on upvotes in backend + connect - Parbir
+- Get all posts based on recipe flair tag + connect - Parbir
+
+- Fix/finalize auth
+- Fix/finalize deployment
+
+Frontend:
+- All - Change font (from default to Lato?) and use consistent fonting throughout
+- Login/Signup Page - add image and description
+- Dashboard - Add shadow/effect to card + change background to light grey for ex. like MUI card exemplar
+- Create Recipe - Include option to upload image as file (w/ url option still there)
+- Post Page - Revamp entire page/make it "pretty"
+- Comments - include reply option
+- Notifications - notification when upvote/downvote or comment
+- Post Page - Use delimeter on Ingredients and Directions
+
+Backend:
+- Comments - include reply option
+- Notifications - notification when upvote/downvote or comment
+- Post Page - Use delimeter on Ingredients and Directions
+
+
+Misc.
+- Final Report 
+- Postman tests/documentation 
+- Plan Demo Video (who says what)
+- Demo Video - All
 
 
 === Brain dump

@@ -92,7 +92,7 @@ app.post("/signup", async (req, res) => {
 });
 
 // for frontend, if successful login save returned user object (or just email) in session/browser Storage
-// GET /login - get user (from firebase auth) given user's email and password parameters
+// POST /login - get user (from firebase auth) given user's email and password parameters
 app.post("/login", async (req, res) => {
   const loginUser = {
     email: req.body.email,

@@ -39,7 +39,7 @@ export const RecipeCard = ({ postId, userId, title, date, image, ingredients, di
 
     useEffect(() => {
         const fetchData = async () => {
-            const response = await fetch(`/posts/${postId}`);
+            const response = await fetch(`${process.env.REACT_APP_DEPLOYED_API_URL}/posts/${postId}`);
             const json = await response.json();
             if (response.ok) {
                 setData(json);

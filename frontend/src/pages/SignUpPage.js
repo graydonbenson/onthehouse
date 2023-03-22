@@ -84,7 +84,9 @@ export default function SignUpPage() {
       setOpen(true);
       return;
     }
-    const response = await axios.post("/signup", signUpInformation);
+    const response = await axios.post(`${process.env.REACT_APP_DEPLOYED_API_URL}/signup`, signUpInformation, {
+      withCredentials: true
+    });
     if (response.data.code) {
       setErrorMessage(response.data.code);
       setLoading(false);

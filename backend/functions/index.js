@@ -10,6 +10,7 @@ const {
   signOut,
   getIdToken
 } = require("firebase/auth");
+const cookieParser = require('cookie-parser');
 
 const { FieldValue } = require("firebase-admin/firestore");
 
@@ -18,7 +19,8 @@ const db = admin.firestore();
 
 const express = require("express");
 const app = express();
-app.use(cors());
+app.use(cors({ origin: true, credentials: true }));
+app.use(cookieParser());
 
 const firebaseConfig = {
   apiKey: "AIzaSyAZToVDJJDQle7Z6Q-fevMs9CF-xWZfbFw",
@@ -85,7 +87,29 @@ app.post("/signup", async (req, res) => {
       },
       { merge: false }
     );
-    res.status(201).send({successMessage: "User successfully created!"});
+    const userEmailRef = await db.collection("Users");
+    //   .doc(registerUser.username)
+    // .doc(userCredentials.user.uid)
+    const snapshot = await userEmailRef
+      .where("email", "==", registerUser.email)
+      .get();
+
+    if (snapshot.empty) {
+      res.status(404);
+      console.log("No matching documents.");
+      res.send({ message: "No matching documents!" });
+    }
+    // set authToken cookie
+    res.cookie("authToken", true, {
+      expires: new Date(Date.now() + 30 * 60 * 1000),
+      secure: true, //change to true when deploying
+      sameSite: 'none' // uncomment when deploying
+    });
+    let userData;
+    snapshot.forEach((doc) => {
+      userData = { ...doc.data() };
+    });
+    res.send(userData);
   } catch (error) {
     res.send(error);
   }
@@ -123,9 +147,18 @@ app.post("/login", async (req, res) => {
       res.send({ message: "No matching documents!" });
     }
 
-    snapshot.forEach((doc) => {
-      res.send({ ...doc.data(), userCredentialsToken});
+    // set authToken cookie
+    res.cookie("authToken", true, {
+      expires: new Date(Date.now() + 30 * 60 * 1000),
+      secure: true, //change to true when deploying
+      sameSite: 'none' // uncomment when deploying
     });
+    let userData;
+    snapshot.forEach((doc) => {
+      userData = { ...doc.data() };
+    });
+
+    res.send(userData);
   } catch (error) {
     res.send(error); // for frontend - if error sent/check status code is not 200 then alert(error.message)
   }
@@ -148,8 +181,13 @@ app.post("/verifyAuth", async (req, res) => {
   const auth = getAuth();
 
   try {
-    await admin.auth().verifyIdToken(req.body.token);
-    res.status(200).send({successMessage: "User authenticated"});
+    // check for authentication cookie
+    const authToken = req.cookies.authToken;
+    if (authToken) {
+      res.send({ successMessage: "User is authenticated!" });
+    } else {
+      res.send({ errorMessage: "User is not authenticated!" });
+    }
   } catch (error) {
     res.send(error);
   }
@@ -162,6 +200,11 @@ app.post("/logout", async (req, res) => {
 
   try {
     signOut(auth);
+    // clear authToken cookie
+    res.clearCookie("authToken", {
+      secure: true, //change to true when deploying
+      sameSite: 'none' // uncomment when deploying
+    });
     res.status(200).send({ message: "Successfully logged out user" });
   } catch (error) {
     res.send(error); // for frontend - if error sent/check status code is not 200 then alert(error.message)

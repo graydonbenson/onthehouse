@@ -11,19 +11,18 @@ const AuthInvalidRoute = () => {
 
     useEffect(() => {
         async function authStatus() {
-            if (!userData) {
-                setAuthentication(false);
-                setLoading(false);
-                return;
-            }
-            const response = await axios.post("/verifyAuth", {token: userData.userCredentialsToken});
-            if (response.data.successMessage) {
+            const response = await fetch(`${process.env.REACT_APP_DEPLOYED_API_URL}/verifyAuth`, {
+                method: "GET",
+                credentials: "include"
+            });
+            const data = await response.json();
+            if (data.successMessage) {
                 setAuthentication(true);
             }
             setLoading(false);
         };
         authStatus();
-    }, [userData])
+    }, [])
     
     if (isLoading) {
         return (
@@ -34,7 +33,7 @@ const AuthInvalidRoute = () => {
         );
     }
 
-    return (isAuthenticated ? <Navigate to="/dashboard"/> : <Outlet/>);
+    return (isAuthenticated ? <Navigate to="/dashboard" /> : <Outlet />);
 }
 
 export default AuthInvalidRoute;

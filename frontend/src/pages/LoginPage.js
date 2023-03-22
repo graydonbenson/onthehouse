@@ -63,14 +63,14 @@ export default function SignIn() {
     setOpen(false);
   };
 
-  if (goToDashboard){
-      return <Navigate to="/dashboard" />;
+  if (goToDashboard) {
+    return <Navigate to="/dashboard" />;
   };
 
 
   const handleSubmit = async (event) => {
     setLoading(true);
-    let signInInformation = {
+    const signInInformation = {
       email: signInEmail,
       password: signInPassword,
     };
@@ -81,7 +81,9 @@ export default function SignIn() {
       setOpen(true);
       return;
     }
-    const response = await axios.post("/login", signInInformation);
+    const response = await axios.post(`${process.env.REACT_APP_DEPLOYED_API_URL}/login`, signInInformation, {
+      withCredentials: true
+    });
     if (response.data.code) {
       setErrorMessage(response.data.code);
       setLoading(false);
@@ -90,9 +92,9 @@ export default function SignIn() {
       setLoading(false);
       setGoToDashboard(true);
     }
-    
+
   };
-  
+
   // const handleSubmit = (event) => {
   //   event.preventDefault();
   //   const data = new FormData(event.currentTarget);
@@ -158,24 +160,24 @@ export default function SignIn() {
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"
             />
-            {isLoading ? (<><LinearProgress color='secondary'/>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              disabled="true"
-              sx={{ mt: 3, mb: 2 }}
-            >
-              Sign In
-            </Button></>) : (<>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-            >
-              Sign In
-            </Button></>)}
+            {isLoading ? (<><LinearProgress color='secondary' />
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                disabled={true}
+                sx={{ mt: 3, mb: 2 }}
+              >
+                Sign In
+              </Button></>) : (<>
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  sx={{ mt: 3, mb: 2 }}
+                >
+                  Sign In
+                </Button></>)}
             <Grid container>
               <Grid item xs>
                 <Link href="forgotpassword" variant="body2">
@@ -193,12 +195,12 @@ export default function SignIn() {
         <Copyright sx={{ mt: 8, mb: 4 }} />
       </Container>
       <Stack spacing={2} sx={{ width: '100%' }}>
-      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-        <Alert onClose={handleClose} severity="error" sx={{ width: '100%' }}>
-          {errorMessage}
-        </Alert>
-      </Snackbar>
-    </Stack>
+        <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+          <Alert onClose={handleClose} severity="error" sx={{ width: '100%' }}>
+            {errorMessage}
+          </Alert>
+        </Snackbar>
+      </Stack>
     </ThemeProvider>
   );
 }

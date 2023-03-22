@@ -39,25 +39,22 @@ function Navbar({ open, openDrawer }) {
 
   useEffect(() => {
     async function authStatus() {
-        if (!userData) {
-            setAuthentication(false);
-            setLoading(false);
-            return;
-        }
-        const response = await axios.post("/verifyAuth", {token: userData.userCredentialsToken});
-        if (response.data.successMessage) {
-            setAuthentication(true);
-        }
-        setLoading(false);
+      const response = await axios.get(`${process.env.REACT_APP_DEPLOYED_API_URL}/verifyAuth`, {
+        withCredentials: true,
+      });
+      if (response.data.successMessage) {
+        setAuthentication(true);
+      }
+      setLoading(false);
     };
     authStatus();
-}, [userData])
+  }, [])
 
   if (isLoading) {
     return (
       <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={true}>
-      <img alt={"Loading"} src={"https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExZDE4NGE2N2M0NThhNmE3ZmQ5MTUzZjE1NTdhZjJkZWFiYjNmMjc0YyZjdD1z/KcWaUe5tKkIrSI2LaU/giphy.gif"} width="100" height="100" />
-      <Typography variant="h4">Loading....</Typography>
+        <img alt={"Loading"} src={"https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExZDE4NGE2N2M0NThhNmE3ZmQ5MTUzZjE1NTdhZjJkZWFiYjNmMjc0YyZjdD1z/KcWaUe5tKkIrSI2LaU/giphy.gif"} width="100" height="100" />
+        <Typography variant="h4">Loading....</Typography>
       </Backdrop>
     )
   }
@@ -67,7 +64,9 @@ function Navbar({ open, openDrawer }) {
   }
 
   async function handleLogout() {
-    const response = await axios.post("/logout");
+    const response = await axios.post(`${process.env.REACT_APP_DEPLOYED_API_URL}/logout`, null, {
+      withCredentials: true
+    });
     if (response.status === 200) {
       localStorage.removeItem("userData");
       setGoToHome(true);
@@ -107,8 +106,8 @@ function Navbar({ open, openDrawer }) {
         {isAuthenticated ?
           (<>
             <Button onClick={handleLogout} variant="contained" color="error" sx={{ fontStyle: "oblique", mr: 1 }}>Logout</Button>
-            <Tooltip title={userData?.username}>
-              <Avatar sx={{ bgcolor: red[500] }}> {userData.username.charAt(0)} </Avatar>
+            <Tooltip title={userData?.fullName}>
+              <Avatar sx={{ bgcolor: red[500] }}> {userData?.fullName.charAt(0)} </Avatar>
             </Tooltip>
           </>) :
           (<>

@@ -60,7 +60,7 @@ export const PostPage = () => {
       const json = await response.json();
       const com = json.comments;
       postComments = com.map(comments => comments.message);
-      users = com.map(comments => comments.userId)
+      users = com.map(comments => comments.userId);
       if (response.ok) {
         setPost(json);
       } else {
@@ -70,9 +70,6 @@ export const PostPage = () => {
 
     fetchPost();
   }, [params.id]);
-
-  console.log(postComments);
-  console.log(users);
 
   const postComment = (text, pID, uID) => {
     const data = { text: text }; // data to be sent in the request body

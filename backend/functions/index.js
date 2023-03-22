@@ -8,6 +8,7 @@ const {
   signInWithEmailAndPassword,
   sendPasswordResetEmail,
   signOut,
+  getIdToken
 } = require("firebase/auth");
 
 const { FieldValue } = require("firebase-admin/firestore");
@@ -30,7 +31,6 @@ const firebaseConfig = {
 };
 
 initializeApp(firebaseConfig);
-const auth = getAuth();
 
 // Create and deploy your first functions
 // https://firebase.google.com/docs/functions/get-started
@@ -68,6 +68,8 @@ app.post("/signup", async (req, res) => {
     return;
   }
 
+  const auth = getAuth();
+
   try {
     const userCredentials = await createUserWithEmailAndPassword(
       auth,
@@ -83,22 +85,7 @@ app.post("/signup", async (req, res) => {
       },
       { merge: false }
     );
-    const userEmailRef = await db.collection("Users");
-    //   .doc(registerUser.username)
-    // .doc(userCredentials.user.uid)
-    const snapshot = await userEmailRef
-      .where("email", "==", registerUser.email)
-      .get();
-
-    if (snapshot.empty) {
-      res.status(404);
-      console.log("No matching documents.");
-      res.send({ message: "No matching documents!" });
-    }
-
-    snapshot.forEach((doc) => {
-      res.send({ ...doc.data() });
-    });
+    res.status(201).send({successMessage: "User successfully created!"});
   } catch (error) {
     res.send(error);
   }
@@ -112,6 +99,8 @@ app.post("/login", async (req, res) => {
     password: req.body.password,
   };
 
+  const auth = getAuth();
+
   try {
     const userCredentials = await signInWithEmailAndPassword(
       auth,
@@ -119,7 +108,7 @@ app.post("/login", async (req, res) => {
       loginUser.password
     );
 
-    //const userCredentialsToken = await getIdToken(userCredentials.user, true);
+    const userCredentialsToken = await getIdToken(userCredentials.user, true);
     // Get usercredentials from firestore
     const userEmailRef = await db.collection("Users");
     //   .doc(registerUser.username)
@@ -135,7 +124,7 @@ app.post("/login", async (req, res) => {
     }
 
     snapshot.forEach((doc) => {
-      res.send({ ...doc.data() });
+      res.send({ ...doc.data(), userCredentialsToken});
     });
   } catch (error) {
     res.send(error); // for frontend - if error sent/check status code is not 200 then alert(error.message)
@@ -154,13 +143,13 @@ app.post("/resetPassword", async (req, res) => {
 });
 
 // Verify JWT Authentication token
-app.get("/verifyAuth", async (req, res) => {
+app.post("/verifyAuth", async (req, res) => {
+
+  const auth = getAuth();
+
   try {
-    if (auth.currentUser) {
-      res.send({ successMessage: "User is authenticated!" });
-    } else {
-      res.send({ errorMessage: "User is not authenticated!" });
-    }
+    await admin.auth().verifyIdToken(req.body.token);
+    res.status(200).send({successMessage: "User authenticated"});
   } catch (error) {
     res.send(error);
   }
@@ -168,11 +157,13 @@ app.get("/verifyAuth", async (req, res) => {
 
 // POST /logout - signout user
 app.post("/logout", async (req, res) => {
+
+  const auth = getAuth();
+
   try {
     signOut(auth);
     res.status(200).send({ message: "Successfully logged out user" });
   } catch (error) {
-    console.error(error);
     res.send(error); // for frontend - if error sent/check status code is not 200 then alert(error.message)
   }
 });

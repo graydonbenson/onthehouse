@@ -51,7 +51,7 @@ const MyRecipes = () => {
         setCardIsLoading(true);
         const userData = JSON.parse(localStorage.getItem("userData"));
         const fetchUserPosts = async () => {
-            const response = await fetch(`${process.env.REACT_APP_API_URL}/posts/user/${userData.username}`);
+            const response = await fetch(`${process.env.REACT_APP_DEPLOYED_API_URL}/posts/user/${userData.username}`);
             const json = await response.json();
             if (response.ok) {
                 if (json.hasOwnProperty('message')) {
@@ -76,7 +76,7 @@ const MyRecipes = () => {
     }, [dispatch]);
 
     const handleDelete = async (id) => {
-        const response = await fetch(`${process.env.REACT_APP_API_URL}/posts/${id}`, {
+        const response = await fetch(`${process.env.REACT_APP_DEPLOYED_API_URL}/posts/${id}`, {
             method: 'DELETE'
         });
         if (response.ok) {

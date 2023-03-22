@@ -40,7 +40,7 @@ const PostForm = ({ initialTitle, initialIngredients, initialDirections, initial
                 // TODO: change this to dynamic userId when auth implemented
                 userId: userData.username
             };
-            const response = await fetch(`${process.env.REACT_APP_API_URL}/posts`, {
+            const response = await fetch(`${process.env.REACT_APP_DEPLOYED_API_URL}/posts`, {
                 method: 'POST',
                 body: JSON.stringify(newPost),
                 headers: {

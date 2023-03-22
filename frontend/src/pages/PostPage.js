@@ -15,6 +15,7 @@ import { useParams } from 'react-router-dom';
 
 const commentAPI = 'https://us-central1-seng-401-on-the-house.cloudfunctions.net/api/comments/'
 const userData = JSON.parse(localStorage.getItem("userData"));
+let postComments = [];
 
 export const PostPage = () => {
   const params = useParams();
@@ -56,6 +57,12 @@ export const PostPage = () => {
     const fetchPost = async () => {
       const response = await fetch(`https://us-central1-seng-401-on-the-house.cloudfunctions.net/api/posts/${params.id}`);
       const json = await response.json();
+      for(let i = 0; i < JSON.stringify(json.comments).length; i++) {
+        postComment[i] = json.comments[i].message;
+        console.log(json.comments[i].message);
+      }
+      console.log(postComments[1]); 
+      
       if (response.ok) {
         setPost(json);
       } else {
@@ -65,7 +72,6 @@ export const PostPage = () => {
 
     fetchPost();
   }, [params.id]);
-
 
   const postComment = (text, pID, uID) => {
     const data = { text: text }; // data to be sent in the request body

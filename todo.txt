@@ -58,7 +58,7 @@ From Checkin 3:
 - Fix/finalize deployment
 
 Frontend:
-- All - Change font (from default to Lato?) and use consistent fonting throughout
+- All Pages - Change font (from default to Lato?) and use consistent fonting throughout
 - Login/Signup Page - add image and description
 - Dashboard - Add shadow/effect to card + change background to light grey for ex. like MUI card exemplar
 - Create Recipe - Include option to upload image as file (w/ url option still there)

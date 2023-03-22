@@ -62,6 +62,7 @@ Frontend:
 - All Pages - Change font (from default to Lato?) and use consistent fonting throughout
 - Login/Signup Page - add image and description
 - Dashboard - Add shadow/effect to card + change background to light grey for ex. like MUI card exemplar
+- RecipeCard - Make it "pretty"
 - Create Recipe - Include option to upload image as file (w/ url option still there)
 - Post Page - Revamp entire page/make it "pretty"
 - Comments - include reply option

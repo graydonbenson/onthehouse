@@ -53,6 +53,7 @@ TBC by SUBMISSION DATE:
 From Checkin 3:
 - Handle meal of the week based on upvotes in backend + connect - Parbir
 - Get all posts based on recipe flair tag + connect - Parbir
+- Upvote/Downvote?
 
 - Fix/finalize auth
 - Fix/finalize deployment
@@ -78,6 +79,9 @@ Misc.
 - Postman tests/documentation 
 - Plan Demo Video (who says what)
 - Demo Video - All
+
+
+
 
 
 === Brain dump

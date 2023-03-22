@@ -44,7 +44,7 @@ const EditPost = () => {
 
     useEffect(() => {
         const fetchPost = async () => {
-            const response = await fetch(`${process.env.REACT_APP_DEPLOYED_API_URL}/posts/${params.id}`);
+            const response = await fetch(`${process.env.REACT_APP_API_URL}/posts/${params.id}`);
             const json = await response.json();
             if (response.ok) {
                 setPost(json);

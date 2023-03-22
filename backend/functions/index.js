@@ -8,6 +8,7 @@ const {
   signInWithEmailAndPassword,
   sendPasswordResetEmail,
   signOut,
+  getIdToken
 } = require("firebase/auth");
 const cookieParser = require('cookie-parser');
 
@@ -32,7 +33,6 @@ const firebaseConfig = {
 };
 
 initializeApp(firebaseConfig);
-const auth = getAuth();
 
 // Create and deploy your first functions
 // https://firebase.google.com/docs/functions/get-started
@@ -69,6 +69,8 @@ app.post("/signup", async (req, res) => {
     res.send({ code: "Username already taken!" });
     return;
   }
+
+  const auth = getAuth();
 
   try {
     const userCredentials = await createUserWithEmailAndPassword(
@@ -114,12 +116,14 @@ app.post("/signup", async (req, res) => {
 });
 
 // for frontend, if successful login save returned user object (or just email) in session/browser Storage
-// GET /login - get user (from firebase auth) given user's email and password parameters
+// POST /login - get user (from firebase auth) given user's email and password parameters
 app.post("/login", async (req, res) => {
   const loginUser = {
     email: req.body.email,
     password: req.body.password,
   };
+
+  const auth = getAuth();
 
   try {
     const userCredentials = await signInWithEmailAndPassword(
@@ -128,7 +132,7 @@ app.post("/login", async (req, res) => {
       loginUser.password
     );
 
-    //const userCredentialsToken = await getIdToken(userCredentials.user, true);
+    const userCredentialsToken = await getIdToken(userCredentials.user, true);
     // Get usercredentials from firestore
     const userEmailRef = await db.collection("Users");
     //   .doc(registerUser.username)
@@ -172,7 +176,10 @@ app.post("/resetPassword", async (req, res) => {
 });
 
 // Verify JWT Authentication token
-app.get("/verifyAuth", async (req, res) => {
+app.post("/verifyAuth", async (req, res) => {
+
+  const auth = getAuth();
+
   try {
     // check for authentication cookie
     const authToken = req.cookies.authToken;
@@ -188,6 +195,9 @@ app.get("/verifyAuth", async (req, res) => {
 
 // POST /logout - signout user
 app.post("/logout", async (req, res) => {
+
+  const auth = getAuth();
+
   try {
     signOut(auth);
     // clear authToken cookie
@@ -197,7 +207,6 @@ app.post("/logout", async (req, res) => {
     });
     res.status(200).send({ message: "Successfully logged out user" });
   } catch (error) {
-    console.error(error);
     res.send(error); // for frontend - if error sent/check status code is not 200 then alert(error.message)
   }
 });

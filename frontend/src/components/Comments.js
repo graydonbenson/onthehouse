@@ -1,80 +1,41 @@
 import * as React from 'react';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
-import Divider from '@mui/material/Divider';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
-import Typography from '@mui/material/Typography';
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 
 export default function Comments() {
+  const params = useParams();
+  const [postComments, setPostComments] = useState([]);
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    const fetchPost = async () => {
+      const response = await fetch(`/posts/${params.id}`);
+      const json = await response.json();
+      const com = json.comments;
+      setPostComments(com.map(comments => comments.message));
+      setUsers(com.map(comments => comments.userId));
+    }
+
+    fetchPost();
+  }, [params.id]);
+
   return (
-    <List sx={{ width: '100%', maxWidth: 360, maxHeight: 700, bgcolor: 'aliceblue' }}>
-      <ListItem alignItems="flex-start">
-        <ListItemAvatar>
-          <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
-        </ListItemAvatar>
-        <ListItemText
-          primary="Brunch this weekend?"
-          secondary={
-            <React.Fragment>
-              <Typography
-                sx={{ display: 'inline' }}
-                component="span"
-                variant="body2"
-                color="text.primary"
-              >
-                Ali Connors
-              </Typography>
-              {" — I'll be in your neighborhood doing errands this…"}
-            </React.Fragment>
-          }
-        />
-      </ListItem>
-      <Divider variant="inset" component="li" />
-      <ListItem alignItems="flex-start">
-        <ListItemAvatar>
-          <Avatar alt="Travis Howard" src="/static/images/avatar/2.jpg" />
-        </ListItemAvatar>
-        <ListItemText
-          primary="Summer BBQ"
-          secondary={
-            <React.Fragment>
-              <Typography
-                sx={{ display: 'inline' }}
-                component="span"
-                variant="body2"
-                color="text.primary"
-              >
-                to Scott, Alex, Jennifer
-              </Typography>
-              {" — Wish I could come, but I'm out of town this…"}
-            </React.Fragment>
-          }
-        />
-      </ListItem>
-      <Divider variant="inset" component="li" />
-      <ListItem alignItems="flex-start">
-        <ListItemAvatar>
-          <Avatar alt="Cindy Baker" src="/static/images/avatar/3.jpg" />
-        </ListItemAvatar>
-        <ListItemText
-          primary="Oui Oui"
-          secondary={
-            <React.Fragment>
-              <Typography
-                sx={{ display: 'inline' }}
-                component="span"
-                variant="body2"
-                color="text.primary"
-              >
-                Sandra Adams
-              </Typography>
-              {' — Do you have Paris recommendations? Have you ever…'}
-            </React.Fragment>
-          }
-        />
-      </ListItem>
+    <List sx={{ width: '100%', maxWidth: 450, maxHeight: 700, bgcolor: 'aliceblue' }}>
+      {postComments.map((comment, index) => (
+        <ListItem alignItems="flex-start">
+          <ListItemAvatar>
+            <Avatar alt={users[index]} src="/static/images/avatar/3.jpg" />
+          </ListItemAvatar>
+          <ListItemText style={{ transform:'translateY(50%)' }}>
+            {users[index]}: {comment}
+          </ListItemText>
+        </ListItem>
+      ))}
     </List>
   );
 }

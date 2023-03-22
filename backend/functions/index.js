@@ -97,10 +97,17 @@ app.post("/signup", async (req, res) => {
       console.log("No matching documents.");
       res.send({ message: "No matching documents!" });
     }
-
-    snapshot.forEach((doc) => {
-      res.send({ ...doc.data() });
+    // set authToken cookie
+    res.cookie("authToken", true, {
+      expires: new Date(Date.now() + 30 * 60 * 1000),
+      secure: true, //change to true when deploying
+      sameSite: 'none' // uncomment when deploying
     });
+    let userData;
+    snapshot.forEach((doc) => {
+      userData = { ...doc.data() };
+    });
+    res.send(userData);
   } catch (error) {
     res.send(error);
   }
@@ -137,10 +144,17 @@ app.post("/login", async (req, res) => {
     }
 
     // set authToken cookie
-    res.cookie("authToken", true, { expires: new Date(Date.now() + 30 * 60 * 1000) });
-    snapshot.forEach((doc) => {
-      res.send({ ...doc.data() });
+    res.cookie("authToken", true, {
+      expires: new Date(Date.now() + 30 * 60 * 1000),
+      secure: true, //change to true when deploying
+      sameSite: 'none' // uncomment when deploying
     });
+    let userData;
+    snapshot.forEach((doc) => {
+      userData = { ...doc.data() };
+    });
+
+    res.send(userData);
   } catch (error) {
     res.send(error); // for frontend - if error sent/check status code is not 200 then alert(error.message)
   }
@@ -177,7 +191,10 @@ app.post("/logout", async (req, res) => {
   try {
     signOut(auth);
     // clear authToken cookie
-    res.clearCookie("authToken");
+    res.clearCookie("authToken", {
+      secure: true, //change to true when deploying
+      sameSite: 'none' // uncomment when deploying
+    });
     res.status(200).send({ message: "Successfully logged out user" });
   } catch (error) {
     console.error(error);

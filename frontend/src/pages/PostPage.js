@@ -14,7 +14,7 @@ import SendIcon from '@mui/icons-material/Send';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 
-const commentAPI = 'https://us-central1-seng-401-on-the-house.cloudfunctions.net/api/comments/:'
+const commentAPI = `${process.env.REACT_APP_DEPLOYED_API_URL}/comments/:`;
 
 export const PostPage = () => {
   const params = useParams();
@@ -44,7 +44,7 @@ export const PostPage = () => {
 
   useEffect(() => {
     const fetchPost = async () => {
-      const response = await fetch(`https://us-central1-seng-401-on-the-house.cloudfunctions.net/api/posts/${params.id}`);
+      const response = await fetch(`${process.env.REACT_APP_DEPLOYED_API_URL}/posts/${params.id}`);
       const json = await response.json();
       if (response.ok) {
         setPost(json);

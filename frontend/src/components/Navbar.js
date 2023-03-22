@@ -39,12 +39,10 @@ function Navbar({ open, openDrawer }) {
 
   useEffect(() => {
     async function authStatus() {
-      const response = await fetch(`${process.env.REACT_APP_DEPLOYED_API_URL}/verifyAuth`, {
-        method: "GET",
-        credentials: "include"
+      const response = await axios.get(`${process.env.REACT_APP_DEPLOYED_API_URL}/verifyAuth`, {
+        withCredentials: true,
       });
-      const data = await response.json();
-      if (data.successMessage) {
+      if (response.data.successMessage) {
         setAuthentication(true);
       }
       setLoading(false);
@@ -66,7 +64,9 @@ function Navbar({ open, openDrawer }) {
   }
 
   async function handleLogout() {
-    const response = await axios.post("/logout");
+    const response = await axios.post(`${process.env.REACT_APP_DEPLOYED_API_URL}/logout`, null, {
+      withCredentials: true
+    });
     if (response.status === 200) {
       localStorage.removeItem("userData");
       setGoToHome(true);
@@ -106,8 +106,8 @@ function Navbar({ open, openDrawer }) {
         {isAuthenticated ?
           (<>
             <Button onClick={handleLogout} variant="contained" color="error" sx={{ fontStyle: "oblique", mr: 1 }}>Logout</Button>
-            <Tooltip title={userData?.username}>
-              <Avatar sx={{ bgcolor: red[500] }}> {userData?.username.charAt(0)} </Avatar>
+            <Tooltip title={userData?.fullName}>
+              <Avatar sx={{ bgcolor: red[500] }}> {userData?.fullName.charAt(0)} </Avatar>
             </Tooltip>
           </>) :
           (<>

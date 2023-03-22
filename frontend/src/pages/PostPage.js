@@ -15,8 +15,6 @@ import { useParams } from 'react-router-dom';
 
 const commentAPI = 'https://us-central1-seng-401-on-the-house.cloudfunctions.net/api/comments/'
 const userData = JSON.parse(localStorage.getItem("userData"));
-let postComments;
-let users;
 
 export const PostPage = () => {
   const params = useParams();
@@ -36,6 +34,8 @@ export const PostPage = () => {
   const [post, setPost] = useState({});
   const [open, setOpen] = useState(false);
   const [comment, setComment] = useState('');
+  const [like, setLike] = useState(false);
+  const [dislike, setDislike] = useState(false);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -58,9 +58,6 @@ export const PostPage = () => {
     const fetchPost = async () => {
       const response = await fetch(`https://us-central1-seng-401-on-the-house.cloudfunctions.net/api/posts/${params.id}`);
       const json = await response.json();
-      const com = json.comments;
-      postComments = com.map(comments => comments.message);
-      users = com.map(comments => comments.userId);
       if (response.ok) {
         setPost(json);
       } else {
@@ -93,6 +90,16 @@ export const PostPage = () => {
       });
   };
 
+  function handleLikeClick() {
+    setLike(true);
+    setDislike(false);
+  }
+
+  function handleDislikeClick() {
+    setLike(false);
+    setDislike(true);
+  }
+
   return (
     <>
       <ThemeProvider theme={theme}>
@@ -118,11 +125,11 @@ export const PostPage = () => {
               </Avatar>
               <Typography sx={{ ml: 2 }}>{post.userId}</Typography>
               <IconButton aria-label="Upvote Recipe" sx={{ ml: 52 }}>
-                <ThumbUpIcon />
+                <ThumbUpIcon onClick={handleLikeClick} style={{ color: like ? 'blue' : 'inherit' }} />
               </IconButton>
               {post.upvoteCount}
               <IconButton aria-label="Downvote Recipe">
-                <ThumbDownIcon />
+                <ThumbDownIcon onClick={handleDislikeClick} style={{ color: dislike ? 'red' : 'inherit' }} />
               </IconButton>
             </Box>
             <Typography sx={{ mt: 2, ml: 3, mr: 3, textAlign: "justify", whiteSpace: "pre-wrap" }} paragraph>

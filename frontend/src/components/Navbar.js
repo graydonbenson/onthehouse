@@ -39,14 +39,19 @@ function Navbar({ open, openDrawer }) {
 
   useEffect(() => {
     async function authStatus() {
-        const response = await axios.get("/verifyAuth");
+        if (!userData) {
+            setAuthentication(false);
+            setLoading(false);
+            return;
+        }
+        const response = await axios.post("/verifyAuth", {token: userData.userCredentialsToken});
         if (response.data.successMessage) {
             setAuthentication(true);
         }
         setLoading(false);
     };
     authStatus();
-}, [isLoading])
+}, [userData])
 
   if (isLoading) {
     return (
@@ -102,7 +107,7 @@ function Navbar({ open, openDrawer }) {
         {isAuthenticated ?
           (<>
             <Button onClick={handleLogout} variant="contained" color="error" sx={{ fontStyle: "oblique", mr: 1 }}>Logout</Button>
-            <Tooltip title={userData.username}>
+            <Tooltip title={userData?.username}>
               <Avatar sx={{ bgcolor: red[500] }}> {userData.username.charAt(0)} </Avatar>
             </Tooltip>
           </>) :

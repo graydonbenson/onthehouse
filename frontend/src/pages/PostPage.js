@@ -13,7 +13,8 @@ import TextField from '@mui/material/TextField';
 import SendIcon from '@mui/icons-material/Send';
 import { useParams } from 'react-router-dom';
 
-const commentAPI = 'https://us-central1-seng-401-on-the-house.cloudfunctions.net/api/comments/:'
+const commentAPI = 'https://us-central1-seng-401-on-the-house.cloudfunctions.net/api/comments/'
+const userData = JSON.parse(localStorage.getItem("userData"));
 
 export const PostPage = () => {
   const params = useParams();
@@ -32,6 +33,7 @@ export const PostPage = () => {
 
   const [post, setPost] = useState({});
   const [open, setOpen] = useState(false);
+  const [comment, setComment] = useState('');
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -40,6 +42,15 @@ export const PostPage = () => {
   const handleDrawerClose = () => {
     setOpen(false);
   };
+
+  const handleComment = (event) => {
+    setComment(event.target.value);
+  }
+
+  const handleComment2 = () => {
+    postComment(comment, params.id, userData.username);
+    setComment('');
+  }
 
   useEffect(() => {
     const fetchPost = async () => {
@@ -77,12 +88,6 @@ export const PostPage = () => {
         console.log(error);
       });
   };
-  
-  postComment("This is a test", "9B0Voyx2CVe2HKqunyNK", "hi");
-  console.log("Done");
-
-  postComment("This is a test", "9B0Voyx2CVe2HKqunyNK");
-  console.log("Done");
 
   return (
     <>
@@ -134,13 +139,15 @@ export const PostPage = () => {
                 <TextField
                   id="filled-multiline-flexible"
                   label="Comment here"
+                  value={comment}
+                  onChange={handleComment}
                   multiline
                   maxRows={4}
                   variant="filled"
                   style={{ width: 360 }}
                 />
               </div>
-              <IconButton aria-label="Send Comment" >
+              <IconButton type="submit" aria-label="Send Comment" onClick={handleComment2}>
                 <SendIcon />
               </IconButton>
             </Grid>

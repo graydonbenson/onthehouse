@@ -166,7 +166,7 @@ export default function SignIn() {
               disabled="true"
               sx={{ mt: 3, mb: 2 }}
             >
-              Sign Up
+              Sign In
             </Button></>) : (<>
             <Button
               type="submit"
@@ -174,7 +174,7 @@ export default function SignIn() {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Sign Up
+              Sign In
             </Button></>)}
             <Grid container>
               <Grid item xs>

@@ -14,7 +14,8 @@ import SendIcon from '@mui/icons-material/Send';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 
-const commentAPI = 'https://us-central1-seng-401-on-the-house.cloudfunctions.net/api/comments/:'
+const commentAPI = '/comments/'
+const userData = JSON.parse(localStorage.getItem("userData"));
 
 export const PostPage = () => {
   const params = useParams();
@@ -33,6 +34,9 @@ export const PostPage = () => {
 
   const [post, setPost] = useState({});
   const [open, setOpen] = useState(false);
+  const [comment, setComment] = useState('');
+  const [like, setLike] = useState(false);
+  const [dislike, setDislike] = useState(false);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -42,9 +46,18 @@ export const PostPage = () => {
     setOpen(false);
   };
 
+  const handleComment = (event) => {
+    setComment(event.target.value);
+  }
+
+  const handleComment2 = () => {
+    postComment(comment, params.id, userData.username);
+    setComment('');
+  }
+
   useEffect(() => {
     const fetchPost = async () => {
-      const response = await fetch(`https://us-central1-seng-401-on-the-house.cloudfunctions.net/api/posts/${params.id}`);
+      const response = await fetch(`/posts/${params.id}`);
       const json = await response.json();
       if (response.ok) {
         setPost(json);
@@ -55,7 +68,6 @@ export const PostPage = () => {
 
     fetchPost();
   }, [params.id]);
-
 
   const postComment = (text, pID, uID) => {
     const data = { text: text }; // data to be sent in the request body
@@ -77,13 +89,18 @@ export const PostPage = () => {
       .catch((error) => {
         console.log(error);
       });
+      window.location.reload();
   };
-  
-  postComment("This is a test", "9B0Voyx2CVe2HKqunyNK", "hi");
-  console.log("Done");
 
-  postComment("This is a test", "9B0Voyx2CVe2HKqunyNK");
-  console.log("Done");
+  function handleLikeClick() {
+    setLike(true);
+    setDislike(false);
+  }
+
+  function handleDislikeClick() {
+    setLike(false);
+    setDislike(true);
+  }
 
   return (
     <>
@@ -110,11 +127,11 @@ export const PostPage = () => {
               </Avatar>
               <Typography sx={{ ml: 2 }}>{post.userId}</Typography>
               <IconButton aria-label="Upvote Recipe" sx={{ ml: 52 }}>
-                <ThumbUpIcon />
+                <ThumbUpIcon onClick={handleLikeClick} style={{ color: like ? 'blue' : 'inherit' }} />
               </IconButton>
               {post.upvoteCount}
               <IconButton aria-label="Downvote Recipe">
-                <ThumbDownIcon />
+                <ThumbDownIcon onClick={handleDislikeClick} style={{ color: dislike ? 'red' : 'inherit' }} />
               </IconButton>
             </Box>
             <Typography sx={{ mt: 2, ml: 3, mr: 3, textAlign: "justify", whiteSpace: "pre-wrap" }} paragraph>
@@ -135,13 +152,15 @@ export const PostPage = () => {
                 <TextField
                   id="filled-multiline-flexible"
                   label="Comment here"
+                  value={comment}
+                  onChange={handleComment}
                   multiline
                   maxRows={4}
                   variant="filled"
                   style={{ width: 360 }}
                 />
               </div>
-              <IconButton aria-label="Send Comment" >
+              <IconButton type="submit" aria-label="Send Comment" onClick={handleComment2}>
                 <SendIcon />
               </IconButton>
             </Grid>

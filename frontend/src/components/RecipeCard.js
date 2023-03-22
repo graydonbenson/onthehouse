@@ -30,6 +30,8 @@ const ExpandMore = styled((props) => {
 export const RecipeCard = ({ postId, userId, title, date, image, ingredients, directions, upvoteCount }) => {
     const [expanded, setExpanded] = useState(false);
     const [data, setData] = useState([]);
+    const [like, setLike] = useState(false);
+    const [dislike, setDislike] = useState(false);
 
     const handleExpandClick = () => {
         setExpanded(!expanded);
@@ -37,7 +39,7 @@ export const RecipeCard = ({ postId, userId, title, date, image, ingredients, di
 
     useEffect(() => {
         const fetchData = async () => {
-            const response = await fetch(`https://us-central1-seng-401-on-the-house.cloudfunctions.net/api/posts/${postId}`);
+            const response = await fetch(`/posts/${postId}`);
             const json = await response.json();
             if (response.ok) {
                 setData(json);
@@ -48,6 +50,16 @@ export const RecipeCard = ({ postId, userId, title, date, image, ingredients, di
 
         fetchData();
     }, [postId]);
+
+    function handleLikeClick() {
+        setLike(true);
+        setDislike(false);
+    }
+
+    function handleDislikeClick() {
+        setLike(false);
+        setDislike(true);
+    }
 
     return (
         <Card sx={{ maxWidth: 345 }}>
@@ -76,11 +88,11 @@ export const RecipeCard = ({ postId, userId, title, date, image, ingredients, di
                 </CardContent>
                 <CardActions disableSpacing>
                     <IconButton aria-label="Upvote Recipe">
-                        <ThumbUpIcon />
+                        <ThumbUpIcon onClick={handleLikeClick} style={{ color: like ? 'blue' : 'inherit' }} />
                     </IconButton>
                     {upvoteCount}
                     <IconButton aria-label="Downvote Recipe">
-                        <ThumbDownIcon />
+                        <ThumbDownIcon onClick={handleDislikeClick} style={{ color: dislike ? 'red' : 'inherit' }} />
                     </IconButton>
                     <ExpandMore
                         expand={expanded}

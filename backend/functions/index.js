@@ -186,8 +186,6 @@ app.get("/posts", (req, res) => {
     .then((querySnap) => {
       querySnap.forEach((doc) => {
         let postId = doc.id;
-        console.log(postId);
-        console.log(getuserNamebyUserId(doc.data().userId));
         posts.push({
           id: postId,
           ...doc.data(),
@@ -323,7 +321,6 @@ app.get('/upvotes', async (req, res) => {
         message: 'No upvotes associated with this user on this post',
       });
     } else {
-      console.log('Document data:', doc.data());
       res.send(doc.data());
     }
   } catch (error) {
@@ -487,7 +484,6 @@ async function getuserNamebyUserId(userId) {
     .get()
     .then((doc) => {
       const username = doc.data().username;
-      console.log("Document data:", username);
       return { username };
     })
     .catch((error) => {

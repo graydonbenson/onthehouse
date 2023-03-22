@@ -14,7 +14,7 @@ export default function Comments() {
 
   useEffect(() => {
     const fetchPost = async () => {
-      const response = await fetch(`https://us-central1-seng-401-on-the-house.cloudfunctions.net/api/posts/${params.id}`);
+      const response = await fetch(`/posts/${params.id}`);
       const json = await response.json();
       const com = json.comments;
       setPostComments(com.map(comments => comments.message));

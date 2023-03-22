@@ -13,7 +13,7 @@ import TextField from '@mui/material/TextField';
 import SendIcon from '@mui/icons-material/Send';
 import { useParams } from 'react-router-dom';
 
-const commentAPI = 'https://us-central1-seng-401-on-the-house.cloudfunctions.net/api/comments/'
+const commentAPI = '/comments/'
 const userData = JSON.parse(localStorage.getItem("userData"));
 
 export const PostPage = () => {
@@ -56,7 +56,7 @@ export const PostPage = () => {
 
   useEffect(() => {
     const fetchPost = async () => {
-      const response = await fetch(`https://us-central1-seng-401-on-the-house.cloudfunctions.net/api/posts/${params.id}`);
+      const response = await fetch(`/posts/${params.id}`);
       const json = await response.json();
       if (response.ok) {
         setPost(json);
@@ -88,6 +88,7 @@ export const PostPage = () => {
       .catch((error) => {
         console.log(error);
       });
+      window.location.reload();
   };
 
   function handleLikeClick() {

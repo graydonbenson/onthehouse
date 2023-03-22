@@ -102,8 +102,8 @@ function Navbar({ open, openDrawer }) {
         {isAuthenticated ?
           (<>
             <Button onClick={handleLogout} variant="contained" color="error" sx={{ fontStyle: "oblique", mr: 1 }}>Logout</Button>
-            <Tooltip title={userData.username}>
-              <Avatar sx={{ bgcolor: red[500] }}> {userData.username.charAt(0)} </Avatar>
+            <Tooltip title={userData?.username}>
+              <Avatar sx={{ bgcolor: red[500] }}> {userData?.username.charAt(0)} </Avatar>
             </Tooltip>
           </>) :
           (<>

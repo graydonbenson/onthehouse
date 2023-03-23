@@ -9,7 +9,7 @@ import {
   Box,
   createTheme,
   ThemeProvider,
-} from "@mui/material";
+} from '@mui/material';
 import PostForm from '../components/PostForm';
 
 const CreatePost = () => {
@@ -38,25 +38,43 @@ const CreatePost = () => {
   return (
     <ThemeProvider theme={theme}>
       <Box sx={{ display: 'flex', height: '100vh' }}>
-      <Navbar open={open} openDrawer={handleDrawerOpen}></Navbar>
-      <SideDrawer open={open} closeDrawer={handleDrawerClose}></SideDrawer>
-      <Box component="main" sx={{ display: 'flex', flexGrow: 1, p: 3, marginTop: 8 }}>
-        <Container
-          maxWidth="sm"
-          sx={{
-            flex: 1,
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center'
-          }}>
-          <Card>
-            <CardHeader title="Upload a New Recipe" />
-            <CardContent>
-              <PostForm initialTitle='' initialIngredients='' initialDirections='' initialTags='' initialImageUrl='' action='CREATE' />
-            </CardContent>
-          </Card>
-        </Container>
-      </Box>
+        <Navbar open={open} openDrawer={handleDrawerOpen}></Navbar>
+        <SideDrawer open={open} closeDrawer={handleDrawerClose}></SideDrawer>
+        <Box
+          component="main"
+          sx={{ display: 'flex', flexGrow: 1, p: 3, marginTop: 8 }}
+        >
+          <Container
+            maxWidth="sm"
+            sx={{
+              flex: 1,
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+            }}
+          >
+            <Card
+              sx={{
+                height: '110%',
+                justifyContent: 'flex-end',
+                overflow: 'hidden',
+                overflowY: 'scroll', // added scroll
+              }}
+            >
+              <CardHeader title="Upload a New Recipe" />
+              <CardContent>
+                <PostForm
+                  initialTitle=""
+                  initialIngredients=""
+                  initialDirections=""
+                  initialTags=""
+                  initialImageUrl=""
+                  action="CREATE"
+                />
+              </CardContent>
+            </Card>
+          </Container>
+        </Box>
       </Box>
     </ThemeProvider>
   );

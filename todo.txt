@@ -53,36 +53,51 @@ TBC by SUBMISSION DATE:
 From Checkin 3:
 - Handle meal of the week based on upvotes in backend + connect - Parbir
 - Get all posts based on recipe flair tag + connect - Parbir
-- Upvote/Downvote?
+- Upvote/Downvote - Ahad
 
-- Fix/finalize auth
-- Fix/finalize deployment
+- Fix/finalize auth - Mush/Athul
+- Fix/finalize deployment - Mush/Athul
 
 Frontend:
-- All Pages - Change font (from default to Lato?) and use consistent fonting throughout
-- Login/Signup Page - add image and description
-- Dashboard - Add shadow/effect to card + change background to light grey for ex. like MUI card exemplar
-- RecipeCard - Make it "pretty"
-- Create Recipe - Include option to upload image as file (w/ url option still there)
-- Post Page - Revamp entire page/make it "pretty"
-- Comments - include reply option
-- Notifications - notification when upvote/downvote or comment
-- Post Page - Use delimeter on Ingredients and Directions
+- All Pages - Change font (from default to Lato?) and use consistent fonting throughout (globally, project-wide) - Mush
+- Login/Signup Page - add image and description - Athul
+- Dashboard - Add shadow/effect to card + change background to light grey for ex. like MUI card exemplar - Mush
+- All Pages - Change theme to be consistent b/w al pages - Mush
+- RecipeCard - Make it "pretty", add flair tag - Mush
+- Create Recipe - Include option to upload image as file (w/ url option still there) - Athul
+- Post Page - Revamp entire page/make it "pretty"/responsive - Parbir
+- Comments - include reply option - Ahad
+- Notifications - notification when upvote/downvote or comment - Ahad
+- Post Page - Use delimeter on Ingredients and Directions - Ahad
+- Recipe Card/Post Page - Gallery of images - Athul (if we have time)
 
 Backend:
-- Comments - include reply option
-- Notifications - notification when upvote/downvote or comment
-- Post Page - Use delimeter on Ingredients and Directions
+- Create/Edit Recipe - Include option to upload image as file (w/ url option still there) - Athul
+- Comments - include reply option - Ahad
+- Notifications - notification when upvote/downvote or comment - Ahad
+- Post Page - Use delimeter on Ingredients and Directions - Ahad
 
 
 Misc.
-- Final Report 
-- Postman tests/documentation 
-- Plan Demo Video (who says what)
+- Final Report - Graydon, Eduardo, David
+- Postman tests/documentation - Mush 
+- Plan Demo Video (who says what)- All - DONE
 - Demo Video - All
+- Deploy Final Time/Final Testing - Mush
 
 
+Demo Video:
+- Objective/Motivation - Athul
+- Requirements - David, Eduardo, Graydon
+- Architecture - Ahad
+- Design Artifacts (arch/seq/class diagrams) - Parbir
+- Test Cases - Mush
+- Retrospective/Next Steps/Q&A - Mush
 
+
+Meet by Sunday 6PM - Finish All Code/Report from Above
+Tuesday Midnight - Drop your video segment on discord
+Wednesday Midnight - Graydon edits and merges all segments
 
 
 === Brain dump

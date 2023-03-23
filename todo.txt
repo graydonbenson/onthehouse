@@ -48,15 +48,21 @@ Manage all posts screen? (admin) (firestore)
 Edit user profile screen? (if we have time)
 
 
+=====
 TBC by SUBMISSION DATE:
+Schedule:
+Sunday 6PM Meeting - Finish All Code/Report from Above
+Tuesday Midnight - Drop your video segment on discord
+Wednesday Midnight - Graydon edits and merges all segments
+
 
 From Checkin 3:
 - Handle meal of the week based on upvotes in backend + connect - Parbir
-- Get all posts based on recipe flair tag + connect - Parbir
+- Get all posts based on recipe flair tag + connect w/ a filter/search - Parbir
 - Upvote/Downvote - Ahad
 
-- Fix/finalize auth - Mush/Athul
-- Fix/finalize deployment - Mush/Athul
+- Fix/finalize auth - Mush
+- Fix/finalize deployment - Mush
 
 Frontend:
 - All Pages - Change font (from default to Lato?) and use consistent fonting throughout (globally, project-wide) - Mush
@@ -95,9 +101,8 @@ Demo Video (write ur script in doc above):
 - Retrospective/Next Steps/Q&A - Mush
 
 
-Meet by Sunday 6PM - Finish All Code/Report from Above
-Tuesday Midnight - Drop your video segment on discord
-Wednesday Midnight - Graydon edits and merges all segments
+
+
 
 
 === Brain dump

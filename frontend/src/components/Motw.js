@@ -1,6 +1,4 @@
-import axios from 'axios';
-import React, { useState } from 'react';
-//import { Link } from "react-router-dom";
+import React from 'react';
 import PropTypes from 'prop-types';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';

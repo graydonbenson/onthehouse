@@ -14,14 +14,19 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import axios from 'axios';
-import { Navigate } from "react-router-dom";
+import { Navigate } from 'react-router-dom';
 import { LinearProgress } from '@mui/material';
 
 function Copyright(props) {
   return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
+    <Typography
+      variant='body2'
+      color='text.secondary'
+      align='center'
+      {...props}
+    >
       {'Copyright © '}
-      <Link color="inherit" href="#">
+      <Link color='inherit' href='#'>
         OnTheHouse
       </Link>{' '}
       {new Date().getFullYear()}
@@ -31,13 +36,12 @@ function Copyright(props) {
 }
 
 const Alert = React.forwardRef(function Alert(props, ref) {
-  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+  return <MuiAlert elevation={6} ref={ref} variant='filled' {...props} />;
 });
 
 const theme = createTheme();
 
 export default function SignUpPage() {
-  
   //const navigate = useNavigate;
   //First Name
   const [signUpName, setSignUpName] = React.useState('');
@@ -65,11 +69,11 @@ export default function SignUpPage() {
   };
 
   //redirect to dashboard
-  if (goToLogin){
-    return <Navigate to="/login" />;
+  if (goToLogin) {
+    return <Navigate to='/login' />;
   }
 
-  const handleSubmit = async (event) => {  
+  const handleSubmit = async (event) => {
     setLoading(true);
     let signUpInformation = {
       fullName: signUpName,
@@ -78,15 +82,24 @@ export default function SignUpPage() {
       password: signUpPassword,
     };
     event.preventDefault();
-    if (signUpName === '' || signUpEmail === '' || signUpUser === '' || signUpPassword === '') {
-      setErrorMessage("Invalid Input!");
+    if (
+      signUpName === '' ||
+      signUpEmail === '' ||
+      signUpUser === '' ||
+      signUpPassword === ''
+    ) {
+      setErrorMessage('Invalid Input!');
       setLoading(false);
       setOpen(true);
       return;
     }
-    const response = await axios.post(`${process.env.REACT_APP_DEPLOYED_API_URL}/signup`, signUpInformation, {
-      withCredentials: true
-    });
+    const response = await axios.post(
+      `${process.env.REACT_APP_DEPLOYED_API_URL}/signup`,
+      signUpInformation,
+      {
+        withCredentials: true,
+      }
+    );
     if (response.data.code) {
       setErrorMessage(response.data.code);
       setLoading(false);
@@ -99,15 +112,16 @@ export default function SignUpPage() {
 
   return (
     <ThemeProvider theme={theme}>
-      <Container 
-        component="main" 
-        maxWidth="xs" 
+      <Container
+        component='main'
+        maxWidth='xs'
         sx={{
           height: '100vh',
           display: 'flex',
           flexDirection: 'column',
-          justifyContent: 'center'
-        }}>
+          justifyContent: 'center',
+        }}
+      >
         <CssBaseline />
         <Box
           sx={{
@@ -119,19 +133,24 @@ export default function SignUpPage() {
           <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
             <LockOutlinedIcon />
           </Avatar>
-          <Typography component="h1" variant="h5">
+          <Typography component='h1' variant='h5'>
             Sign up
           </Typography>
-          <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+          <Box
+            component='form'
+            noValidate
+            onSubmit={handleSubmit}
+            sx={{ mt: 3 }}
+          >
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <TextField
-                  autoComplete="given-name"
-                  name="firstName"
+                  autoComplete='given-name'
+                  name='firstName'
                   required
                   fullWidth
-                  id="fullName"
-                  label="Full Name"
+                  id='fullName'
+                  label='Full Name'
                   autoFocus
                   onChange={(event) => {
                     setSignUpName(event.target.value);
@@ -142,10 +161,10 @@ export default function SignUpPage() {
                 <TextField
                   required
                   fullWidth
-                  id="email"
-                  label="Email Address"
-                  name="email"
-                  autoComplete="email"
+                  id='email'
+                  label='Email Address'
+                  name='email'
+                  autoComplete='email'
                   onChange={(event) => {
                     setSignUpEmail(event.target.value);
                   }}
@@ -155,10 +174,10 @@ export default function SignUpPage() {
                 <TextField
                   required
                   fullWidth
-                  id="username"
-                  label="Username"
-                  name="username"
-                  autoComplete="username"
+                  id='username'
+                  label='Username'
+                  name='username'
+                  autoComplete='username'
                   onChange={(event) => {
                     setSignUpUser(event.target.value);
                   }}
@@ -168,40 +187,46 @@ export default function SignUpPage() {
                 <TextField
                   required
                   fullWidth
-                  name="password"
-                  label="Password"
-                  type="password"
-                  id="password"
-                  autoComplete="new-password"
+                  name='password'
+                  label='Password'
+                  type='password'
+                  id='password'
+                  autoComplete='new-password'
                   onChange={(event) => {
                     setSignUpPassword(event.target.value);
                   }}
                 />
               </Grid>
-              <Grid item xs={12}>
-              </Grid>
+              <Grid item xs={12}></Grid>
             </Grid>
-            {isLoading ? (<><LinearProgress color='secondary'/>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              disabled="true"
-              sx={{ mt: 3, mb: 2 }}
-            >
-              Sign Up
-            </Button></>) : (<>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-            >
-              Sign Up
-            </Button></>)}
-            <Grid container justifyContent="flex-end">
+            {isLoading ? (
+              <>
+                <LinearProgress color='secondary' />
+                <Button
+                  type='submit'
+                  fullWidth
+                  variant='contained'
+                  disabled='true'
+                  sx={{ mt: 3, mb: 2 }}
+                >
+                  Sign Up
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button
+                  type='submit'
+                  fullWidth
+                  variant='contained'
+                  sx={{ mt: 3, mb: 2 }}
+                >
+                  Sign Up
+                </Button>
+              </>
+            )}
+            <Grid container justifyContent='flex-end'>
               <Grid item>
-                <Link href="login" variant="body2">
+                <Link href='login' variant='body2'>
                   Already have an account? Sign in
                 </Link>
               </Grid>
@@ -211,12 +236,12 @@ export default function SignUpPage() {
         <Copyright sx={{ mt: 5 }} />
       </Container>
       <Stack spacing={2} sx={{ width: '100%' }}>
-          <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-            <Alert onClose={handleClose} severity="error" sx={{ width: '100%' }}>
-              {errorMessage}
-            </Alert>
-          </Snackbar>
-        </Stack>
+        <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+          <Alert onClose={handleClose} severity='error' sx={{ width: '100%' }}>
+            {errorMessage}
+          </Alert>
+        </Snackbar>
+      </Stack>
     </ThemeProvider>
   );
 }

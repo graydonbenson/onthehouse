@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Navbar from '../components/Navbar';
 import SideDrawer from '../components/SideDrawer';
 import {
@@ -9,11 +9,8 @@ import {
   Box,
   createTheme,
   ThemeProvider,
-  Backdrop,
-  Typography
 } from "@mui/material";
 import PostForm from '../components/PostForm';
-import axios from 'axios';
 
 const CreatePost = () => {
   const [open, setOpen] = useState(false);

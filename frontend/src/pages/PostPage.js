@@ -8,13 +8,12 @@ import IconButton from '@mui/material/IconButton';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 import Comments from '../components/Comments';
-import { Grid, createTheme, ThemeProvider, Backdrop } from '@mui/material';
+import { Grid, createTheme, ThemeProvider } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import SendIcon from '@mui/icons-material/Send';
 import { useParams } from 'react-router-dom';
-import axios from 'axios';
 
-const commentAPI = `${process.env.REACT_APP_DEPLOYED_API_URL}/comments/:`;
+const commentAPI = `${process.env.REACT_APP_DEPLOYED_API_URL}/comments/`;
 
 export const PostPage = () => {
   const params = useParams();

@@ -77,7 +77,7 @@ Backend:
 
 Misc.
 - Final Report 
-- Postman (unit/integration) tests/documentation 
+- Postman tests/documentation 
 - Plan Demo Video (who says what)
 - Demo Video - All
 

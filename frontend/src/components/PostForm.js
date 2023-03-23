@@ -146,8 +146,8 @@ const PostForm = ({ initialTitle, initialIngredients, initialDirections, initial
             <Button
                 type="submit"
                 variant="contained"
-                color="primary"
-                sx={{ marginTop: 3 }}
+                color="info"
+                sx={{ marginTop: 3, fontStyle: "oblique", fontWeight: "bold" }}
                 onSubmit={handleSubmit}
             >
                 {action === 'CREATE' ? "Create ✨" : "Save Changes"}

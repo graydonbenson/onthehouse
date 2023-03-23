@@ -81,7 +81,7 @@ export default function SignIn() {
       setOpen(true);
       return;
     }
-    const response = await axios.post(`${process.env.REACT_APP_API_URL}/login`, signInInformation, {
+    const response = await axios.post(`${process.env.REACT_APP_DEPLOYED_API_URL}/login`, signInInformation, {
       withCredentials: true
     });
     if (response.data.code) {

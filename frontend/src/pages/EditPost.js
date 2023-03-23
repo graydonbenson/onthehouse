@@ -59,10 +59,10 @@ const EditPost = () => {
 
     return (
         <ThemeProvider theme={theme}>
-        <Box sx={{ display: 'flex', height: '100vh' }}>
+        <Box sx={{ display: 'flex', height: '100vh', backgroundColor: "#fee7e7" }}>
             <Navbar open={open} openDrawer={handleDrawerOpen}></Navbar>
             <SideDrawer open={open} closeDrawer={handleDrawerClose}></SideDrawer>
-            <Box component="main" sx={{ display: 'flex', flexGrow: 1, p: 3, marginTop: 8 }}>
+            <Box component="main" sx={{ flexGrow: 1, p: 3, marginTop: 8 }}>
                 <Container
                     maxWidth="sm"
                     sx={{
@@ -71,8 +71,8 @@ const EditPost = () => {
                         flexDirection: 'column',
                         justifyContent: 'center'
                     }}>
-                    <Card>
-                        <CardHeader title="Edit Your Recipe" />
+                    <Card sx={{borderRadius: "20px"}}>
+                        <CardHeader title={<Typography variant="h4" sx={{fontWeight: "bold", fontFamily: "unset", fontStyle: "oblique"}}>Edit Your Recipe</Typography>}/>
                         <CardContent>
                             {post &&
                                 <PostForm

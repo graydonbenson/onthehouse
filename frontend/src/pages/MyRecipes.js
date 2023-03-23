@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import Navbar from '../components/Navbar';
 import SideDrawer from '../components/SideDrawer';
 import Box from '@mui/material/Box';
-import { Backdrop, Button, createTheme, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, Skeleton, Stack, ThemeProvider, Typography } from '@mui/material';
+import { Backdrop, Button, createTheme, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, Paper, Skeleton, Stack, ThemeProvider, Typography } from '@mui/material';
 import RecipeCard from '../components/RecipeCard';
 import { usePostsContext } from '../hooks/usePostsContext';
 import { Link } from "react-router-dom";
@@ -91,12 +91,14 @@ const MyRecipes = () => {
     return (
         <>
         <ThemeProvider theme={theme}>
-            <Box sx={{ display: 'flex', height: '100vh' }}>
+            <Box sx={{ display: 'flex', backgroundColor: "#fee7e7" }}>
                 <Navbar open={open} openDrawer={handleDrawerOpen}></Navbar>
                 <SideDrawer open={open} closeDrawer={handleDrawerClose}></SideDrawer>
                 <Box component="main" sx={{ flexGrow: 1, p: 3, marginTop: 8 }}>
-                    <>
-                        <h1 style={{ paddingBottom: 30 }}>My Recipes</h1>
+                    <>  
+                        <Paper elevation={11} sx={{display: "inline-block", backgroundColor: "#fe647d", borderRadius: "16px", paddingRight: 2, paddingLeft: 2, marginBottom: 2, color: "white"}}>
+                        <Typography variant="body1" sx={{fontWeight: "bold", fontFamily: "unset", fontStyle: "oblique", fontSize: "40px"}}>My Recipes</Typography>
+                        </Paper>
                         {posts &&
                             <>
                                 <Grid container spacing={2}>
@@ -130,9 +132,10 @@ const MyRecipes = () => {
                                                     >
                                                         <Button
                                                             variant='outlined'
+                                                            color="info"
                                                         >
                                                             <Link
-                                                                style={{ color: 'inherit', textDecoration: 'none' }}
+                                                                style={{ color: 'inherit', textDecoration: 'none', fontWeight: "bold" }}
                                                                 to={`/edit/${post.id}`}
                                                             >
                                                                 Edit
@@ -140,6 +143,7 @@ const MyRecipes = () => {
                                                         </Button>
                                                         <Button
                                                             variant='contained'
+                                                            sx={{fontWeight: "bold"}}
                                                             color='error'
                                                             onClick={() => handleAlertOpen(post.id)}
                                                         >
@@ -167,6 +171,7 @@ const MyRecipes = () => {
                                     </DialogContent>
                                     <DialogActions>
                                         <Button
+                                            color="info"
                                             onClick={handleAlertClose}
                                         >
                                             No

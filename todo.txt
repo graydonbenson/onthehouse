@@ -59,7 +59,8 @@ Wednesday Midnight - Graydon edits and merges all segments
 From Checkin 3:
 - Handle meal of the week based on upvotes in backend + connect - Parbir
 - Get all posts based on recipe flair tag + connect w/ a filter/search - Parbir
-- Upvote/Downvote - Ahad
+- Upvote/Downvote - Ahad (1)
+- Comment - Ahad (2)
 
 - Fix/finalize auth - Mush
 - Fix/finalize deployment - Mush
@@ -75,7 +76,7 @@ Frontend:
 - Post Page - Revamp entire page/make it "pretty"/responsive - Parbir
 
 - Create Recipe - Include option to upload image as file (w/ url option still there) - Athul
-- Create Recipe - Change flair from text field to drop down - Ahad
+- Create Recipe - Change flair from text field to drop down - Ahad (3)
 
 - Comments - include reply option - Ahad
 - Notifications - notification when upvote/downvote or comment - Ahad

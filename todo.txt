@@ -66,16 +66,20 @@ From Checkin 3:
 
 Frontend:
 - All Pages - Change font (from default to Lato?) and use consistent fonting throughout (globally, project-wide) - Mush
+- All Pages - Change theme to be consistent b/w all pages - Mush
+
 - Login/Signup Page - add image and description - Athul
 - Dashboard - Add shadow/effect to card + change background to light grey for ex. like MUI card exemplar - Mush
-- All Pages - Change theme to be consistent b/w al pages - Mush
 - RecipeCard - Make it "pretty", add flair tag - Mush
-- Create Recipe - Include option to upload image as file (w/ url option still there) - Athul
+- Recipe Card/Post Page - Gallery of images - Athul (if we have time)
 - Post Page - Revamp entire page/make it "pretty"/responsive - Parbir
+
+- Create Recipe - Include option to upload image as file (w/ url option still there) - Athul
+- Create Recipe - Change flair from text field to drop down - Ahad
+
 - Comments - include reply option - Ahad
 - Notifications - notification when upvote/downvote or comment - Ahad
 - Post Page - Use delimeter on Ingredients and Directions - Ahad
-- Recipe Card/Post Page - Gallery of images - Athul (if we have time)
 
 Backend:
 - Create/Edit Recipe - Include option to upload image as file (w/ url option still there) - Athul
@@ -92,7 +96,7 @@ Misc.
 - Deploy Final Time/Final Testing - Mush
 
 
-Demo Video (write ur script in doc above):
+Demo Video (write ur script in doc on dc, keep it to 1 minute):
 - Objective/Motivation - Athul
 - Requirements - David, Eduardo, Graydon
 - Architecture - Ahad

@@ -43,7 +43,7 @@ function MainFeaturedPost(props) {
             <Box
               sx={{
                 position: 'relative',
-                p: { xs: 3, md: 6 },
+                p: { xs: 3, md: 6 }, 
                 pr: { md: 0 },
               }}
             >

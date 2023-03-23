@@ -109,7 +109,7 @@ function Navbar({ open, openDrawer }) {
               <Avatar sx={{ bgcolor: red[500] }}> {userData?.fullName.charAt(0)} </Avatar>
             </Tooltip>
           </>) :
-          (<>
+          (<> 
             <Button component={Link} to="/login" variant="contained" color="secondary" sx={{ fontStyle: "oblique", fontWeight: "bold", mr: 1 }}>Login</Button>
             <Button component={Link} to="/signup" variant="contained" color="info" sx={{ fontStyle: "oblique", fontWeight: "bold" }}>Sign Up</Button>
           </>)}

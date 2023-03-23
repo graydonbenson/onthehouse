@@ -97,7 +97,7 @@ export const RecipeCard = ({ postId, userId, title, date, image, ingredients, di
                     <ExpandMore
                         expand={expanded}
                         onClick={handleExpandClick}
-                        aria-expanded={expanded}
+                        aria-expanded={expanded} 
                         aria-label="Show More"
                     >
                         <ExpandMoreIcon />

@@ -121,6 +121,7 @@ const MyRecipes = () => {
                                                         ingredients={post.ingredients}
                                                         directions={post.directions}
                                                         upvoteCount={post.upvoteCount}
+                                                        flairTag={post.flair}
                                                     />
 
                                                     <Box

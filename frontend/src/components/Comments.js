@@ -16,7 +16,7 @@ export default function Comments({ postId }) {
         `${process.env.REACT_APP_API_URL}/comments/${postId}`
       );
       const json = await response.json();
-      console.log(json);
+      //   console.log(json); - debugging purposes
       setPostComments(json.comments.map((c) => c.message));
       setUsers(json.comments.map((c) => c.userId));
     };

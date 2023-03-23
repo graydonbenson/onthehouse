@@ -12,6 +12,7 @@ import { Grid, createTheme, ThemeProvider } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import SendIcon from '@mui/icons-material/Send';
 import { useParams } from 'react-router-dom';
+import LoadingIcon from '../components/LoadingIcon';
 
 export const PostPage = () => {
   const params = useParams();
@@ -34,6 +35,7 @@ export const PostPage = () => {
   const [like, setLike] = useState(false);
   const [dislike, setDislike] = useState(false);
   const userData = JSON.parse(localStorage.getItem('userData'));
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -65,7 +67,9 @@ export const PostPage = () => {
       }
     };
 
+    setIsLoading(true);
     fetchPost();
+    setIsLoading(false);
   }, [params.id]);
 
   const postComment = (text, pID, uID) => {
@@ -96,6 +100,10 @@ export const PostPage = () => {
   function handleDislikeClick() {
     setLike(false);
     setDislike(true);
+  }
+
+  if (isLoading) {
+    return <LoadingIcon/>
   }
 
   return (

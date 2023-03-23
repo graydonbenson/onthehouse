@@ -3,11 +3,10 @@ import Navbar from '../components/Navbar';
 import SideDrawer from '../components/SideDrawer';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import { Grid, LinearProgress, Paper, Skeleton, Stack, createTheme, ThemeProvider, Backdrop } from '@mui/material';
+import { Grid, Skeleton, Stack, createTheme, ThemeProvider, Backdrop } from '@mui/material';
 import RecipeCard from '../components/RecipeCard';
 import MainFeaturedPost from '../components/Motw';
 import { usePostsContext } from '../hooks/usePostsContext';
-import axios from 'axios';
 
 const mainFeaturedPost = {
   title: 'Meal of the Week',
@@ -36,8 +35,8 @@ const DashboardPage = () => {
 
   const [open, setOpen] = useState(false);
   const [cardIsLoading, setCardIsLoading] = useState(false);
-  const [error, setError] = useState('');
-  const [data, setData] = useState([]);
+//   const [error, setError] = useState('');
+//   const [data, setData] = useState([]);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -59,7 +58,7 @@ const DashboardPage = () => {
         });
         setCardIsLoading(false);
       } else {
-        setError("Error: " + json.error);
+        // setError("Error: " + json.error);
         setCardIsLoading(false);
       }
     }

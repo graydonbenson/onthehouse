@@ -1,35 +1,35 @@
-const functions = require("firebase-functions");
-const admin = require("firebase-admin");
-const cors = require("cors");
-const { initializeApp } = require("firebase/app");
+const functions = require('firebase-functions');
+const admin = require('firebase-admin');
+const cors = require('cors');
+const { initializeApp } = require('firebase/app');
 const {
   getAuth,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   sendPasswordResetEmail,
   signOut,
-  getIdToken
-} = require("firebase/auth");
+  getIdToken,
+} = require('firebase/auth');
 const cookieParser = require('cookie-parser');
 
-const { FieldValue } = require("firebase-admin/firestore");
+const { FieldValue } = require('firebase-admin/firestore');
 
 admin.initializeApp();
 const db = admin.firestore();
 
-const express = require("express");
+const express = require('express');
 const app = express();
 app.use(cors({ origin: true, credentials: true }));
 app.use(cookieParser());
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAZToVDJJDQle7Z6Q-fevMs9CF-xWZfbFw",
-  authDomain: "seng-401-on-the-house.firebaseapp.com",
-  projectId: "seng-401-on-the-house",
-  storageBucket: "seng-401-on-the-house.appspot.com",
-  messagingSenderId: "439573630964",
-  appId: "1:439573630964:web:98ca7406811fc583fef3a1",
-  measurementId: "G-EFH2Y2NN1X",
+  apiKey: 'AIzaSyAZToVDJJDQle7Z6Q-fevMs9CF-xWZfbFw',
+  authDomain: 'seng-401-on-the-house.firebaseapp.com',
+  projectId: 'seng-401-on-the-house',
+  storageBucket: 'seng-401-on-the-house.appspot.com',
+  messagingSenderId: '439573630964',
+  appId: '1:439573630964:web:98ca7406811fc583fef3a1',
+  measurementId: 'G-EFH2Y2NN1X',
 };
 
 initializeApp(firebaseConfig);
@@ -39,9 +39,9 @@ initializeApp(firebaseConfig);
 
 // ! Users Endpoints
 // GET /users - get all users (from firestore)
-app.get("/users", (req, res) => {
+app.get('/users', (req, res) => {
   let users = [];
-  db.collection("Users")
+  db.collection('Users')
     .get()
     .then((querySnap) => {
       querySnap.forEach((doc) => {
@@ -54,7 +54,7 @@ app.get("/users", (req, res) => {
 
 // for frontend if /signup api request is successful, redirect to login page
 // POST /signup - add user (to firebase auth and firestore)
-app.post("/signup", async (req, res) => {
+app.post('/signup', async (req, res) => {
   const registerUser = {
     fullName: req.body.fullName,
     email: req.body.email,
@@ -62,11 +62,11 @@ app.post("/signup", async (req, res) => {
     password: req.body.password,
   };
 
-  const usernameRef = await db.collection("Users").doc(registerUser.username);
+  const usernameRef = await db.collection('Users').doc(registerUser.username);
   const doc = await usernameRef.get();
 
   if (doc.exists) {
-    res.send({ code: "Username already taken!" });
+    res.send({ code: 'Username already taken!' });
     return;
   }
 
@@ -79,7 +79,7 @@ app.post("/signup", async (req, res) => {
       registerUser.password
     );
 
-    await db.collection("Users").doc(registerUser.username).set(
+    await db.collection('Users').doc(registerUser.username).set(
       {
         fullName: registerUser.fullName,
         email: registerUser.email,
@@ -87,23 +87,23 @@ app.post("/signup", async (req, res) => {
       },
       { merge: false }
     );
-    const userEmailRef = await db.collection("Users");
+    const userEmailRef = await db.collection('Users');
     //   .doc(registerUser.username)
     // .doc(userCredentials.user.uid)
     const snapshot = await userEmailRef
-      .where("email", "==", registerUser.email)
+      .where('email', '==', registerUser.email)
       .get();
 
     if (snapshot.empty) {
       res.status(404);
-      console.log("No matching documents.");
-      res.send({ message: "No matching documents!" });
+      console.log('No matching documents.');
+      res.send({ message: 'No matching documents!' });
     }
     // set authToken cookie
-    res.cookie("authToken", true, {
+    res.cookie('authToken', true, {
       expires: new Date(Date.now() + 30 * 60 * 1000),
       secure: true, //change to true when deploying
-      sameSite: 'none' // uncomment when deploying
+      sameSite: 'none', // uncomment when deploying
     });
     let userData;
     snapshot.forEach((doc) => {
@@ -117,7 +117,7 @@ app.post("/signup", async (req, res) => {
 
 // for frontend, if successful login save returned user object (or just email) in session/browser Storage
 // POST /login - get user (from firebase auth) given user's email and password parameters
-app.post("/login", async (req, res) => {
+app.post('/login', async (req, res) => {
   const loginUser = {
     email: req.body.email,
     password: req.body.password,
@@ -134,24 +134,24 @@ app.post("/login", async (req, res) => {
 
     const userCredentialsToken = await getIdToken(userCredentials.user, true);
     // Get usercredentials from firestore
-    const userEmailRef = await db.collection("Users");
+    const userEmailRef = await db.collection('Users');
     //   .doc(registerUser.username)
     // .doc(userCredentials.user.uid)
     const snapshot = await userEmailRef
-      .where("email", "==", loginUser.email)
+      .where('email', '==', loginUser.email)
       .get();
 
     if (snapshot.empty) {
       res.status(404);
-      console.log("No matching documents.");
-      res.send({ message: "No matching documents!" });
+      console.log('No matching documents.');
+      res.send({ message: 'No matching documents!' });
     }
 
     // set authToken cookie
-    res.cookie("authToken", true, {
+    res.cookie('authToken', true, {
       expires: new Date(Date.now() + 30 * 60 * 1000),
       secure: true, //change to true when deploying
-      sameSite: 'none' // uncomment when deploying
+      sameSite: 'none', // uncomment when deploying
     });
     let userData;
     snapshot.forEach((doc) => {
@@ -165,7 +165,7 @@ app.post("/login", async (req, res) => {
 });
 
 // POST /resetPassword - send user a password reset link to their email address
-app.post("/resetPassword", async (req, res) => {
+app.post('/resetPassword', async (req, res) => {
   try {
     await sendPasswordResetEmail(auth, req.body.email);
     res.send({ message: `Password reset link sent to ${req.body.email}!` });
@@ -176,17 +176,16 @@ app.post("/resetPassword", async (req, res) => {
 });
 
 // Verify JWT Authentication token
-app.post("/verifyAuth", async (req, res) => {
-
+app.post('/verifyAuth', async (req, res) => {
   const auth = getAuth();
 
   try {
     // check for authentication cookie
     const authToken = req.cookies.authToken;
     if (authToken) {
-      res.send({ successMessage: "User is authenticated!" });
+      res.send({ successMessage: 'User is authenticated!' });
     } else {
-      res.send({ errorMessage: "User is not authenticated!" });
+      res.send({ errorMessage: 'User is not authenticated!' });
     }
   } catch (error) {
     res.send(error);
@@ -194,18 +193,17 @@ app.post("/verifyAuth", async (req, res) => {
 });
 
 // POST /logout - signout user
-app.post("/logout", async (req, res) => {
-
+app.post('/logout', async (req, res) => {
   const auth = getAuth();
 
   try {
     signOut(auth);
     // clear authToken cookie
-    res.clearCookie("authToken", {
+    res.clearCookie('authToken', {
       secure: true, //change to true when deploying
-      sameSite: 'none' // uncomment when deploying
+      sameSite: 'none', // uncomment when deploying
     });
-    res.status(200).send({ message: "Successfully logged out user" });
+    res.status(200).send({ message: 'Successfully logged out user' });
   } catch (error) {
     res.send(error); // for frontend - if error sent/check status code is not 200 then alert(error.message)
   }
@@ -213,9 +211,10 @@ app.post("/logout", async (req, res) => {
 
 // !Posts
 // GET /posts - get all posts
-app.get("/posts", (req, res) => {
+app.get('/posts', (req, res) => {
   let posts = [];
-  db.collection("Posts")
+  db.collection('Posts')
+    .orderBy('date')
     .get()
     .then((querySnap) => {
       querySnap.forEach((doc) => {
@@ -241,7 +240,7 @@ app.get('/posts/user/:userId', (req, res) => {
         querySnap.forEach((doc) => {
           userPosts.push({
             id: doc.id,
-            ...doc.data()
+            ...doc.data(),
           });
         });
 
@@ -258,16 +257,17 @@ app.get('/posts/user/:userId', (req, res) => {
 });
 
 // GET /posts/:id - get post by post id
-app.get("/posts/:id", (req, res) => {
-  db.collection("Posts")
+app.get('/posts/:id', (req, res) => {
+  db.collection('Posts')
     .doc(req.params.id)
     .get()
     .then((doc) => {
       if (doc.exists) {
         let comments = [];
-        db.collection("Posts")
+        db.collection('Posts')
           .doc(doc.id)
-          .collection("Comments")
+          .collection('Comments')
+          .orderBy('date')
           .get()
           .then((querySnap) => {
             querySnap.forEach((doc) => {
@@ -282,8 +282,8 @@ app.get("/posts/:id", (req, res) => {
             res.send(error);
           });
       } else {
-        console.log("No such document!");
-        res.send({ message: "No such document!" });
+        console.log('No such document!');
+        res.send({ message: 'No such document!' });
       }
     })
     .catch((error) => {
@@ -309,7 +309,7 @@ app.patch('/posts/:id', (req, res) => {
 });
 
 // POST /posts - create a new post
-app.post("/posts", (req, res) => {
+app.post('/posts', (req, res) => {
   const newPost = {
     title: req.body.title,
     ingredients: req.body.ingredients,
@@ -325,17 +325,16 @@ app.post("/posts", (req, res) => {
     const docRef = db.collection('Posts').doc();
     const docId = docRef.id;
 
-    docRef.set(newPost)
-      .then(() => {
-        console.log('Post document successfully created!');
-        res.send({
-          message: 'Created Post Successfully',
-          post: {
-            id: docId,
-            ...newPost
-          }
-        });
-      })
+    docRef.set(newPost).then(() => {
+      console.log('Post document successfully created!');
+      res.send({
+        message: 'Created Post Successfully',
+        post: {
+          id: docId,
+          ...newPost,
+        },
+      });
+    });
   } catch (error) {
     console.error(error);
     res.send(error);
@@ -364,7 +363,7 @@ app.get('/upvotes', async (req, res) => {
 });
 
 // POST /upvotes - upvote a post
-app.post("/upvotes", (req, res) => {
+app.post('/upvotes', (req, res) => {
   const newUpvote = {
     postId: req.body.postId,
     userId: req.body.userId,
@@ -382,22 +381,22 @@ else:
   create a new record
 */
 
-  db.collection("Upvotes")
+  db.collection('Upvotes')
     .doc(docId)
     .get()
     .then((doc) => {
       if (doc.exists) {
         if (doc.data().isUpvote === newUpvote.isUpvote) {
-          const message = "Post has already been upvoted/downvoted by user.";
+          const message = 'Post has already been upvoted/downvoted by user.';
           console.log(message);
           res.send({ message: message });
         } else {
           // Update isUpvote in found record
-          db.collection("Upvotes")
+          db.collection('Upvotes')
             .doc(docId)
             .update({ isUpvote: newUpvote.isUpvote })
             .then(() => {
-              console.log("IsUpvote attribute updated!");
+              console.log('IsUpvote attribute updated!');
             })
             .catch((error) => {
               console.error(error);
@@ -418,7 +417,7 @@ else:
       */
 
           // Update upvoteCount in posts
-          db.collection("Posts")
+          db.collection('Posts')
             .doc(newUpvote.postId)
             .update({
               upvoteCount: newUpvote.isUpvote
@@ -426,8 +425,8 @@ else:
                 : FieldValue.increment(-2),
             })
             .then(() => {
-              console.log("upvoteCount attribute updated!");
-              res.send({ message: "Upvoted/Downvoted Post Successfully" });
+              console.log('upvoteCount attribute updated!');
+              res.send({ message: 'Upvoted/Downvoted Post Successfully' });
             })
             .catch((error) => {
               console.error(error);
@@ -436,11 +435,11 @@ else:
         }
       } else {
         // Create a new record
-        db.collection("Upvotes")
+        db.collection('Upvotes')
           .doc(docId)
           .set(newUpvote)
           .then(() => {
-            console.log("Upvote document successfully created!");
+            console.log('Upvote document successfully created!');
           })
           .catch((error) => {
             console.error(error);
@@ -448,7 +447,7 @@ else:
           });
 
         // Update upvoteCount in posts
-        db.collection("Posts")
+        db.collection('Posts')
           .doc(newUpvote.postId)
           .update({
             upvoteCount: newUpvote.isUpvote
@@ -456,8 +455,8 @@ else:
               : FieldValue.increment(-1),
           })
           .then(() => {
-            console.log("upvoteCount attribute updated!");
-            res.send({ message: "Upvoted/Downvoted Post Successfully" });
+            console.log('upvoteCount attribute updated!');
+            res.send({ message: 'Upvoted/Downvoted Post Successfully' });
           })
           .catch((error) => {
             console.error(error);
@@ -487,22 +486,58 @@ app.delete('/posts/:id', (req, res) => {
 });
 
 // Comments
+
+// GET /comments/:postId - get comments for a specific post
+app.get('/comments/:postId', (req, res) => {
+  db.collection('Posts')
+    .doc(req.params.postId)
+    .get()
+    .then((doc) => {
+      if (doc.exists) {
+        let comments = [];
+        db.collection('Posts')
+          .doc(doc.id)
+          .collection('Comments')
+          .orderBy('date')
+          .get()
+          .then((querySnap) => {
+            querySnap.forEach((doc) => {
+              comments.push(doc.data());
+            });
+            return res.json({ comments });
+          })
+          .catch((error) => {
+            console.error(error);
+            res.send(error);
+          });
+      } else {
+        console.log('No such document!');
+        res.send({ message: 'No such document!' });
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+      res.send(error);
+    });
+});
+
 // POST /comments/:postId - add a comment to a specific post
-app.post("/comments/:postId", async (req, res) => {
+app.post('/comments/:postId', async (req, res) => {
   const newComment = {
     message: req.body.message,
     userId: req.body.userId,
+    date: new Date(),
   };
 
   await db
-    .collection("Posts")
+    .collection('Posts')
     .doc(req.params.postId)
-    .collection("Comments")
+    .collection('Comments')
     .doc()
     .set(newComment)
     .then(() => {
-      console.log("Comment document successfully created!");
-      res.send({ message: "Created Comment Successfully" });
+      console.log('Comment document successfully created!');
+      res.send({ message: 'Created Comment Successfully' });
     })
     .catch((error) => {
       console.error(error);
@@ -513,7 +548,7 @@ app.post("/comments/:postId", async (req, res) => {
 // !Helper Function
 async function getuserNamebyUserId(userId) {
   await db
-    .collection("Users")
+    .collection('Users')
     .doc(userId)
     .get()
     .then((doc) => {

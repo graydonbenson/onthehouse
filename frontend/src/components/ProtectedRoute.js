@@ -1,5 +1,4 @@
-import { Backdrop, LinearProgress, Typography } from '@mui/material';
-import axios from 'axios';
+import { Backdrop, Typography } from '@mui/material';
 import React, { useEffect } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
 
@@ -7,7 +6,7 @@ function ProtectedRoute() {
 
     const [isAuthenticated, setAuthentication] = React.useState(false);
     const [isLoading, setLoading] = React.useState(true);
-    const userData = JSON.parse(localStorage.getItem("userData"));
+    // const userData = JSON.parse(localStorage.getItem("userData"));
 
     useEffect(() => {
         async function authStatus() {

@@ -23,10 +23,11 @@ export const PostPage = () => {
     palette: {
       mode: 'light',
       primary: {
-        main: '#ba68c8',
+        main: '#f4bd7b',
+        contrastText: '#000000',
       },
       secondary: {
-        main: '#f50057',
+        main: '#fe647d',
       },
     },
   });

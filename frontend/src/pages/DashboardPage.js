@@ -104,6 +104,7 @@ const DashboardPage = () => {
                       ingredients={post.ingredients}
                       directions={post.directions}
                       upvoteCount={post.upvoteCount}
+                      flairTag={post.flair}
                     />
                   }
                 </Grid>

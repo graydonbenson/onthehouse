@@ -14,7 +14,7 @@ import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Link } from "react-router-dom";
-import { Tooltip } from '@mui/material';
+import { Paper, Tooltip } from '@mui/material';
 
 const ExpandMore = styled((props) => {
     const { expand, ...other } = props;
@@ -27,7 +27,7 @@ const ExpandMore = styled((props) => {
     }),
 }));
 
-export const RecipeCard = ({ postId, userId, title, date, image, ingredients, directions, upvoteCount }) => {
+export const RecipeCard = ({ postId, userId, title, date, image, ingredients, directions, upvoteCount, flairTag }) => {
     const [expanded, setExpanded] = useState(false);
     const [data, setData] = useState([]);
     const [like, setLike] = useState(false);
@@ -70,6 +70,7 @@ export const RecipeCard = ({ postId, userId, title, date, image, ingredients, di
                             <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">{userId.charAt(0)}</Avatar>
                         </Tooltip>
                     }
+                    action={<Paper elevation={8} sx={{width: 80, fontStyle: "oblique", fontWeight: "bold", backgroundColor: "#0288d1", color: "white", textAlign: "center"}}>{flairTag}</Paper>}
                     title={<Typography variant="body1" sx={{fontWeight: "bold", fontFamily: "unset", fontStyle: "oblique"}}>{title}</Typography>}
                     subheader={<Typography variant="">{new Date(date._seconds * 1000).toDateString()}</Typography>}
                 />

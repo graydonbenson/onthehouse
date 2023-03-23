@@ -36,6 +36,7 @@ export const PostPage = () => {
   const [comment, setComment] = useState('');
   const [like, setLike] = useState(false);
   const [dislike, setDislike] = useState(false);
+  const userData = JSON.parse(localStorage.getItem("userData"));
 
   const handleDrawerOpen = () => {
     setOpen(true);

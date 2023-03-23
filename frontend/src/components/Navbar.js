@@ -5,10 +5,11 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
-import { Avatar, Backdrop, Button, Tooltip } from '@mui/material';
+import { Avatar, Button, Tooltip } from '@mui/material';
 import { red } from '@mui/material/colors';
 import { Link, Navigate } from 'react-router-dom';
 import axios from 'axios';
+import LoadingIcon from './LoadingIcon';
 
 const drawerWidth = 240;
 
@@ -31,47 +32,48 @@ const AppBar = styled(MuiAppBar, {
 }));
 
 function Navbar({ open, openDrawer }) {
-
   const [gotToHome, setGoToHome] = useState(false);
   const [isAuthenticated, setAuthentication] = useState(false);
   const [isLoading, setLoading] = useState(true);
-  const userData = JSON.parse(localStorage.getItem("userData"));
+  const userData = JSON.parse(localStorage.getItem('userData'));
 
   useEffect(() => {
     async function authStatus() {
-      const response = await axios.get(`${process.env.REACT_APP_DEPLOYED_API_URL}/verifyAuth`, {
-        withCredentials: true,
-      });
+      const response = await axios.get(
+        `${process.env.REACT_APP_DEPLOYED_API_URL}/verifyAuth`,
+        {
+          withCredentials: true,
+        }
+      );
       if (response.data.successMessage) {
         setAuthentication(true);
       }
       setLoading(false);
-    };
+    }
     authStatus();
-  }, [])
+  }, []);
 
   if (isLoading) {
-    return (
-      <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={true}>
-        <img alt={"Loading"} src={"https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExZDE4NGE2N2M0NThhNmE3ZmQ5MTUzZjE1NTdhZjJkZWFiYjNmMjc0YyZjdD1z/KcWaUe5tKkIrSI2LaU/giphy.gif"} width="100" height="100" />
-        <Typography variant="h4">Loading....</Typography>
-      </Backdrop>
-    )
+    return <LoadingIcon />;
   }
 
   if (gotToHome) {
-    return <Navigate to="/" />
+    return <Navigate to="/" />;
   }
 
   async function handleLogout() {
-    const response = await axios.post(`${process.env.REACT_APP_DEPLOYED_API_URL}/logout`, null, {
-      withCredentials: true
-    });
+    const response = await axios.post(
+      `${process.env.REACT_APP_DEPLOYED_API_URL}/logout`,
+      null,
+      {
+        withCredentials: true,
+      }
+    );
     if (response.status === 200) {
-      localStorage.removeItem("userData");
+      localStorage.removeItem('userData');
       setGoToHome(true);
     } else {
-      alert("Error occurred when logging out");
+      alert('Error occurred when logging out');
     }
   }
 
@@ -99,24 +101,55 @@ function Navbar({ open, openDrawer }) {
           textAlign={'left'}
           sx={{ flexGrow: 1 }}
         >
-          <Link to={"/dashboard"} style={{ color: 'inherit', textDecoration: 'none' }}>
+          <Link
+            to={'/dashboard'}
+            style={{ color: 'inherit', textDecoration: 'none' }}
+          >
             On The House 🍜
           </Link>
         </Typography>
-        {isAuthenticated ?
-          (<>
-            <Button onClick={handleLogout} variant="contained" color="error" sx={{ fontStyle: "oblique", mr: 1 }}>Logout</Button>
+        {isAuthenticated ? (
+          <>
+            <Button
+              onClick={handleLogout}
+              variant="contained"
+              color="error"
+              sx={{ fontStyle: 'oblique', mr: 1 }}
+            >
+              Logout
+            </Button>
             <Tooltip title={userData?.fullName}>
-              <Avatar sx={{ bgcolor: red[500] }}> {userData?.fullName.charAt(0)} </Avatar>
+              <Avatar sx={{ bgcolor: red[500] }}>
+                {' '}
+                {userData?.fullName.charAt(0)}{' '}
+              </Avatar>
             </Tooltip>
-          </>) :
-          (<>
-            <Button component={Link} to="/login" variant="contained" color="secondary" sx={{ fontStyle: "oblique", fontWeight: "bold", mr: 1 }}>Login</Button>
-            <Button component={Link} to="/signup" variant="contained" color="info" sx={{ fontStyle: "oblique", fontWeight: "bold" }}>Sign Up</Button>
-          </>)}
+          </>
+        ) : (
+          <>
+            <Button
+              component={Link}
+              to="/login"
+              variant="contained"
+              color="secondary"
+              sx={{ fontStyle: 'oblique', fontWeight: 'bold', mr: 1 }}
+            >
+              Login
+            </Button>
+            <Button
+              component={Link}
+              to="/signup"
+              variant="contained"
+              color="info"
+              sx={{ fontStyle: 'oblique', fontWeight: 'bold' }}
+            >
+              Sign Up
+            </Button>
+          </>
+        )}
       </Toolbar>
     </AppBar>
-  )
+  );
 }
 
 export default Navbar;

@@ -76,11 +76,11 @@ Frontend:
 - Post Page - Revamp entire page/make it "pretty"/responsive - Parbir
 
 - Create Recipe - Include option to upload image as file (w/ url option still there) - Athul
-- Create Recipe - Change flair from text field to drop down - Ahad (3)
+- Create Recipe - Change flair from text field to drop down - Ahad (DONE)
 
-- Comments - include reply option - Ahad
-- Notifications - notification when upvote/downvote or comment - Ahad
-- Post Page - Use delimeter on Ingredients and Directions - Ahad
+- Comments - include reply option - Ahad (3)
+- Notifications - notification when upvote/downvote or comment - Ahad (2)
+- Post Page - Use delimeter on Ingredients and Directions - Ahad (DONE)
 
 Backend:
 - Create/Edit Recipe - Include option to upload image as file (w/ url option still there) - Athul

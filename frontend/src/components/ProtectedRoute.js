@@ -1,4 +1,3 @@
-import { Backdrop, Typography } from '@mui/material';
 import React, { useEffect } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
 import LoadingIcon from './LoadingIcon';

@@ -341,20 +341,20 @@ app.post('/posts', (req, res) => {
   }
 });
 
-// GET /upvotes - check if specific user upvoted specific post
-app.get('/upvotes', async (req, res) => {
-  const docId = `${req.body.postId}_${req.body.userId}`;
+// GET /upvotes/:postId/:userId - check if specific user upvoted specific post
+app.get('/upvotes/:postId/:userId', async (req, res) => {
+  const docId = `${req.params.postId}_${req.params.userId}`;
   try {
     const upvotesRef = await db.collection('Upvotes').doc(docId);
     const doc = await upvotesRef.get();
 
     if (!doc.exists) {
       console.log('No upvotes associated with this user on this post');
-      res.send({
+      res.status(400).send({
         message: 'No upvotes associated with this user on this post',
       });
     } else {
-      res.send(doc.data());
+      res.status(200).send(doc.data());
     }
   } catch (error) {
     console.error(error);
@@ -389,7 +389,7 @@ else:
         if (doc.data().isUpvote === newUpvote.isUpvote) {
           const message = 'Post has already been upvoted/downvoted by user.';
           console.log(message);
-          res.send({ message: message });
+          res.status(400).send({ message: message });
         } else {
           // Update isUpvote in found record
           db.collection('Upvotes')
@@ -426,7 +426,9 @@ else:
             })
             .then(() => {
               console.log('upvoteCount attribute updated!');
-              res.send({ message: 'Upvoted/Downvoted Post Successfully' });
+              res
+                .status(200)
+                .send({ message: 'Upvoted/Downvoted Post Successfully' });
             })
             .catch((error) => {
               console.error(error);

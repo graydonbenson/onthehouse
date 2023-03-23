@@ -60,7 +60,7 @@ From Checkin 3:
 - Handle meal of the week based on upvotes in backend + connect - Parbir
 - Get all posts based on recipe flair tag + connect w/ a filter/search - Parbir
 - Fix/finalize Get all & post comment - Ahad (DONE)
-- Upvote/Downvote - Ahad (2)
+- Upvote/Downvote - Ahad (DONE)
 
 - Fix/finalize auth - Mush
 - Fix/finalize deployment - Mush

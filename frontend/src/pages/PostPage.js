@@ -8,7 +8,7 @@ import IconButton from '@mui/material/IconButton';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 import Comments from '../components/Comments';
-import { Grid, createTheme, ThemeProvider } from '@mui/material';
+import { Grid, createTheme, ThemeProvider, Chip } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import SendIcon from '@mui/icons-material/Send';
 import { useParams } from 'react-router-dom';
@@ -45,14 +45,47 @@ export const PostPage = () => {
     setOpen(false);
   };
 
-  const handleComment = (event) => {
+  const handleCommentOnChange = (event) => {
     setComment(event.target.value);
   };
 
-  const handleComment2 = () => {
+  const handleCommentOnSubmit = () => {
     postComment(comment, params.id, userData.username);
     setComment('');
   };
+
+  async function handleLikeClick() {
+    await postUpvote(params.id, userData.username, true);
+  }
+
+  async function handleDislikeClick() {
+    await postUpvote(params.id, userData.username, false);
+  }
+
+  // Check if previously upvoted/downvoted
+  useEffect(() => {
+    const fetchUpvote = async () => {
+      const response = await fetch(
+        `${process.env.REACT_APP_API_URL}/upvotes/${params.id}/${userData.username}`
+      );
+      const json = await response.json();
+      console.log(json); // debugging purposes
+
+      if (response.ok) {
+        if (json.isUpvote) {
+          setLike(true);
+          setDislike(false);
+        } else {
+          setLike(false);
+          setDislike(true);
+        }
+      } else {
+        console.log(json);
+      }
+    };
+
+    fetchUpvote();
+  }, [params.id, userData.username]);
 
   useEffect(() => {
     const fetchPost = async () => {
@@ -92,18 +125,40 @@ export const PostPage = () => {
       });
   };
 
-  function handleLikeClick() {
-    setLike(true);
-    setDislike(false);
-  }
-
-  function handleDislikeClick() {
-    setLike(false);
-    setDislike(true);
-  }
+  const postUpvote = async (postId, userId, isUpvote) => {
+    try {
+      const response = await fetch(
+        `${process.env.REACT_APP_API_URL}/upvotes/`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ postId, userId, isUpvote }),
+        }
+      );
+      const json = await response.json();
+      if (response.ok) {
+        console.log(json);
+        if (isUpvote) {
+          setLike(true);
+          setDislike(false);
+        } else {
+          setLike(false);
+          setDislike(true);
+        }
+        window.location.reload();
+      } else {
+        console.log(json);
+        alert(json.message);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   if (isLoading) {
-    return <LoadingIcon/>
+    return <LoadingIcon />;
   }
 
   return (
@@ -147,16 +202,18 @@ export const PostPage = () => {
                     {post.userId?.substring(0, 1)}
                   </Avatar>
                   <Typography sx={{ ml: 2 }}>{post.userId}</Typography>
-                  <IconButton aria-label="Upvote Recipe" sx={{ ml: 52 }}>
+                  <IconButton aria-label="Upvote Recipe" sx={{ ml: 48 }}>
                     <ThumbUpIcon
-                      onClick={handleLikeClick}
+                      onClick={async () => await handleLikeClick()}
                       style={{ color: like ? 'blue' : 'inherit' }}
                     />
                   </IconButton>
-                  {post.upvoteCount}
+                  {/* TODO Ahad/Mush - change color to color theme from mush's branch */}
+                  <Chip label={post.upvoteCount} color="primary" />
+
                   <IconButton aria-label="Downvote Recipe">
                     <ThumbDownIcon
-                      onClick={handleDislikeClick}
+                      onClick={async () => await handleDislikeClick()}
                       style={{ color: dislike ? 'red' : 'inherit' }}
                     />
                   </IconButton>
@@ -203,7 +260,7 @@ export const PostPage = () => {
                       id="filled-multiline-flexible"
                       label="Comment here"
                       value={comment}
-                      onChange={handleComment}
+                      onChange={handleCommentOnChange}
                       multiline
                       maxRows={4}
                       variant="filled"
@@ -213,7 +270,7 @@ export const PostPage = () => {
                   <IconButton
                     type="submit"
                     aria-label="Send Comment"
-                    onClick={handleComment2}
+                    onClick={handleCommentOnSubmit}
                   >
                     <SendIcon />
                   </IconButton>

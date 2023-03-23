@@ -15,7 +15,7 @@ const mainFeaturedPost = {
     "Multiple lines of text that form the lede, informing new readers quickly and efficiently about what's most interesting in this post's contents.",
   image: 'https://source.unsplash.com/random',
   imageText: 'main image description',
-  linkText: 'Continue reading…',
+  linkText: 'Continue reading....',
 
 };
 
@@ -26,10 +26,11 @@ const DashboardPage = () => {
     palette: {
       mode: 'light',
       primary: {
-        main: '#ba68c8',
+        main: '#f4bd7b',
+        contrastText: '#000000',
       },
       secondary: {
-        main: '#f50057',
+        main: '#fe647d',
       },
     },
   });
@@ -79,12 +80,12 @@ const DashboardPage = () => {
     return (
       <>
         <ThemeProvider theme={theme}>
-          <Box sx={{ display: 'flex' }}>
+          <Box sx={{ display: 'flex', backgroundColor: "#fee7e7" }}>
           <Navbar open={open} openDrawer={handleDrawerOpen}></Navbar>
           <SideDrawer open={open} closeDrawer={handleDrawerClose}></SideDrawer>
           <Box component="main" sx={{ flexGrow: 1, p: 3, marginTop: 8 }}>
             <MainFeaturedPost post={mainFeaturedPost} />
-            <Grid container spacing={2}>
+            <Grid container alignItems="center" rowSpacing={4} columnSpacing={0}>
               {posts && Object.values(posts).map(post =>
                 <Grid item xs={12} sm={6} md={5} lg={3} key={post.id}>
                   {cardIsLoading ?

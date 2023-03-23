@@ -92,12 +92,11 @@ function Navbar({ open, openDrawer }) {
         </IconButton>
 
         <Typography
-          component="h1"
-          variant="h5"
+          variant="h1"
           color="inherit"
           noWrap
           textAlign={'left'}
-          sx={{ flexGrow: 1 }}
+          sx={{ fontSize: 26, flexGrow: 1 }}
         >
           <Link to={"/dashboard"} style={{ color: 'inherit', textDecoration: 'none' }}>
             On The House 🍜

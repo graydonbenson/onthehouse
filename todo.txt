@@ -86,7 +86,7 @@ Misc.
 - Deploy Final Time/Final Testing - Mush
 
 
-Demo Video:
+Demo Video (write ur script in doc above):
 - Objective/Motivation - Athul
 - Requirements - David, Eduardo, Graydon
 - Architecture - Ahad

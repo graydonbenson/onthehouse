@@ -84,7 +84,9 @@ export const PostPage = () => {
       }
     };
 
+    setIsLoading(true);
     fetchUpvote();
+    setIsLoading(false);
   }, [params.id, userData.username]);
 
   useEffect(() => {
@@ -106,6 +108,7 @@ export const PostPage = () => {
   }, [params.id]);
 
   const postComment = (text, pID, uID) => {
+    setIsLoading(true);
     fetch(`${process.env.REACT_APP_API_URL}/comments/${pID}`, {
       method: 'POST',
       headers: {
@@ -123,6 +126,7 @@ export const PostPage = () => {
         console.log(error);
         window.location.reload();
       });
+    setIsLoading(false);
   };
 
   const postUpvote = async (postId, userId, isUpvote) => {
@@ -202,7 +206,7 @@ export const PostPage = () => {
                     {post.userId?.substring(0, 1)}
                   </Avatar>
                   <Typography sx={{ ml: 2 }}>{post.userId}</Typography>
-                  <IconButton aria-label="Upvote Recipe" sx={{ ml: 48 }}>
+                  <IconButton aria-label="Upvote Recipe" sx={{ ml: 30 }}>
                     <ThumbUpIcon
                       onClick={async () => await handleLikeClick()}
                       style={{ color: like ? 'blue' : 'inherit' }}

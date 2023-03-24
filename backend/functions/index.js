@@ -11,6 +11,7 @@ const {
   getIdToken,
 } = require('firebase/auth');
 const cookieParser = require('cookie-parser');
+const nodemailer = require('nodemailer');
 
 const { FieldValue } = require('firebase-admin/firestore');
 
@@ -525,26 +526,76 @@ app.get('/comments/:postId', (req, res) => {
 
 // POST /comments/:postId - add a comment to a specific post
 app.post('/comments/:postId', async (req, res) => {
-  const newComment = {
-    message: req.body.message,
-    userId: req.body.userId,
-    date: new Date(),
-  };
+  try {
+    const newComment = {
+      message: req.body.message,
+      userId: req.body.userId,
+      date: new Date(),
+    };
 
-  await db
-    .collection('Posts')
-    .doc(req.params.postId)
-    .collection('Comments')
-    .doc()
-    .set(newComment)
-    .then(() => {
-      console.log('Comment document successfully created!');
-      res.send({ message: 'Created Comment Successfully' });
-    })
-    .catch((error) => {
-      console.error(error);
-      res.send(error);
-    });
+    await db
+      .collection('Posts')
+      .doc(req.params.postId)
+      .collection('Comments')
+      .doc()
+      .set(newComment);
+
+    // Email user notification about comment
+    // // Get userId and email of OG poster
+    // let doc = await db.collection('Posts').doc(req.params.postId).get();
+    // let userIdOGPoster = '';
+    // if (doc.exists) {
+    //   console.log(doc.data());
+    //   userIdOGPoster = doc.data().userId;
+    // } else {
+    //   console.log('No such document!');
+    // }
+
+    // // Get usercredentials from firestore
+    // const userEmailRef = await db.collection('Users');
+    // const userData = (await userEmailRef.doc(userIdOGPoster).get()).data();
+
+    // console.log(userData);
+
+    // const userOGPosterEmail = userData.email;
+
+    // let transporter = nodemailer.createTransport({
+    //   service: 'gmail',
+    //   auth: {
+    //     type: 'OAuth2',
+    //     user: 'seng401g23@gmail.com',
+    //     pass: 'passwordg23',
+    //     clientId:
+    //       '439573630964-dq3oisqpo61urc8scov884qqlke9s1tt.apps.googleusercontent.com',
+    //     clientSecret: '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',
+    //     refreshToken:
+    //       '1//04v_2txArdUQxCgYIARAAGAQSNwF-L9Ir02JHGh9EmEaVbwWAoBT37-M0tfFZSNb8yCOnYnDBn_VEfGGljHtXKwjs14mzW-caNE8',
+    //   },
+    // });
+
+    // console.log(userOGPosterEmail);
+    // let mailOptions = {
+    //   from: 'seng401g23@gmail.com',
+    //   //   to: `${userOGPosterEmail}`,
+    //   to: 'ahadali101aa@gmail.com',
+    //   subject: 'OnTheHouse Comment Notification',
+    //   text: `${newComment.userId} left a comment on your post. Be sure to check it out on https://seng-401-on-the-house.web.app/.`,
+    // };
+
+    // transporter.sendMail(mailOptions, (error, info) => {
+    //   if (error) {
+    //     console.log(error);
+    //   } else {
+    //     console.log('Email sent: ' + info.response);
+    //   }
+    // });
+
+    console.log('Comment document successfully created!');
+    res.send({ message: 'Created Comment Successfully' });
+  } catch (error) {
+    console.error(error);
+    res.send(error);
+  }
 });
 
 // !Helper Function

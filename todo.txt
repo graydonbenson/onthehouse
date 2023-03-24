@@ -69,7 +69,7 @@ Frontend:
 - All Pages - Change font (from default to Lato?) and use consistent fonting throughout (globally, project-wide) - Mush
 - All Pages - Change theme to be consistent b/w all pages - Mush
 
-- Login/Signup Page - add image and description - Athul
+- Login/Signup Page - add image and description - Athul (DONE)
 - Dashboard - Add shadow/effect to card + change background to light grey for ex. like MUI card exemplar - Mush
 - RecipeCard - Make it "pretty", add flair tag - Mush
 - Recipe Card/Post Page - Gallery of images - Athul (if we have time)

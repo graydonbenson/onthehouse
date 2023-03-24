@@ -6,8 +6,12 @@ import {
   MenuItem,
   Select,
   TextField,
+  Stack,
+  Typography,
+  CardMedia,
+  Box
 } from '@mui/material';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 
 const PostForm = ({
   initialTitle,
@@ -15,6 +19,8 @@ const PostForm = ({
   initialDirections,
   initialTags,
   initialImageUrl,
+  initialFilename,
+  initialImageUpload,
   action,
 }) => {
   const navigate = useNavigate();
@@ -25,13 +31,30 @@ const PostForm = ({
   const [directions, setDirections] = useState(initialDirections);
   const [tags, setTags] = useState(initialTags);
   const [imageUrl, setImageUrl] = useState(initialImageUrl);
+  const [filename, setFilename] = useState(initialFilename);
+  const [imageUpload, setImageUpload] = useState(initialImageUpload);
   const [error, setError] = useState('');
 
   const handleTitleChange = (event) => setTitle(event.target.value);
   const handleIngredientsChange = (event) => setIngredients(event.target.value);
   const handleDirectionsChange = (event) => setDirections(event.target.value);
   const handleTagsChange = (event) => setTags(event.target.value);
-  const handleImageUrlChange = (event) => setImageUrl(event.target.value);
+  const handleImageUrlChange = (event) => {
+    setFilename('');
+    setImageUpload('');
+    setImageUrl(event.target.value);
+  }
+  const handleImageUploadChange = (event) => {
+    setImageUrl('');
+    const file = event.target.files[0];
+    if (file) {
+      setFilename(event.target.files[0].name);
+      setImageUpload(URL.createObjectURL(file));
+    } else {
+      setFilename('');
+      setImageUpload('');
+    }
+  }
 
   useEffect(() => {
     setTitle(initialTitle);
@@ -110,7 +133,7 @@ const PostForm = ({
         value={title || ''}
         onChange={handleTitleChange}
         required
-		placeholder="Basic Omelette"
+        placeholder="Basic Omelette"
       />
       <TextField
         label="Ingredients"
@@ -191,18 +214,74 @@ const PostForm = ({
         fullWidth
         value={imageUrl || ''}
         onChange={handleImageUrlChange}
-        required
+        required={!imageUpload ? true : false}
         sx={{ marginTop: 3 }}
       />
-      <Button
-        type="submit"
-        variant="contained"
-        color="primary"
-        sx={{ marginTop: 3 }}
-        onSubmit={handleSubmit}
-      >
-        {action === 'CREATE' ? 'Create ✨' : 'Save Changes'}
-      </Button>
+      <Typography variant="h6" mt={1} mb={1}>OR</Typography>
+      <Stack direction="column" alignItems="flex-start" mb={1}>
+        <Box direction="row" alignItems="center">
+          <Button
+            variant="contained"
+            color="success"
+            component="label"
+            sx={{ mr: 1 }}
+          >
+            Upload Image
+            <input
+              hidden
+              accept="image/*"
+              multiple
+              type="file"
+              onChange={handleImageUploadChange}
+            />
+          </Button>
+          {filename && <>{filename}</>}
+        </Box>
+      </Stack>
+
+      <>
+        {(imageUrl || imageUpload) &&
+          <Typography variant="h6" sx={{ textAlign: 'left' }}>
+            Image Preview
+          </Typography>}
+        {imageUrl && <>
+          <CardMedia
+            component="img"
+            height="194"
+            src={imageUrl}
+            alt="Image URL Preview"
+          />
+        </>}
+        {imageUpload && <>
+          <CardMedia
+            component="img"
+            height="194"
+            src={imageUpload}
+            alt="Uploaded Image Preview"
+          />
+        </>}
+      </>
+      <Box direction="row" alignItems="center" marginTop={3}>
+        {action === 'UPDATE' &&
+          <Link to="/my-recipes" style={{textDecoration: 'none'}}>
+            <Button
+              variant="contained"
+              color="error"
+              sx={{ mr: 2 }}
+            > Cancel
+            </Button>
+          </Link>
+        }
+        <Button
+          type="submit"
+          variant="contained"
+          color="primary"
+          onSubmit={handleSubmit}
+        >
+          {action === 'CREATE' ? 'Create ✨' : 'Save Changes'}
+        </Button>
+      </Box>
+
       {error && <div>{error}</div>}
     </form>
   );

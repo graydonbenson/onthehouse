@@ -57,10 +57,23 @@ const CreatePost = () => {
           >
             <Card
               sx={{
-                borderRadius: "20px"
+                overflowY: 'scroll',
+                '&::-webkit-scrollbar': {
+                  width: '8px',
+                  height: '8px',
+                  borderRadius: '4px',
+                },
+                '&::-webkit-scrollbar-thumb': {
+                  backgroundColor: 'rgba(0, 0, 0, 0.2)',
+                  borderRadius: '4px',
+                },
+                '&::-webkit-scrollbar-track': {
+                  borderRadius: '4px',
+                  height: '80%'
+                },
               }}
             >
-              <CardHeader title={<Typography variant="h4" sx={{fontWeight: "bold", fontFamily: "unset", fontStyle: "oblique"}}>Upload a New Recipe</Typography>}/>
+              <CardHeader title={<Typography variant="h4" sx={{ fontWeight: "bold", fontFamily: "unset", fontStyle: "oblique" }}>Upload a New Recipe</Typography>} />
               <CardContent>
                 <PostForm
                   initialTitle=""

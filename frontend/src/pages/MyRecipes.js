@@ -120,9 +120,9 @@ const MyRecipes = () => {
               </Paper>
               {posts &&
                 <>
-                  <Grid container spacing={2}>
+                  <Grid container spacing={4}>
                     {Object.values(posts).map(post =>
-                      <Grid item xs={12} sm={6} md={5} lg={3} key={post.id}>
+                      <Grid item xs={12} sm={6} md={4} lg={3} key={post.id}>
                         {cardIsLoading ?
                           <Stack spacing={1}>
                             <Skeleton variant="circular" width={40} height={40} />

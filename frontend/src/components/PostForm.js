@@ -8,7 +8,8 @@ import {
   TextField,
   Stack,
   Typography,
-  CardMedia
+  CardMedia,
+  Box
 } from '@mui/material';
 import { useNavigate, useParams } from 'react-router-dom';
 
@@ -18,6 +19,7 @@ const PostForm = ({
   initialDirections,
   initialTags,
   initialImageUrl,
+  initialFilename,
   initialImageUpload,
   action,
 }) => {
@@ -29,6 +31,7 @@ const PostForm = ({
   const [directions, setDirections] = useState(initialDirections);
   const [tags, setTags] = useState(initialTags);
   const [imageUrl, setImageUrl] = useState(initialImageUrl);
+  const [filename, setFilename] = useState(initialFilename);
   const [imageUpload, setImageUpload] = useState(initialImageUpload);
   const [error, setError] = useState('');
 
@@ -37,6 +40,7 @@ const PostForm = ({
   const handleDirectionsChange = (event) => setDirections(event.target.value);
   const handleTagsChange = (event) => setTags(event.target.value);
   const handleImageUrlChange = (event) => {
+    setFilename('');
     setImageUpload('');
     setImageUrl(event.target.value);
   }
@@ -44,8 +48,10 @@ const PostForm = ({
     setImageUrl('');
     const file = event.target.files[0];
     if (file) {
+      setFilename(event.target.files[0].name);
       setImageUpload(URL.createObjectURL(file));
     } else {
+      setFilename('');
       setImageUpload('');
     }
   }
@@ -208,15 +214,29 @@ const PostForm = ({
         fullWidth
         value={imageUrl || ''}
         onChange={handleImageUrlChange}
-        required
+        required={!imageUpload ? true : false}
         sx={{ marginTop: 3 }}
       />
       <Typography variant="h6" mt={1} mb={1}>OR</Typography>
-      <Stack direction="row" alignSelf="center" alignItems="center" spacing={2} mb={1}>
-        <Button variant="contained" color="success" component="label">
-          Upload Image
-          <input hidden accept="image/*" multiple type="file" onChange={handleImageUploadChange} />
-        </Button>
+      <Stack direction="column" alignItems="flex-start" mb={1}>
+        <Box direction="row" alignItems="center">
+          <Button
+            variant="contained"
+            color="success"
+            component="label"
+            sx={{ mr: 1 }}
+          >
+            Upload Image
+            <input
+              hidden
+              accept="image/*"
+              multiple
+              type="file"
+              onChange={handleImageUploadChange}
+            />
+          </Button>
+          {filename && <>{filename}</>}
+        </Box>
       </Stack>
 
       <>

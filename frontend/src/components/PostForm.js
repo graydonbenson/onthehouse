@@ -265,7 +265,6 @@ const PostForm = ({
         {action === 'UPDATE' &&
           <Link to="/my-recipes" style={{textDecoration: 'none'}}>
             <Button
-              to="/my-recipes"
               variant="contained"
               color="error"
               sx={{ mr: 2 }}

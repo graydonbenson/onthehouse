@@ -9,6 +9,7 @@ import {
     Box,
     createTheme,
     ThemeProvider,
+    Typography
 } from "@mui/material";
 import PostForm from '../components/PostForm';
 import { useParams } from 'react-router-dom';
@@ -59,7 +60,7 @@ const EditPost = () => {
         <Box sx={{ display: 'flex', height: '100vh', backgroundColor: "#fee7e7" }}>
             <Navbar open={open} openDrawer={handleDrawerOpen}></Navbar>
             <SideDrawer open={open} closeDrawer={handleDrawerClose}></SideDrawer>
-            <Box component="main" sx={{ flexGrow: 1, p: 3, marginTop: 8 }}>
+            <Box component="main" sx={{ display: 'flex', flexGrow: 1, p: 3, marginTop: 8 }}>
                 <Container
                     maxWidth="sm"
                     sx={{

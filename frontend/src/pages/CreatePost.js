@@ -9,6 +9,7 @@ import {
   Box,
   createTheme,
   ThemeProvider,
+  Typography
 } from '@mui/material';
 import PostForm from '../components/PostForm';
 
@@ -38,7 +39,7 @@ const CreatePost = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <Box sx={{ display: 'flex', height: '100vh' }}>
+      <Box sx={{ display: 'flex', height: '100vh', backgroundColor: "#fee7e7" }}>
         <Navbar open={open} openDrawer={handleDrawerOpen}></Navbar>
         <SideDrawer open={open} closeDrawer={handleDrawerClose}></SideDrawer>
         <Box
@@ -56,13 +57,10 @@ const CreatePost = () => {
           >
             <Card
               sx={{
-                height: '110%',
-                justifyContent: 'flex-end',
-                overflow: 'hidden',
-                overflowY: 'scroll', // added scroll
+                borderRadius: "20px"
               }}
             >
-              <CardHeader title="Upload a New Recipe" />
+              <CardHeader title={<Typography variant="h4" sx={{fontWeight: "bold", fontFamily: "unset", fontStyle: "oblique"}}>Upload a New Recipe</Typography>}/>
               <CardContent>
                 <PostForm
                   initialTitle=""

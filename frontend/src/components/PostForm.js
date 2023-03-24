@@ -163,7 +163,7 @@ const PostForm = ({
         <Select
           labelId="demo-simple-select-label"
           id="demo-simple-select"
-          value={tags}
+          value={tags || ''}
           label="Tag"
           required
           onChange={handleTagsChange}

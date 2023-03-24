@@ -13,6 +13,7 @@ function MainFeaturedPost(props) {
       <Paper
         sx={{
           position: 'relative',
+          borderRadius: "20px",
           backgroundColor: 'grey.800',
           color: '#fff',
           mb: 4,
@@ -27,6 +28,7 @@ function MainFeaturedPost(props) {
         <Box
           sx={{
             position: 'absolute',
+            borderRadius: "20px",
             top: 0,
             bottom: 0,
             right: 0,
@@ -39,19 +41,21 @@ function MainFeaturedPost(props) {
             <Box
               sx={{
                 position: 'relative',
-                p: { xs: 3, md: 6 },
+                p: { xs: 3, md: 6 }, 
                 pr: { md: 0 },
               }}
             >
-              <Typography component="h1" variant="h3" color="inherit" gutterBottom>
+              <Typography variant="h2" sx={{fontWeight: "bold", fontFamily: "unset", fontStyle: "oblique", fontSize: 40}} color="inherit" gutterBottom>
                 {post.title}
               </Typography>
-              <Typography variant="h5" color="inherit" paragraph>
+              <Typography variant="" color="inherit" sx={{fontSize: 28}} paragraph>
                 {post.description}
               </Typography>
-              <Link variant="subtitle1" href="#">
+              <Paper elevation={11} sx={{backgroundColor: "#fe647d", borderRadius: "20px", width: "28%", display: "inline-block"}}>
+              <Link variant="" href="#" sx={{textDecoration: "none", fontStyle: "oblique", fontSize: 26, color: "white"}}>
                 {post.linkText}
               </Link>
+              </Paper>
             </Box>
           </Grid>
         </Grid>

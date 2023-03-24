@@ -14,7 +14,7 @@ import { red } from '@mui/material/colors';
 // import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Link } from "react-router-dom";
-import { Tooltip } from '@mui/material';
+import { Paper, Tooltip } from '@mui/material';
 
 const ExpandMore = styled((props) => {
     const { expand, ...other } = props;
@@ -27,7 +27,7 @@ const ExpandMore = styled((props) => {
     }),
 }));
 
-export const RecipeCard = ({ postId, userId, title, date, image, ingredients, directions, upvoteCount }) => {
+export const RecipeCard = ({ postId, userId, title, date, image, ingredients, directions, upvoteCount, flairTag }) => {
     const [expanded, setExpanded] = useState(false);
     const [data, setData] = useState([]);
     // const [like, setLike] = useState(false);
@@ -62,7 +62,7 @@ export const RecipeCard = ({ postId, userId, title, date, image, ingredients, di
     // }
 
     return (
-        <Card sx={{ maxWidth: 345 }}>
+        <Card sx={{ maxWidth: 345, color: "black", backgroundColor: "#f5c589", borderRadius: "20px", boxShadow: 20, textAlign: "left" }}>
             {data && <>
                 <CardHeader
                     avatar={
@@ -70,8 +70,9 @@ export const RecipeCard = ({ postId, userId, title, date, image, ingredients, di
                             <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">{userId.charAt(0)}</Avatar>
                         </Tooltip>
                     }
-                    title={title}
-                    subheader={new Date(date._seconds * 1000).toLocaleDateString("en-US")}
+                    action={<Paper elevation={8} sx={{width: 80, fontStyle: "oblique", fontWeight: "bold", backgroundColor: "#0288d1", color: "white", textAlign: "center"}}>{flairTag}</Paper>}
+                    title={<Typography variant="body1" sx={{fontWeight: "bold", fontFamily: "unset", fontStyle: "oblique"}}>{title}</Typography>}
+                    subheader={<Typography variant="">{new Date(date._seconds * 1000).toDateString()}</Typography>}
                 />
                 <Link to={`/post/${postId}`}>
                     <CardMedia
@@ -82,7 +83,7 @@ export const RecipeCard = ({ postId, userId, title, date, image, ingredients, di
                     />
                 </Link>
                 <CardContent>
-                    <Typography variant="body2" color="text.secondary">
+                    <Typography color="black" variant="subtitle2" sx={{fontWeight: "bold"}}>
                         {ingredients}
                     </Typography>
                 </CardContent>
@@ -98,7 +99,7 @@ export const RecipeCard = ({ postId, userId, title, date, image, ingredients, di
                     <ExpandMore
                         expand={expanded}
                         onClick={handleExpandClick}
-                        aria-expanded={expanded}
+                        aria-expanded={expanded} 
                         aria-label="Show More"
                     >
                         <ExpandMoreIcon />
@@ -106,7 +107,7 @@ export const RecipeCard = ({ postId, userId, title, date, image, ingredients, di
                 </CardActions>
                 <Collapse in={expanded} timeout="auto" unmountOnExit>
                     <CardContent>
-                        <Typography
+                        <Typography color="black" variant="" sx={{fontSize: 18}}
                             style={{
                                 textAlign: 'left',
                                 whiteSpace: 'pre-wrap'

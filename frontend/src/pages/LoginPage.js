@@ -87,6 +87,7 @@ export default function SignIn() {
     if (response.data.code) {
       setErrorMessage(response.data.code);
       setLoading(false);
+      setOpen(true);
     } else {
       localStorage.setItem("userData", JSON.stringify(response.data));
       setLoading(false);

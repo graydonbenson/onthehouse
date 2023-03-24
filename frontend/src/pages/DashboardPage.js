@@ -20,7 +20,8 @@ const mainFeaturedPost = {
     "Multiple lines of text that form the lede, informing new readers quickly and efficiently about what's most interesting in this post's contents.",
   image: 'https://source.unsplash.com/random',
   imageText: 'main image description',
-  linkText: 'Continue reading…',
+  linkText: 'Continue reading....', 
+
 };
 
 const DashboardPage = () => {
@@ -30,10 +31,11 @@ const DashboardPage = () => {
     palette: {
       mode: 'light',
       primary: {
-        main: '#ba68c8',
+        main: '#f4bd7b',
+        contrastText: '#000000',
       },
       secondary: {
-        main: '#f50057',
+        main: '#fe647d',
       },
     },
   });
@@ -75,42 +77,41 @@ const DashboardPage = () => {
     return <LoadingIcon />;
   }
 
-  return (
-    <>
-      <ThemeProvider theme={theme}>
-        <Box sx={{ display: 'flex' }}>
+    return (
+      <>
+        <ThemeProvider theme={theme}>
+          <Box sx={{ display: 'flex', backgroundColor: "#fee7e7" }}>
+
           <Navbar open={open} openDrawer={handleDrawerOpen}></Navbar>
           <SideDrawer open={open} closeDrawer={handleDrawerClose}></SideDrawer>
           <Box component="main" sx={{ flexGrow: 1, p: 3, marginTop: 8 }}>
             <MainFeaturedPost post={mainFeaturedPost} />
-            <Grid container spacing={2}>
-              {posts &&
-                Object.values(posts).map((post) => (
-                  <Grid item xs={12} sm={6} md={5} lg={3} key={post.id}>
-                    {cardIsLoading ? (
-                      <Stack spacing={1}>
-                        <Skeleton variant="circular" width={40} height={40} />
-                        <Skeleton
-                          variant="rectangular"
-                          width={210}
-                          height={100}
-                        />
-                        <Skeleton variant="rounded" width={210} height={100} />
-                      </Stack>
-                    ) : (
-                      <RecipeCard
-                        postId={post.id}
-                        userId={post.userId}
-                        title={post.title}
-                        date={post.date}
-                        image={post.image}
-                        ingredients={post.ingredients}
-                        directions={post.directions}
-                        upvoteCount={post.upvoteCount}
-                      />
-                    )}
-                  </Grid>
-                ))}
+            <Grid container alignItems="center" rowSpacing={4} columnSpacing={0}>
+              {posts && Object.values(posts).map(post =>
+                <Grid item xs={12} sm={6} md={5} lg={3} key={post.id}>
+                  {cardIsLoading ?
+                    <Stack spacing={1}>
+                      <Skeleton variant="circular" width={40} height={40} />
+                      <Skeleton variant="rectangular" width={210} height={100} />
+                      <Skeleton variant="rounded" width={210} height={100} />
+                    </Stack>
+                    :
+                    <RecipeCard 
+                      postId={post.id}
+                      userId={post.userId}
+                      title={post.title}
+                      date={post.date}
+                      image={post.image}
+                      ingredients={post.ingredients}
+                      directions={post.directions}
+                      upvoteCount={post.upvoteCount}
+                      flairTag={post.flair}
+                    />
+                  }
+                </Grid>
+              )
+              }
+
             </Grid>
           </Box>
         </Box>

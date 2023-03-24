@@ -11,7 +11,7 @@ import {
   CardMedia,
   Box
 } from '@mui/material';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 
 const PostForm = ({
   initialTitle,
@@ -261,16 +261,28 @@ const PostForm = ({
           />
         </>}
       </>
+      <Box direction="row" alignItems="center" marginTop={3}>
+        {action === 'UPDATE' &&
+          <Link to="/my-recipes" style={{textDecoration: 'none'}}>
+            <Button
+              to="/my-recipes"
+              variant="contained"
+              color="error"
+              sx={{ mr: 2 }}
+            > Cancel
+            </Button>
+          </Link>
+        }
+        <Button
+          type="submit"
+          variant="contained"
+          color="primary"
+          onSubmit={handleSubmit}
+        >
+          {action === 'CREATE' ? 'Create ✨' : 'Save Changes'}
+        </Button>
+      </Box>
 
-      <Button
-        type="submit"
-        variant="contained"
-        color="primary"
-        sx={{ marginTop: 3 }}
-        onSubmit={handleSubmit}
-      >
-        {action === 'CREATE' ? 'Create ✨' : 'Save Changes'}
-      </Button>
       {error && <div>{error}</div>}
     </form>
   );

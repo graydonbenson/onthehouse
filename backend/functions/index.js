@@ -177,7 +177,7 @@ app.post('/resetPassword', async (req, res) => {
 });
 
 // Verify JWT Authentication token
-app.post('/verifyAuth', async (req, res) => {
+app.get('/verifyAuth', async (req, res) => {
   const auth = getAuth();
 
   try {

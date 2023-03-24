@@ -48,34 +48,45 @@ Manage all posts screen? (admin) (firestore)
 Edit user profile screen? (if we have time)
 
 
+=====
 TBC by SUBMISSION DATE:
+Schedule:
+Sunday 6PM Meeting - Finish All Code/Report from Above
+Tuesday Midnight - Drop your video segment on discord
+Wednesday Midnight - Graydon edits and merges all segments
+
 
 From Checkin 3:
 - Handle meal of the week based on upvotes in backend + connect - Parbir
-- Get all posts based on recipe flair tag + connect - Parbir
-- Upvote/Downvote - Ahad
+- Get all posts based on recipe flair tag + connect w/ a filter/search - Parbir
+- Fix/finalize Get all & post comment - Ahad (DONE)
+- Upvote/Downvote - Ahad (DONE)
 
-- Fix/finalize auth - Mush/Athul
-- Fix/finalize deployment - Mush/Athul
+- Fix/finalize auth - Mush
+- Fix/finalize deployment - Mush
 
 Frontend:
 - All Pages - Change font (from default to Lato?) and use consistent fonting throughout (globally, project-wide) - Mush
+- All Pages - Change theme to be consistent b/w all pages - Mush
+
 - Login/Signup Page - add image and description - Athul
 - Dashboard - Add shadow/effect to card + change background to light grey for ex. like MUI card exemplar - Mush
-- All Pages - Change theme to be consistent b/w al pages - Mush
 - RecipeCard - Make it "pretty", add flair tag - Mush
-- Create Recipe - Include option to upload image as file (w/ url option still there) - Athul
-- Post Page - Revamp entire page/make it "pretty"/responsive - Parbir
-- Comments - include reply option - Ahad
-- Notifications - notification when upvote/downvote or comment - Ahad
-- Post Page - Use delimeter on Ingredients and Directions - Ahad
 - Recipe Card/Post Page - Gallery of images - Athul (if we have time)
+- Post Page - Revamp entire page/make it "pretty"/responsive - Parbir
+
+- Create Recipe - Include option to upload image as file (w/ url option still there) - Athul
+- Create Recipe - Change flair from text field to drop down - Ahad (DONE)
+
+- Comments - include reply option - Ahad (1)
+- Notifications - notification when upvote/downvote or comment - Ahad (IMPLEMENTED - but makes app slow and blocks after first time)
+- Post Page - Use delimeter on Ingredients and Directions - Ahad (DONE)
 
 Backend:
 - Create/Edit Recipe - Include option to upload image as file (w/ url option still there) - Athul
-- Comments - include reply option - Ahad
-- Notifications - notification when upvote/downvote or comment - Ahad
-- Post Page - Use delimeter on Ingredients and Directions - Ahad
+- Comments - include reply option - Ahad (1)
+- Notifications - notification when upvote/downvote or comment - Ahad (IMPLEMENTED - but makes app slow and blocks after first time)
+- Post Page - Use delimeter on Ingredients and Directions - Ahad (DONE)
 
 
 Misc.
@@ -86,7 +97,7 @@ Misc.
 - Deploy Final Time/Final Testing - Mush
 
 
-Demo Video (write ur script in doc above):
+Demo Video (write ur script in doc on dc, keep it to 1 minute):
 - Objective/Motivation - Athul
 - Requirements - David, Eduardo, Graydon
 - Architecture - Ahad
@@ -95,9 +106,8 @@ Demo Video (write ur script in doc above):
 - Retrospective/Next Steps/Q&A - Mush
 
 
-Meet by Sunday 6PM - Finish All Code/Report from Above
-Tuesday Midnight - Drop your video segment on discord
-Wednesday Midnight - Graydon edits and merges all segments
+
+
 
 
 === Brain dump

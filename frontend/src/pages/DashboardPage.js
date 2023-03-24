@@ -2,12 +2,17 @@ import { useEffect, useState } from 'react';
 import Navbar from '../components/Navbar';
 import SideDrawer from '../components/SideDrawer';
 import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import { Grid, LinearProgress, Paper, Skeleton, Stack, createTheme, ThemeProvider, Backdrop } from '@mui/material';
+import {
+  Grid,
+  Skeleton,
+  Stack,
+  createTheme,
+  ThemeProvider,
+} from '@mui/material';
 import RecipeCard from '../components/RecipeCard';
 import MainFeaturedPost from '../components/Motw';
 import { usePostsContext } from '../hooks/usePostsContext';
-import axios from 'axios';
+import LoadingIcon from '../components/LoadingIcon';
 
 const mainFeaturedPost = {
   title: 'Meal of the Week',
@@ -37,8 +42,8 @@ const DashboardPage = () => {
 
   const [open, setOpen] = useState(false);
   const [cardIsLoading, setCardIsLoading] = useState(false);
-  const [error, setError] = useState('');
-  const [data, setData] = useState([]);
+  //   const [error, setError] = useState('');
+  //   const [data, setData] = useState([]);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -56,31 +61,27 @@ const DashboardPage = () => {
       if (response.ok) {
         dispatch({
           type: 'SET_POSTS',
-          payload: json
+          payload: json,
         });
         setCardIsLoading(false);
       } else {
-        setError("Error: " + json.error);
+        // setError("Error: " + json.error);
         setCardIsLoading(false);
       }
-    }
+    };
 
     fetchPosts();
   }, [dispatch]);
 
   if (cardIsLoading) {
-    return (
-      <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={true}>
-      <img alt={"Loading"} src={"https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExZDE4NGE2N2M0NThhNmE3ZmQ5MTUzZjE1NTdhZjJkZWFiYjNmMjc0YyZjdD1z/KcWaUe5tKkIrSI2LaU/giphy.gif"} width="100" height="100" />
-      <Typography variant="h4">Loading....</Typography>
-      </Backdrop>
-    )
+    return <LoadingIcon />;
   }
 
     return (
       <>
         <ThemeProvider theme={theme}>
           <Box sx={{ display: 'flex', backgroundColor: "#fee7e7" }}>
+
           <Navbar open={open} openDrawer={handleDrawerOpen}></Navbar>
           <SideDrawer open={open} closeDrawer={handleDrawerClose}></SideDrawer>
           <Box component="main" sx={{ flexGrow: 1, p: 3, marginTop: 8 }}>
@@ -110,12 +111,13 @@ const DashboardPage = () => {
                 </Grid>
               )
               }
+
             </Grid>
           </Box>
-          </Box>
-        </ThemeProvider>
-      </>
-    )
-}
+        </Box>
+      </ThemeProvider>
+    </>
+  );
+};
 
 export default DashboardPage;

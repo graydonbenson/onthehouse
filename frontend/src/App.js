@@ -4,7 +4,6 @@ import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import SignUpPage from './pages/SignUpPage';
 import DashboardPage from './pages/DashboardPage';
-import axios from 'axios';
 import ForgotPassword from './pages/ForgotPassword';
 import AuthInvalidRoute from './components/AuthInvalidRoute';
 import ProtectedRoute from './components/ProtectedRoute';

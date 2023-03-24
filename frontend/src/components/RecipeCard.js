@@ -10,8 +10,8 @@ import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import { red } from '@mui/material/colors';
-import ThumbUpIcon from '@mui/icons-material/ThumbUp';
-import ThumbDownIcon from '@mui/icons-material/ThumbDown';
+// import ThumbUpIcon from '@mui/icons-material/ThumbUp';
+// import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Link } from "react-router-dom";
 import { Paper, Tooltip } from '@mui/material';
@@ -30,8 +30,8 @@ const ExpandMore = styled((props) => {
 export const RecipeCard = ({ postId, userId, title, date, image, ingredients, directions, upvoteCount, flairTag }) => {
     const [expanded, setExpanded] = useState(false);
     const [data, setData] = useState([]);
-    const [like, setLike] = useState(false);
-    const [dislike, setDislike] = useState(false);
+    // const [like, setLike] = useState(false);
+    // const [dislike, setDislike] = useState(false);
 
     const handleExpandClick = () => {
         setExpanded(!expanded);
@@ -51,15 +51,15 @@ export const RecipeCard = ({ postId, userId, title, date, image, ingredients, di
         fetchData();
     }, [postId]);
 
-    function handleLikeClick() {
-        setLike(true);
-        setDislike(false);
-    }
+    // function handleLikeClick() {
+    //     setLike(true);
+    //     setDislike(false);
+    // }
 
-    function handleDislikeClick() {
-        setLike(false);
-        setDislike(true);
-    }
+    // function handleDislikeClick() {
+    //     setLike(false);
+    //     setDislike(true);
+    // }
 
     return (
         <Card sx={{ maxWidth: 345, color: "black", backgroundColor: "#f5c589", borderRadius: "20px", boxShadow: 20, textAlign: "left" }}>
@@ -88,13 +88,14 @@ export const RecipeCard = ({ postId, userId, title, date, image, ingredients, di
                     </Typography>
                 </CardContent>
                 <CardActions disableSpacing>
-                    <IconButton aria-label="Upvote Recipe">
+                    {/* TODO Ahad: Come back to if have time */}
+					{/* <IconButton aria-label="Upvote Recipe">
                         <ThumbUpIcon onClick={handleLikeClick} style={{ color: like ? 'blue' : 'inherit' }} />
                     </IconButton>
                     {upvoteCount}
                     <IconButton aria-label="Downvote Recipe">
                         <ThumbDownIcon onClick={handleDislikeClick} style={{ color: dislike ? 'red' : 'inherit' }} />
-                    </IconButton>
+                    </IconButton> */}
                     <ExpandMore
                         expand={expanded}
                         onClick={handleExpandClick}

@@ -86,9 +86,9 @@ const DashboardPage = () => {
           <SideDrawer open={open} closeDrawer={handleDrawerClose}></SideDrawer>
           <Box component="main" sx={{ flexGrow: 1, p: 3, marginTop: 8 }}>
             <MainFeaturedPost post={mainFeaturedPost} />
-            <Grid container alignItems="center" rowSpacing={4} columnSpacing={0}>
+            <Grid container alignItems="center" spacing={4}>
               {posts && Object.values(posts).map(post =>
-                <Grid item xs={12} sm={6} md={5} lg={3} key={post.id}>
+                <Grid item xs={12} sm={6} md={4} lg={3} key={post.id}>
                   {cardIsLoading ?
                     <Stack spacing={1}>
                       <Skeleton variant="circular" width={40} height={40} />

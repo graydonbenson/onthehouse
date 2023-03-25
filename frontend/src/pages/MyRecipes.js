@@ -12,9 +12,11 @@ import {
   DialogContentText,
   DialogTitle,
   Grid,
+  Paper,
   Skeleton,
   Stack,
   ThemeProvider,
+  Typography,
 } from '@mui/material';
 import RecipeCard from '../components/RecipeCard';
 import { usePostsContext } from '../hooks/usePostsContext';
@@ -95,7 +97,7 @@ const MyRecipes = () => {
       `${process.env.REACT_APP_API_URL}/posts/${id}`,
       {
         method: 'DELETE',
-      }
+      });
   
     if (response.ok) {
       dispatch({ type: 'DELETE_POST', payload: id });

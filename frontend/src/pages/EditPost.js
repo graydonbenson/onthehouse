@@ -9,6 +9,7 @@ import {
     Box,
     createTheme,
     ThemeProvider,
+    Typography,
 } from "@mui/material";
 import PostForm from '../components/PostForm';
 import { useParams } from 'react-router-dom';

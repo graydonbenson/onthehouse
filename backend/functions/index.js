@@ -230,6 +230,24 @@ app.get('/posts', (req, res) => {
     .catch((error) => console.error(error));
 });
 
+// GET /motw - get the meal of the week
+app.get('/motw', async (req, res) => {
+  let motw = [];
+  const beginning = new Date();
+  const end = new Date();
+  beginning.setDate(new Date().getDate() - new Date().getDay());
+  end.setDate(beginning.getDate() + 6);
+
+  const motwRef = await db.collection("Posts");
+  const snapshot = await motwRef.where("date", ">=", beginning).where("date", "<=", end).orderBy("date").orderBy("upvoteCount", "desc").limit(1).get();
+
+  snapshot.forEach((doc) => {
+    motw.push(doc.data());
+  });
+  res.send(motw);
+  
+});
+
 // GET /posts/user/:userId - get posts associated with a userId
 app.get('/posts/user/:userId', (req, res) => {
   db.collection('Posts')

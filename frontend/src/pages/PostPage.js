@@ -8,11 +8,12 @@ import IconButton from '@mui/material/IconButton';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 import Comments from '../components/Comments';
-import { Grid, createTheme, ThemeProvider, Chip } from '@mui/material';
+import { Grid, createTheme, ThemeProvider, Chip, Card, CardHeader, Tooltip, Paper, CardMedia, CardContent } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import SendIcon from '@mui/icons-material/Send';
 import { useParams } from 'react-router-dom';
 import LoadingIcon from '../components/LoadingIcon';
+import { red } from '@mui/material/colors';
 
 export const PostPage = () => {
   const params = useParams();
@@ -32,11 +33,11 @@ export const PostPage = () => {
 
   const [post, setPost] = useState({});
   const [open, setOpen] = useState(false);
-  const [comment, setComment] = useState('');
   const [like, setLike] = useState(false);
   const [dislike, setDislike] = useState(false);
   const userData = JSON.parse(localStorage.getItem('userData'));
   const [isLoading, setIsLoading] = useState(false);
+  const [comment, setComment] = useState('');
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -45,7 +46,7 @@ export const PostPage = () => {
   const handleDrawerClose = () => {
     setOpen(false);
   };
-
+  
   const handleCommentOnChange = (event) => {
     setComment(event.target.value);
   };
@@ -54,7 +55,7 @@ export const PostPage = () => {
     postComment(comment, params.id, userData.username);
     setComment('');
   };
-
+  
   async function handleLikeClick() {
     await postUpvote(params.id, userData.username, true);
   }
@@ -169,121 +170,79 @@ export const PostPage = () => {
   return (
     <>
       <ThemeProvider theme={theme}>
-        {post && (
           <>
-            <Box sx={{ display: 'flex' }}>
+            <Box sx={{ display: 'flex', backgroundColor: "#fee7e7" }}>
               <Navbar open={open} openDrawer={handleDrawerOpen}></Navbar>
-              <SideDrawer
-                open={open}
-                closeDrawer={handleDrawerClose}
-              ></SideDrawer>
-              <Box
-                component="main"
-                sx={{
-                  mt: 15,
-                  mb: 15,
-                  ml: 15,
-                  width: 650,
-                  backgroundColor: '#def9f5',
-                }}
-                style={{ alignItems: 'center', justifyContent: 'center' }}
-              >
-                <Typography paragraph>{post.title}</Typography>
-                <Box
-                  component="img"
-                  sx={{
-                    width: 600,
-                  }}
-                  src={post.image}
-                ></Box>
-                <Box
-                  sx={{ flexGrow: 1, mt: 1 }}
-                  style={{ display: 'flex', alignItems: 'center' }}
-                >
-                  <Avatar
-                    sx={{ bgcolor: 'red', width: 30, height: 30, ml: 3 }}
-                    aria-label="recipe"
-                  >
-                    {post.userId?.substring(0, 1)}
-                  </Avatar>
-                  <Typography sx={{ ml: 2 }}>{post.userId}</Typography>
-                  <IconButton aria-label="Upvote Recipe" sx={{ ml: 30 }}>
-                    <ThumbUpIcon
-                      onClick={async () => await handleLikeClick()}
-                      style={{ color: like ? 'blue' : 'inherit' }}
-                    />
-                  </IconButton>
-                  {/* TODO Ahad/Mush - change color to color theme from mush's branch */}
-                  <Chip label={post.upvoteCount} color="primary" />
-
-                  <IconButton aria-label="Downvote Recipe">
-                    <ThumbDownIcon
-                      onClick={async () => await handleDislikeClick()}
-                      style={{ color: dislike ? 'red' : 'inherit' }}
-                    />
-                  </IconButton>
-                </Box>
-                <Typography
-                  sx={{
-                    mt: 2,
-                    ml: 3,
-                    mr: 3,
-                    textAlign: 'justify',
-                    whiteSpace: 'pre-wrap',
-                  }}
-                  paragraph
-                >
-                  <b>Ingredients:</b>
-                  <br />
-                  {post.ingredients}
-                </Typography>
-                <Typography
-                  sx={{
-                    ml: 3,
-                    mr: 3,
-                    textAlign: 'justify',
-                    whiteSpace: 'pre-wrap',
-                  }}
-                  paragraph
-                >
-                  <b>Directions:</b>
-                  <br />
-                  {post.directions}
-                </Typography>
-              </Box>
-              <Box
-                component="main"
-                sx={{ mt: 15, mb: 15, pr: 10 }}
-                style={{ alignItems: 'center', justifyContent: 'center' }}
-              >
-                <Grid>
-                  <Comments postId={params.id} />
-                </Grid>
-                <Grid>
-                  <div>
-                    <TextField
-                      id="filled-multiline-flexible"
+              <SideDrawer open={open} closeDrawer={handleDrawerClose}></SideDrawer>
+              <Box component="main" sx={{ flexGrow: 1, p: 3, marginTop: 8 }}>
+                <Grid container spacing={4}>
+                  <Grid item xs={12} md={8}>
+                    <Card sx={{ maxWidth: 1000, color: "black", backgroundColor: "#f5c589", borderRadius: "20px", boxShadow: 20, textAlign: "center" }}>
+                      <CardHeader
+                      avatar={
+                        <Tooltip title={post?.userId}>
+                        <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">{post.userId?.substring(0, 1)}</Avatar>
+                        </Tooltip>
+                      }
+                      action={<Paper elevation={8} sx={{width: 80, fontStyle: "oblique", fontWeight: "bold", backgroundColor: "#0288d1", color: "white", textAlign: "center"}}>{post?.flair}</Paper>}
+                      title={<Typography variant="body1" sx={{fontWeight: "bold", fontFamily: "unset", fontStyle: "oblique", fontSize: "20px"}}>{post?.title}</Typography>}
+                      subheader={<Typography variant="">Creator: &nbsp;{post?.userId}</Typography>}
+                      />
+                      <CardMedia
+                        component="img"
+                        height="600"
+                        image={post?.image}
+                        alt=""
+                      />
+                      <CardContent>
+                        <IconButton aria-label="Upvote Recipe">
+                        <ThumbUpIcon
+                        onClick={async () => await handleLikeClick()}
+                        style={{ color: like ? 'blue' : 'inherit' }}
+                        />
+                        </IconButton>
+                        <Chip sx={{fontWeight: "bold", fontSize: "18px"}} label={post.upvoteCount} color="info"/>
+                        <IconButton aria-label="Downvote Recipe">
+                        <ThumbDownIcon
+                          onClick={async () => await handleDislikeClick()}
+                          style={{ color: dislike ? 'red' : 'inherit' }}
+                        />
+                        </IconButton>
+                        <Typography variant="">Date Created: &nbsp;{new Date(post?.date?._seconds * 1000).toDateString()}</Typography>
+                        <Typography variant="h6" sx={{textAlign: "left", fontWeight: "bold", fontFamily: "unset", fontStyle: "oblique", display: "block"}}>Ingredients:</Typography>
+                        <Typography color="black" variant="subtitle1" sx={{display: "block", textAlign: "left"}}>{post?.ingredients}</Typography>
+                        <Typography variant="h6" sx={{textAlign: "left", fontWeight: "bold", fontFamily: "unset", fontStyle: "oblique", display: "block"}}>Directions:</Typography>
+                        <Typography color="black" variant="subtitle1" sx={{display: "block", textAlign: "left"}}>{post?.directions}</Typography>
+                      </CardContent>
+                    </Card>
+                  </Grid>
+                  <Grid item xs={12} md={4}>
+                    <Paper elevation={11} sx={{ backgroundColor: "#fe647d", borderRadius: "16px", paddingRight: 2, paddingLeft: 2, marginBottom: 2, color: "white" }}>
+                      <Typography variant="body1" sx={{ fontWeight: "bold", fontFamily: "unset", fontStyle: "oblique", fontSize: "40px" }}>Comments</Typography>
+                    </Paper>
+                    <Comments postId={params.id}/>
+                    <Paper elevation={11} sx={{alignItems: "center", display: "inline-block", borderRadius: "18px", width: "85%", backgroundColor: "#f5c589"}}>
+                      <TextField
                       label="Comment here"
                       value={comment}
                       onChange={handleCommentOnChange}
-                      multiline
-                      maxRows={4}
+                      color="info"
                       variant="filled"
                       style={{ width: 360 }}
-                    />
-                  </div>
-                  <IconButton
-                    type="submit"
-                    aria-label="Send Comment"
-                    onClick={handleCommentOnSubmit}
-                  >
-                    <SendIcon />
-                  </IconButton>
+                      />
+                      <IconButton
+                      type="submit"
+                      aria-label="Send Comment"
+                      onClick={handleCommentOnSubmit}
+                      >
+                      <SendIcon />
+                      </IconButton>
+                      </Paper>
+                  </Grid>
                 </Grid>
               </Box>
             </Box>
           </>
-        )}
       </ThemeProvider>
     </>
   );

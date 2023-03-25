@@ -58,6 +58,7 @@ const CreatePost = () => {
             <Card
               sx={{
                 overflowY: 'scroll',
+                borderRadius: "18px",
                 '&::-webkit-scrollbar': {
                   width: '8px',
                   height: '8px',

@@ -275,7 +275,7 @@ const PostForm = ({
         <Button
           type="submit"
           variant="contained"
-          color="primary"
+          color="info"
           onSubmit={handleSubmit}
         >
           {action === 'CREATE' ? 'Create ✨' : 'Save Changes'}

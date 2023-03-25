@@ -238,13 +238,18 @@ app.get('/motw', async (req, res) => {
   beginning.setDate(new Date().getDate() - new Date().getDay());
   end.setDate(beginning.getDate() + 6);
 
-  const motwRef = await db.collection("Posts");
-  const snapshot = await motwRef.where("date", ">=", beginning).where("date", "<=", end).orderBy("date").orderBy("upvoteCount", "desc").limit(1).get();
+  try {
+    const motwRef = await db.collection("Posts");
+    const snapshot = await motwRef.where("date", ">=", beginning).where("date", "<=", end).orderBy("date").orderBy("upvoteCount", "desc").limit(1).get();
 
-  snapshot.forEach((doc) => {
-    motw.push(doc.data());
-  });
-  res.send(motw);
+    snapshot.forEach((doc) => {
+      motw.push(doc.data());
+    });
+    res.send(motw);
+    
+  } catch (error) {
+    res.send(error);
+  }
   
 });
 

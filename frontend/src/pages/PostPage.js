@@ -92,6 +92,7 @@ export const PostPage = () => {
   }, [params.id, userData.username]);
 
   useEffect(() => {
+    setIsLoading(true);
     const fetchPost = async () => {
       const response = await fetch(
         `${process.env.REACT_APP_API_URL}/posts/${params.id}`
@@ -99,14 +100,14 @@ export const PostPage = () => {
       const json = await response.json();
       if (response.ok) {
         setPost(json);
+        setIsLoading(false);
       } else {
         console.log('did not work');
+        setIsLoading(false);
       }
     };
 
-    setIsLoading(true);
     fetchPost();
-    setIsLoading(false);
   }, [params.id]);
 
   const postComment = (text, pID, uID) => {

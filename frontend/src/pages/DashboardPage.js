@@ -14,16 +14,6 @@ import MainFeaturedPost from '../components/Motw';
 import { usePostsContext } from '../hooks/usePostsContext';
 import LoadingIcon from '../components/LoadingIcon';
 
-const mainFeaturedPost = {
-  title: 'Meal of the Week',
-  description:
-    "Multiple lines of text that form the lede, informing new readers quickly and efficiently about what's most interesting in this post's contents.",
-  image: 'https://source.unsplash.com/random',
-  imageText: 'main image description',
-  linkText: 'Continue reading....', 
-
-};
-
 const DashboardPage = () => {
   const { posts, dispatch } = usePostsContext();
 
@@ -42,8 +32,11 @@ const DashboardPage = () => {
 
   const [open, setOpen] = useState(false);
   const [cardIsLoading, setCardIsLoading] = useState(false);
-  //   const [error, setError] = useState('');
-  //   const [data, setData] = useState([]);
+  const [motwTitle, setMotwTitle] = useState("Meal of the Week");
+  const [motwDesc, setMotwDesc] = useState("A new week, and a new chance for the oppurtunity to let your dish shine to the world!");
+  const [motwImage, setMotwImage] = useState("https://source.unsplash.com/random");
+  const [motwLink, setMotwLink] = useState("#");
+  const [motwLinkText, setMotwLinkText] = useState("Coming Soon....");
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -63,14 +56,28 @@ const DashboardPage = () => {
           type: 'SET_POSTS',
           payload: json,
         });
-        setCardIsLoading(false);
       } else {
         // setError("Error: " + json.error);
         setCardIsLoading(false);
       }
     };
 
+    const fetchMotw = async () => {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/motw`);
+      const json = await response.json();
+      console.log("post/" + json[0].id);
+      if (json[0].userId) {
+        setMotwTitle("Meal of the Week - " + json[0].title);
+        setMotwImage(json[0].image);
+        setMotwLink("/post/" + json[0].id);
+        setMotwLinkText("Continue Reading....");
+      }
+      setCardIsLoading(false);
+    };
+
     fetchPosts();
+    fetchMotw();
+
   }, [dispatch]);
 
   if (cardIsLoading) {
@@ -85,7 +92,7 @@ const DashboardPage = () => {
           <Navbar open={open} openDrawer={handleDrawerOpen}></Navbar>
           <SideDrawer open={open} closeDrawer={handleDrawerClose}></SideDrawer>
           <Box component="main" sx={{ flexGrow: 1, p: 3, marginTop: 8 }}>
-            <MainFeaturedPost post={mainFeaturedPost} />
+            <MainFeaturedPost title={motwTitle} desc={motwDesc} image={motwImage} link={motwLink} linkText={motwLinkText} />
             <Grid container alignItems="center" spacing={4}>
               {posts && Object.values(posts).map(post =>
                 <Grid item xs={12} sm={6} md={4} lg={3} key={post.id}>

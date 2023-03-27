@@ -242,10 +242,15 @@ app.get('/motw', async (req, res) => {
 
   try {
     const motwRef = await db.collection("Posts");
-    const snapshot = await motwRef.where("date", ">=", newBeginning).where("date", "<=", newEnd).orderBy("date").orderBy("upvoteCount", "desc").limit(1).get();
+    const snapshot = await motwRef.where("date", ">=", newBeginning).where("date", "<=", newEnd).orderBy("date").orderBy("upvoteCount", "desc").get();
+    let highest = 0;
 
     snapshot.forEach((doc) => {
-      motw.push({id: doc.id, ...doc.data()});
+      if (doc.data().upvoteCount > highest) {
+        highest = doc.data().upvoteCount;
+        motw.pop();
+        motw.push({id: doc.id, ...doc.data()});
+      }                             
     });
     res.send(motw);
 

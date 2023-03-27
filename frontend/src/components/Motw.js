@@ -34,13 +34,14 @@ function MainFeaturedPost({title, desc, image, link, linkText}) {
             backgroundColor: 'rgba(0,0,0,.3)',
           }}
         />
-        <Grid container>
-          <Grid item md={6}>
+        <Grid container justifyContent="center">
+          <Grid item md={11} lg={6} >
             <Box
               sx={{
                 position: 'relative',
                 p: { xs: 3, md: 6 }, 
                 pr: { md: 0 },
+                pl: { md: 0 }
               }}
             >
               <Typography variant="h2" sx={{fontWeight: "bold", fontFamily: "unset", fontStyle: "oblique", fontSize: 40}} color="inherit" gutterBottom>

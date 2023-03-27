@@ -33,7 +33,7 @@ const DashboardPage = () => {
   const [open, setOpen] = useState(false);
   const [cardIsLoading, setCardIsLoading] = useState(false);
   const [motwTitle, setMotwTitle] = useState("Meal of the Week");
-  const [motwDesc, setMotwDesc] = useState("A new week, and a new chance for the oppurtunity to let your dish shine to the world!");
+  const [motwDesc, setMotwDesc] = useState("A new week, and a new chance for the opportunity to let your dish shine to the world!");
   const [motwImage, setMotwImage] = useState("https://source.unsplash.com/random");
   const [motwLink, setMotwLink] = useState("#");
   const [motwLinkText, setMotwLinkText] = useState("Coming Soon....");
@@ -93,7 +93,7 @@ const DashboardPage = () => {
           <SideDrawer open={open} closeDrawer={handleDrawerClose}></SideDrawer>
           <Box component="main" sx={{ flexGrow: 1, p: 3, marginTop: 8 }}>
             <MainFeaturedPost title={motwTitle} desc={motwDesc} image={motwImage} link={motwLink} linkText={motwLinkText} />
-            <Grid container alignItems="center" spacing={4}>
+            <Grid container alignItems="center" justifyContent="center" spacing={4}>
               {posts && Object.values(posts).map(post =>
                 <Grid item xs={12} sm={6} md={4} lg={3} key={post.id}>
                   {cardIsLoading ?

@@ -3,7 +3,7 @@
 SENG 401 Project
 
 # Live Demo
-OnTheHouse was deployed on Firebase and can be accessed (here)[https://seng-401-on-the-house.web.app/].
+OnTheHouse was deployed on Firebase and can be accessed [here](https://seng-401-on-the-house.web.app/).
 
 # To Run
 1. `cd frontend`

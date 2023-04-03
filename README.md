@@ -5,7 +5,7 @@
 ![Node.js](https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white)
 ![Postman](https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=postman&logoColor=white)
 
-# On The House
+# On The House 🍜
 
 <img width="1440" alt="Screen Shot 2023-03-30 at 1 22 21 PM" src="https://user-images.githubusercontent.com/66704595/228943077-65630f23-5abf-4033-9fe4-dbbecbfb263b.png">
 
@@ -13,11 +13,12 @@
 
 On the House is a homemade food recipe aggregation web application inspired by the concept of online food recipe websites and blogs, while also implementing the features of popular forums such as Reddit. It would allow users to upload images and recipes of their own home cooked meals, while also providing the ability to comment and rate other users' meals based on an upvote and downvote function.
 
-# Live Demo
+# Live Demo 🖥️
+
 ### Note: Our deployed web application uses cookies that are necessary to function properly
 On The House was deployed on Firebase and can be accessed [here](https://seng-401-on-the-house.web.app/).
 
-# API Documentation
+# API Documentation 🚀
 
 Postman was used to verify API endpoint functionality. Several test cases were executed to determine correct behavior, and ensure POST, GET, DELETE and PATCH requests were working as expected.
 
@@ -28,7 +29,8 @@ Please refer to the following documentation for the endpoints used on the projec
 ### 3. [Users](https://documenter.getpostman.com/view/25807081/2s93RNzb8T)
 ### 4. [Upvotes](https://documenter.getpostman.com/view/25807081/2s93RNzb8Y)
 
-# To Run Locally
+# To Run Locally 👨‍💻
+
 ### Note: that proper authentication is required through `firebase login` in order to run locally
 1. `cd frontend`
 2. `npm i`

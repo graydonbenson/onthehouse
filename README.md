@@ -14,6 +14,7 @@
 On the House is a homemade food recipe aggregation web application inspired by the concept of online food recipe websites and blogs, while also implementing the features of popular forums such as Reddit. It would allow users to upload images and recipes of their own home cooked meals, while also providing the ability to comment and rate other users' meals based on an upvote and downvote function.
 
 # Live Demo
+### Note: Our deployed web application uses cookies that are necessary to function properly
 On The House was deployed on Firebase and can be accessed [here](https://seng-401-on-the-house.web.app/).
 
 # API Documentation
@@ -28,7 +29,7 @@ Please refer to the following documentation for the endpoints used on the projec
 ### 4. [Upvotes](https://documenter.getpostman.com/view/25807081/2s93RNzb8Y)
 
 # To Run Locally
-### Note that proper authentication is required through `firebase login` in order to run locally
+### Note: that proper authentication is required through `firebase login` in order to run locally
 1. `cd frontend`
 2. `npm i`
 3. `npm start`

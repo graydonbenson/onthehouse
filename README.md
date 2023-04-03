@@ -1,15 +1,16 @@
-# onthehouse
-
-SENG 401 Project
+# On The House
 
 <img width="1440" alt="Screen Shot 2023-03-30 at 1 22 21 PM" src="https://user-images.githubusercontent.com/66704595/228943077-65630f23-5abf-4033-9fe4-dbbecbfb263b.png">
 
 <img width="1440" alt="Screen Shot 2023-03-30 at 1 22 57 PM" src="https://user-images.githubusercontent.com/66704595/228943112-7d75af15-8d08-4070-ae7b-e6b510471adb.png">
 
+On the House is a homemade food recipe aggregation web application inspired by the concept of online food recipe websites and blogs, while also implementing the features of popular forums such as Reddit. It would allow users to upload images and recipes of their own home cooked meals, while also providing the ability to comment and rate other users' meals based on an upvote and downvote function.
+
 # Live Demo
-OnTheHouse was deployed on Firebase and can be accessed [here](https://seng-401-on-the-house.web.app/).
+On The House was deployed on Firebase and can be accessed [here](https://seng-401-on-the-house.web.app/).
 
 # To Run Locally
+### Note that proper authentication is required through `firebase login` in order to run locally
 1. `cd frontend`
 2. `npm i`
 3. `npm start`

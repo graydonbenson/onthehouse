@@ -9,6 +9,17 @@ On the House is a homemade food recipe aggregation web application inspired by t
 # Live Demo
 On The House was deployed on Firebase and can be accessed [here](https://seng-401-on-the-house.web.app/).
 
+# API Documentation
+
+Postman was used to verify API endpoint functionality. Several test cases were executed to determine correct behavior, and ensure POST, GET, DELETE and PATCH requests were working as expected.
+
+Please refer to the following documentation for the endpoints used on the project:
+
+### 1. [Comments](https://documenter.getpostman.com/view/25807081/2s93RNzag2)
+### 2. [Posts](https://documenter.getpostman.com/view/25807081/2s93RNzb8X)
+### 3. [Users](https://documenter.getpostman.com/view/25807081/2s93RNzb8T)
+### 4. [Upvotes](https://documenter.getpostman.com/view/25807081/2s93RNzb8Y)
+
 # To Run Locally
 ### Note that proper authentication is required through `firebase login` in order to run locally
 1. `cd frontend`

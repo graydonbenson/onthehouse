@@ -26,9 +26,9 @@ check-in #2:
 - Comments
 
 check-in #3:
-Connect auth to frontend - Mush - DONE
+Connect auth to frontend - Parbir - DONE
 Set up auth protected routes - Mush - DONE
-Set up auth invalid inputs (and dupicate user handling) - Mush
+Set up auth invalid inputs (and dupicate user handling) - Mush & Parbir
 Set up dashboard-v2 (when logged in/logged out) - Mush
 Create individual recipe post screen frontend + connect (with comments, recipe flair tag, upvote/downvote, etc) - Graydon, Eduardo, David
 User "my recipes" recipes screen (rectangles) - Athul - DONE
@@ -41,8 +41,8 @@ Create posts in backend - Mush (baseline endpoint) - DONE
     + Update upvote counter posts in backend - Ahad - DONE
     + Get all comments for specific post (based on post ID) - Ahad - DONE (in GET /post/:id)
     + Add comments to posts in backend - Ahad - DONE
-    + Handle meal of the week based on upvotes in backend - Parbir
-    + Get all posts based on recipe flair tag - Parbir
+    + Handle meal of the week based on upvotes in backend - Parbir - DONE
+    + Get all posts based on recipe flair tag - Parbir - DONE
 Manage all users screen? (admin) (firestore)
 Manage all posts screen? (admin) (firestore)
 Edit user profile screen? (if we have time)
@@ -57,8 +57,8 @@ Wednesday Midnight - Graydon edits and merges all segments
 
 
 From Checkin 3:
-- Handle meal of the week based on upvotes in backend + connect - Parbir
-- Get all posts based on recipe flair tag + connect w/ a filter/search - Parbir
+- Handle meal of the week based on upvotes in backend + connect - Parbir (DONE)
+- Get all posts based on recipe flair tag + connect w/ a filter/search - Parbir (DONE)
 - Fix/finalize Get all & post comment - Ahad (DONE)
 - Upvote/Downvote - Ahad (DONE)
 
